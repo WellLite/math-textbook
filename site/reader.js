@@ -6,11 +6,11 @@
   const topic = document.querySelector('[data-reading-topic]');
   const resumeLinks = document.querySelectorAll('[data-resume-reading]');
 
-  function read(key) {
-    try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
+  function read(key, storage = 'localStorage') {
+    try { return JSON.parse(window[storage].getItem(key)); } catch { return null; }
   }
-  function save(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* Storage may be disabled. */ }
+  function save(key, value, storage = 'localStorage') {
+    try { window[storage].setItem(key, JSON.stringify(value)); } catch { /* Storage may be disabled. */ }
   }
   function refreshResume() {
     const mark = read(bookmarkKey);
@@ -58,6 +58,68 @@
     window.addEventListener('pageshow', matchLessons);
   }
 
+  const header = document.querySelector('.chapter-header');
+  const outline = document.getElementById('chapter-outline');
+  if (outline) {
+    const panel = outline.closest('.outline-panel');
+    const toggle = panel.querySelector('.outline-toggle');
+    const current = outline.querySelector('a[aria-current="page"]');
+    const heading = outline.querySelector('h2');
+    const narrow = matchMedia('(max-width: 419px)');
+    panel.classList.add('has-toggle');
+    toggle.hidden = false;
+
+    const railKey = 'math-textbook:outline:' + book.pathname;
+    const previous = read(railKey, 'sessionStorage');
+    if (previous) {
+      if (previous.to === location.pathname && Number.isFinite(previous.top)) outline.scrollTop = previous.top;
+      save(railKey, null, 'sessionStorage');
+    }
+    const chapterLinks = new Set([...outline.querySelectorAll('.outline-topics a')].map(a => a.href));
+    document.addEventListener('click', event => {
+      if (event.button || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || event.defaultPrevented) return;
+      const link = event.target.closest('a');
+      if (link && chapterLinks.has(link.href)) save(railKey, { to: link.pathname, top: outline.scrollTop }, 'sessionStorage');
+    });
+
+    function keepCurrentVisible() {
+      if (!current) return;
+      const row = current.getBoundingClientRect();
+      const viewport = outline.getBoundingClientRect();
+      const top = viewport.top + heading.getBoundingClientRect().height;
+      if (row.top < top || row.bottom > viewport.bottom) {
+        outline.scrollTop += (row.top + row.bottom - top - viewport.bottom) / 2;
+      }
+    }
+    function setOutlineOpen(open) {
+      panel.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? '收起本章脉络' : '展开本章脉络');
+      toggle.textContent = open ? '收起脉络' : '脉络';
+      keepCurrentVisible();
+    }
+    setOutlineOpen(false);
+    toggle.addEventListener('click', () => setOutlineOpen(!panel.classList.contains('is-open')));
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape' || !panel.classList.contains('is-open')) return;
+      event.preventDefault();
+      setOutlineOpen(false);
+      toggle.focus({ preventScroll: true });
+    });
+    function closeOutside(event) {
+      if (panel.classList.contains('is-open') && !panel.contains(event.target)) setOutlineOpen(false);
+    }
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('focusin', closeOutside);
+    narrow.addEventListener('change', () => setOutlineOpen(false));
+    outline.addEventListener('outline-layout', keepCurrentVisible);
+    window.addEventListener('pageshow', keepCurrentVisible);
+    new ResizeObserver(() => {
+      document.body.style.setProperty('--chapter-header-height', header.getBoundingClientRect().height + 'px');
+      keepCurrentVisible();
+    }).observe(header);
+  }
+
   if (!topic) return;
   const largeType = document.getElementById('large-type');
   function setType(large) {
@@ -73,7 +135,6 @@
   });
 
   const path = location.pathname.slice(book.pathname.length);
-  const header = document.querySelector('.chapter-header');
   const blocks = [...document.querySelectorAll('.chapter article > *, .reading-end')];
   const last = read(bookmarkKey);
   let restoring = location.hash === '#resume' && last?.path === path;

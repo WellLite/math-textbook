@@ -105,6 +105,52 @@
 .chapter-directory a {display: block; padding: .75em 0; text-decoration: none; line-height: 1.55}
 .chapter-directory small {display: block; color: var(--reading-muted); font-size: .82rem; margin-bottom: .18em}
 .chapter-directory span {font-size: 1.05rem}
+.with-outline {
+  --chapter-header-height: 62px;
+  --outline-paper: #f1f4ed;
+  --outline-width: clamp(12.5rem, 19vw, 16.5rem);
+}
+.with-outline .chapter-header {z-index: 3}
+.reading-layout {
+  display: grid; grid-template-columns: var(--outline-width) minmax(0, 1fr);
+  align-items: start; min-height: calc(100vh - var(--chapter-header-height));
+  min-height: calc(100dvh - var(--chapter-header-height));
+}
+.reading-layout > .chapter {
+  min-width: 0; width: calc(100% - clamp(2.5rem, 9vw, 9rem));
+  padding-top: clamp(1.8rem, 2.5vw, 2.5rem);
+}
+.outline-panel {
+  position: sticky; top: var(--chapter-header-height); z-index: 1;
+  display: flex; flex-direction: column; min-width: 0;
+  height: calc(100vh - var(--chapter-header-height));
+  height: calc(100dvh - var(--chapter-header-height));
+  color: var(--reading-ink); background: var(--outline-paper);
+  border-inline-end: 1px solid var(--reading-rule);
+}
+#chapter-outline {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain;
+  scrollbar-width: thin; padding-block-end: 1.5rem;
+}
+#chapter-outline h2 {
+  padding: 1.8rem 1.1rem .95rem; color: var(--reading-teal);
+  font: 650 1.14rem/1.5 var(--atlas-serif); text-wrap: pretty;
+  position: sticky; top: 0; z-index: 1; background: var(--outline-paper);
+}
+#chapter-outline a {scroll-margin-block: 5rem .5rem}
+.outline-map-link {
+  display: flex; align-items: center; min-height: 44px; margin: .8rem .85rem 0;
+  border-top: 1px solid var(--reading-rule); padding: .55rem .25rem 0;
+  font-size: .85rem; text-decoration: none;
+}
+.outline-map-link:hover {text-decoration: underline}
+.outline-toggle {display: none}
+@media (min-width: 420px) {
+  .reading-layout .reading-context {display: none}
+}
+@media (min-width: 1080px) {
+  .reading-layout > .chapter {margin-inline-start: clamp(3rem, 7vw, 8.5rem)}
+}
 @media (max-width: 640px) {
   .chapter-header {min-height: 54px; gap: .4rem; padding: .15rem .85rem}
   .chapter-header .brand {font-size: 1.08rem; gap: .45rem}
@@ -117,10 +163,38 @@
   .directory-find {margin-bottom: 1.2rem}
   .directory-find input {flex: 1 1 12rem}
 }
+@media (max-width: 699px) {
+  .with-outline {--outline-width: clamp(7.2rem, 27vw, 9.6rem)}
+  .reading-layout > .chapter {width: calc(100% - clamp(1.2rem, 4.9vw, 2.2rem)); padding-top: 1.6rem}
+  .reading-layout > .chapter article h1 {font-size: clamp(1.57rem, 1.18rem + 2.15vw, 2.1rem)}
+  #chapter-outline h2 {padding: 1.4rem .5rem .9rem; font-size: .93rem}
+  .outline-map-link {margin-inline: .4rem; font-size: .77rem}
+}
+@media (max-width: 419px) {
+  .with-outline {--outline-width: 45px}
+  .outline-panel.has-toggle.is-open {width: min(16rem, calc(100vw - 3.6rem)); z-index: 2; box-shadow: 8px 0 22px -10px #30453e42}
+  .outline-panel.has-toggle .outline-toggle {
+    flex: none; width: 100%; min-height: 46px; display: flex; justify-content: center;
+    align-items: center; gap: .6em; border: 0; border-radius: 0; border-bottom: 1px solid var(--reading-rule);
+    padding: 0; background: var(--outline-paper); color: var(--reading-teal); font-size: .76rem; font-weight: 600;
+  }
+  .outline-panel.is-open .outline-toggle {justify-content: space-between; padding: 0 1rem}
+  .outline-panel.is-open .outline-toggle::after {
+    content: ""; width: .49rem; height: .49rem; border: solid currentColor; border-width: 0 0 1.5px 1.5px;
+    transform: rotate(45deg);
+  }
+  .outline-panel.has-toggle:not(.is-open) :is(#chapter-outline h2, .outline-map-link) {display: none}
+  .outline-panel.has-toggle.is-open #chapter-outline h2 {padding: 1rem 1rem .7rem; font-size: 1.05rem}
+  .outline-panel .outline-toggle:focus-visible {outline-offset: -3px}
+  /* Let the complete list remain reachable if scripting is unavailable. */
+  .reading-layout:has(.outline-panel:not(.has-toggle)) {display: block}
+  .outline-panel:not(.has-toggle) {position: static; height: auto; max-height: 32vh; border-block-end: 1px solid var(--reading-rule)}
+}
 @media print {
   .chapter-page {background: white; color: black}
-  .chapter-header, .skip-reading, .reading-end, .directory-find, .resume-link {display: none}
-  .chapter {width: auto; max-width: none; padding: 0; font-size: 11pt}
+  .chapter-header, .skip-reading, .reading-end, .directory-find, .resume-link, .outline-panel {display: none}
+  .reading-layout {display: block; min-height: 0}
+  .chapter, .reading-layout > .chapter {width: auto; max-width: none; padding: 0; font-size: 11pt}
   .chapter h2, .chapter h3 {break-after: avoid}
   .chapter figure, .chapter .equation-block {break-inside: avoid}
   .chapter .equation-block, .chapter .table-scroll {overflow: visible}

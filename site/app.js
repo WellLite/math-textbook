@@ -88,7 +88,7 @@ function oceanData() {
 const overview = () => data.views.find((v) => v.id === 'overview');
 const view = (id) => data.views.find((v) => v.id === id);
 const worlds = () => data.views.filter((v) => v.id !== 'overview');
-const chapterHref = (node) => node.chapter.replace(/\.md$/, '.html');
+const chapterHref = (node) => node.readingPage || node.chapter?.replace(/\.md$/, '.html');
 const worldTitle = (id) => overview().nodes.find((n) => n.target === id)?.label || view(id)?.title || id;
 const color = (id) =>
   COLORS[
@@ -266,6 +266,14 @@ function revealInspector() {
   }
 }
 function enter(id) {
+  if (id !== 'overview') {
+    const nodes = [...view(id).nodes].sort((a, b) => a.level - b.level);
+    const opening = nodes.find(node => node.chapter) || nodes[0];
+    if (opening && chapterHref(opening)) {
+      location.assign(chapterHref(opening));
+      return;
+    }
+  }
   frameWholeOcean = false;
   inspector.closest('.workspace').classList.remove('topic-open');
   scope = id;
@@ -276,6 +284,11 @@ function enter(id) {
 
 function actionNode(ref) {
   if (ref.type === 'world') enter(ref.world);
+  else if (scope === 'overview' && ref.type === 'node') {
+    const node = view(ref.world).nodes.find(n => n.id === ref.node);
+    if (node && chapterHref(node)) location.assign(chapterHref(node));
+    else select(ref);
+  }
   else select(ref);
 }
 function interactive(g, ref, label) {
@@ -436,11 +449,11 @@ function renderCanvas() {
     });
   }
 
-  $('map-hint').textContent = adjacentMode()
+  $('map-hint').textContent = scope === 'overview'
+    ? '点大圆读一章，点小圆直接读一个知识点。点连线看联系。'
+    : adjacentMode()
     ? '沿箭头逐层往下读，点线查看两端的联系。'
-    : scope === 'overview'
-      ? '点大圆展开板块，点小圆查看跨板块联系。'
-      : '点知识点阅读讲解，点连线查看它们之间的联系。';
+    : '点知识点查看相关内容，点连线查看两端的联系。';
 }
 function renderNav() {
   const list = $('world-list');
@@ -665,9 +678,7 @@ function renderReadingSelection(ref) {
     const entry = overview().nodes.find((n) => n.target === world.id)?.entry;
     heading('数学板块', worldTitle(ref.world));
     if (entry) inspector.append(html('p', { class: 'intro' }, entry));
-    if (world.nodes.length) inspector.append(html('h3', {}, '板块内的知识点'));
-    for (const n of world.nodes)
-      inspector.append(html('a', { class: 'topic-item', href: topicHash(world.id, n.id) }, n.label));
+    if (world.nodes.length) inspector.append(button('进入本章', () => enter(world.id), 'topic-item'));
     appendWorldConnections(world.id);
   } else if (ref.type === 'node') {
     const node = view(ref.world)?.nodes.find((n) => n.id === ref.node);
@@ -678,10 +689,10 @@ function renderReadingSelection(ref) {
       id: 'student-lesson',
       'aria-label': node.label + '的讲解',
     });
-    if (node.chapter) {
+    if (chapterHref(node)) {
       const actions = html('div', { class: 'reading-actions' });
       actions.append(
-        html('a', { class: 'chapter-link', href: chapterHref(node) }, '阅读本节正文'),
+        html('a', { class: 'chapter-link', href: chapterHref(node) }, node.chapter ? '阅读本节正文' : '查看本章脉络'),
       );
       if (scope !== 'overview') {
         actions.append(button('回到图上', () => {

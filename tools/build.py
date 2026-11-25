@@ -17,7 +17,8 @@ from urllib.parse import quote, unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_FILES = ('index.html', 'app.js', 'style.css', 'chapter.css', 'ocean.css',
-              'ocean-layout.js', 'learning-view.css', 'learning-view.js', 'learning-graph.js', 'reader.js')
+              'ocean-layout.js', 'learning-view.css', 'learning-view.js', 'learning-graph.js', 'reader.js',
+              'chapter-outline.js', 'outline-graph.css')
 RELATIONS = {'prerequisite', 'perspective', 'route'}
 MARKER = '.math-textbook-build'
 
@@ -81,19 +82,64 @@ def chapter_sources(atlas):
     return chapters
 
 
-def page(title, body, root, directory=False):
-    reading_tools = '' if directory else '<button id="large-type" type="button" aria-pressed="false" hidden>大字阅读</button>'
+def page(title, body, root, directory=False, outline='', pending=False):
+    reading_tools = '' if directory or pending else '<button id="large-type" type="button" aria-pressed="false" hidden>大字阅读</button>'
     page_class = 'directory' if directory else 'chapter'
+    main = f'<main class="{page_class}" id="reading" tabindex="-1">{body}</main>'
+    outline_assets = ''
+    if outline:
+        outline_assets = (f'<link rel="stylesheet" href="{root}outline-graph.css">'
+                          f'<script src="{root}learning-graph.js" defer></script><script src="{root}chapter-outline.js" defer></script>')
+        main = f'<div class="reading-layout">{outline}{main}</div>'
     return f'''<!doctype html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' https:; base-uri 'none'; form-action 'none'">
 <title>{escape(title)} · 数学地图</title>
-<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css"><script src="{root}reader.js" defer></script>
+<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css">{outline_assets}<script src="{root}reader.js" defer></script>
 </head>
-<body class="chapter-page"><a class="skip-reading" href="#reading">跳到正文</a><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><nav aria-label="阅读导航">{reading_tools}<a href="{root}chapters/index.html">教材目录</a></nav></header>
-<main class="{page_class}" id="reading">{body}</main></body></html>
+<body class="chapter-page{' with-outline' if outline else ''}"><a class="skip-reading" href="#reading">跳到正文</a><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><nav aria-label="阅读导航">{reading_tools}<a href="{root}chapters/index.html">教材目录</a></nav></header>
+{main}</body></html>
 '''
+
+
+def reader_paths(worlds):
+    """Keep published chapter URLs and give every point a place in its own outline."""
+    paths = {}
+    used = set()
+    for world in worlds:
+        for node in world['nodes']:
+            world_key, node_key = (quote(key, safe='') for key in (world['id'], node['id']))
+            if node.get('chapter'):
+                path = PurePosixPath(node['chapter']).with_suffix('.html')
+                if path in used:
+                    path = path.with_name(f'{path.stem}.outline-{world_key}.{node_key}.html')
+            else:
+                path = PurePosixPath('chapters/_topics', 'world-' + world_key, 'topic-' + node_key + '.html')
+            if path in used or path == PurePosixPath('chapters/index.html'):
+                raise ValueError(f'阅读页面路径冲突：{path}')
+            paths[world['id'], node['id']] = path
+            node['readingPage'] = quote(path.as_posix())
+            used.add(path)
+    return paths
+
+
+def chapter_outline(world, current, path, paths, map_href):
+    rows = []
+    for node in sorted(world['nodes'], key=lambda item: item['level']):
+        href = quote(os.path.relpath(paths[world['id'], node['id']], path.parent))
+        active = ' aria-current="page"' if node['id'] == current else ''
+        pending = '' if node.get('chapter') else ' class="outline-pending"'
+        label = escape(node['label'])
+        rows.append(f'<li data-topic="{escape(node["id"])}" data-level="{node["level"]}"{pending}>'
+                    f'<a href="{href}"{active}><span class="outline-label">{label}</span></a></li>')
+    edges = json.dumps(world['edges'], ensure_ascii=False, separators=(',', ':')).replace('<', r'\u003c')
+    return ('<aside class="outline-panel" aria-label="章节导航">'
+            '<button type="button" class="outline-toggle" aria-controls="chapter-outline" aria-expanded="false" hidden>本章脉络</button>'
+            f'<nav id="chapter-outline" aria-label="本章脉络"><h2>{escape(world["title"])}</h2>'
+            f'<ol class="outline-topics">{"".join(rows)}</ol>'
+            f'<a class="outline-map-link" href="{map_href}">完整关系图</a>'
+            f'<script type="application/json" class="outline-edges">{edges}</script></nav></aside>')
 
 
 def chapter_directory(atlas, titles):
@@ -175,8 +221,10 @@ def build(stage):
         raise ValueError(f'章节文件与地图的 chapter 引用不一致：{mismatch}')
     for name in SITE_FILES:
         shutil.copyfile(ROOT / 'site' / name, stage / name)
+    worlds = {world['id']: world for world in atlas['views'] if world['id'] != 'overview'}
+    paths = reader_paths(worlds.values())
     (stage / 'content').mkdir()
-    shutil.copyfile(atlas_path, stage / 'content/map.json')
+    (stage / 'content/map.json').write_text(json.dumps(atlas, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     (stage / 'chapters').mkdir()
     for image in (ROOT / 'chapters').rglob('*'):
         if image.is_symlink():
@@ -189,37 +237,43 @@ def build(stage):
     if not shutil.which('pandoc'):
         raise RuntimeError('请先安装 Pandoc 并确认 pandoc 命令在 PATH 中。')
     titles = {}
-    worlds = {view['id']: view for view in atlas['views']}
-    for source, topics in chapters.items():
+    articles = {}
+    for source in chapters:
         text = (ROOT / source).read_text(encoding='utf-8')
         first = next((line for line in text.splitlines() if line.strip()), '')
         if not first.startswith('# '):
             raise ValueError(f'{source} 请用一级标题开篇')
         title = first[2:].strip()
         titles[source] = title
-        filename = source.with_suffix('.html')
-        output = stage / filename
-        root = '../' * (len(filename.parts) - 1)
-        chapter = subprocess.run(
+        articles[source] = subprocess.run(
             ['pandoc', '--from=gfm+tex_math_dollars', '--to=html5', '--mathml', '--wrap=none',
              '--fail-if-warnings', '--lua-filter', str(ROOT / 'tools/chapter-links.lua')],
             input=text, text=True, encoding='utf-8',
             stdout=subprocess.PIPE, check=True,
         ).stdout
-        back = ''.join(f'<a href="{root}index.html#topic/{quote(w, safe="")}/{quote(n, safe="")}">'
-                       f'{escape(label)}</a>' for w, n, label in topics)
-        world_id = topics[0][0]
-        collection = escape(worlds[world_id]['title'])
-        crumb = f'<a href="{root}chapters/index.html#world-{quote(world_id, safe="")}">{collection}</a>'
-        topic = escape(topics[0][2])
-        context = (f'<p class="reading-context">{crumb}<span aria-hidden="true">/</span>'
-                   f'<span data-reading-topic>{topic}</span></p>')
-        body = (f'{context}<article>{chapter}</article><footer class="reading-end">'
-                + related_reading(worlds, topics, source)
-                + f'<nav class="map-return" aria-label="返回导航">在地图中查看 {back}'
-                  f'<a class="directory-return" href="{root}chapters/index.html#world-{quote(world_id, safe="")}">返回本板块目录</a></nav></footer>')
-        output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(page(title, body, root), encoding='utf-8')
+    for world_id, world in worlds.items():
+        for node in world['nodes']:
+            path = paths[world_id, node['id']]
+            output = stage / path
+            root = '../' * (len(path.parts) - 1)
+            map_href = f'{root}index.html#topic/{quote(world_id, safe="")}/{quote(node["id"], safe="")}'
+            outline = chapter_outline(world, node['id'], path, paths, map_href)
+            label = escape(node['label'])
+            if node.get('chapter'):
+                source = PurePosixPath(node['chapter'])
+                title = titles[source]
+                body = (f'<p class="reading-context" data-reading-topic>{label}</p><article>{articles[source]}</article>'
+                        '<footer class="reading-end">' + related_reading(worlds, chapters[source], source)
+                        + f'<nav class="map-return" aria-label="返回导航"><a href="{map_href}">在地图中查看「{label}」</a>'
+                          f'<a href="{root}chapters/index.html#world-{quote(world_id, safe="")}">返回本板块目录</a></nav></footer>')
+            else:
+                title = node['label']
+                description = f'<p>{escape(node["description"])}</p>' if node.get('description') else ''
+                body = (f'<article class="topic-pending"><h1>{label}</h1>{description}<p>本节正文尚未写成。</p></article>'
+                        f'<footer class="reading-end"><nav class="map-return" aria-label="返回导航">'
+                        f'<a href="{map_href}">查看「{label}」的知识联系</a></nav></footer>')
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(page(title, body, root, outline=outline, pending=not node.get('chapter')), encoding='utf-8')
     index = chapter_directory(atlas, titles)
     (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True), encoding='utf-8')
     # Browsers can retain yesterday's map scripts or data when a reader reopens the book.
