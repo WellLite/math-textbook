@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="290" viewBox="0 0 420 290" role="img" aria-labelledby="title desc">
+  <title id="title">对角线围成的正方形</title>
+  <desc id="desc">四个单位方格各有一半涂色。涂色区域是一个斜放的正方形，每条边是单位方格的对角线 d。</desc>
+  <rect width="420" height="290" rx="12" fill="#f8faf7"/>
+  <path d="M99 33h222v222H99z" stroke="#38565a" stroke-width="2" fill="#fff"/>
+  <path d="M210 33 321 144 210 255 99 144z" fill="#d4e9e2" stroke="#087c74" stroke-width="3"/>
+  <path d="M99 144h222M210 33v222" fill="none" stroke="#67837e" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <g fill="#274645" font-family="Georgia, serif" font-size="19" text-anchor="middle">
+    <text x="154" y="25">1</text><text x="266" y="25">1</text>
+    <text x="87" y="93">1</text><text x="87" y="207">1</text>
+    <text x="272" y="85" font-style="italic">d</text>
+  </g>
+</svg>

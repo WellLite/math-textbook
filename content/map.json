@@ -403,70 +403,81 @@
           "id": "statement",
           "label": "命题与判断",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/statement.md"
         },
         {
           "id": "sets",
           "label": "集合与关系",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/sets.md"
         },
         {
           "id": "problem",
           "label": "问题与模型",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/problem.md"
         },
         {
           "id": "quant",
           "label": "所有与存在",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/quant.md"
         },
         {
           "id": "mapping",
           "label": "映射与复合",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/mapping.md"
         },
         {
           "id": "proof",
           "label": "证明与反例",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/proof.md"
         },
         {
           "id": "induction",
           "label": "归纳与递推",
           "level": 2,
           "target": null,
-          "description": "想给每个自然数一个保证，逐个检查永远查不完。先证明最初一项，再证明任意已成立的一项都能推出下一项。这样若有失败的项，最早的失败就既不可能是第一项，也不可能紧随成功的一项。"
+          "description": "想给每个自然数一个保证，逐个检查永远查不完。先证明最初一项，再证明任意已成立的一项都能推出下一项。这样若有失败的项，最早的失败就既不可能是第一项，也不可能紧随成功的一项。",
+          "chapter": "chapters/language/induction.md"
         },
         {
           "id": "formal",
           "label": "数理逻辑",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/formal.md"
         },
         {
           "id": "axioms",
           "label": "公理集合论",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/axioms.md"
         },
         {
           "id": "contradiction",
           "label": "反证法",
           "level": 3,
           "description": "要证明不存在最大的自然数，可以暂时假定最大的数叫 N。此时 N＋1 仍是自然数，却比 N 大，与假设冲突。反证法要求矛盾从假设和已建立的事实一步步推出。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/contradiction.md"
         },
         {
           "id": "contrapositive",
           "label": "逆否命题",
           "level": 3,
           "description": "要证明“若 n² 为偶数，则整数 n 为偶数”，可以改证“若 n 为奇数，则 n² 为奇数”。若原命题有反例，反例会同时满足前件为真、后件为假，也正好推翻逆否命题。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/language/contrapositive.md"
         },
         {
           "id": "strong-induction",
@@ -479,7 +490,8 @@
             "强数学归纳法",
             "最小反例"
           ],
-          "description": "要证明每个大于 1 的整数都可拆成素数的乘积，只知道前一个整数能拆往往帮不上忙。若当前数是合数，它的两个因子都更小，于是允许使用所有更小整数的结论就够了。等价地，若失败，取最小的反例，它的两个因子又能把它拆开。"
+          "description": "要证明每个大于 1 的整数都可拆成素数的乘积，只知道前一个整数能拆往往帮不上忙。若当前数是合数，它的两个因子都更小，于是允许使用所有更小整数的结论就够了。等价地，若失败，取最小的反例，它的两个因子又能把它拆开。",
+          "chapter": "chapters/language/strong-induction.md"
         }
       ],
       "edges": [
@@ -563,64 +575,74 @@
           "id": "count",
           "label": "计数与对应",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/count.md"
         },
         {
           "id": "natural",
           "label": "自然数",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/natural.md"
         },
         {
           "id": "add",
           "label": "加法",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/add.md"
         },
         {
           "id": "multiply",
           "label": "乘法",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/multiply.md"
         },
         {
           "id": "integer",
           "label": "整数",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/integer.md"
         },
         {
           "id": "rational",
           "label": "有理数",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/rational.md"
         },
         {
           "id": "real",
           "label": "实数",
           "level": 5,
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/real.md"
         },
         {
           "id": "complex",
           "label": "复数",
           "level": 6,
           "target": null,
-          "description": "把实数直线上的数扩充为 a+bi，其中 i²=−1。加法按两个分量进行，乘法按分配律展开并用 i²=−1 化简。把 a、b 画作平面坐标后，乘以 i 会把 (a,b) 变成 (−b,a)，恰好转过一个直角。"
+          "description": "把实数直线上的数扩充为 a+bi，其中 i²=−1。加法按两个分量进行，乘法按分配律展开并用 i²=−1 化简。把 a、b 画作平面坐标后，乘以 i 会把 (a,b) 变成 (−b,a)，恰好转过一个直角。",
+          "chapter": "chapters/numbers/complex.md"
         },
         {
           "id": "common-denominator",
           "label": "通分与分数加法",
           "level": 5,
           "description": "半张纸和三分之一张纸合起来有多大？把同样大的整张纸等分成六份，半张占三份，三分之一张占两份。统一计量的单位后，得到六分之五张。通分正是在选择共同的份额。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/common-denominator.md"
         },
         {
           "id": "square-root",
           "label": "平方根与无理数",
           "level": 6,
           "description": "单位正方形的对角线 d 满足 d²＝2。若 d＝p/q 是既约正分数，p²＝2q² 迫使 p 为偶数，代回后又迫使 q 为偶数，与既约矛盾。在实数中，把这个正解写成 √2。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/numbers/square-root.md"
         }
       ],
       "edges": [
@@ -711,134 +733,154 @@
           "id": "points",
           "label": "点线与图形",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/geometry/points.md"
         },
         {
           "id": "measure",
           "label": "长度角度面积",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/geometry/measure.md"
         },
         {
           "id": "congruent",
           "label": "全等与变换",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/geometry/congruent.md"
         },
         {
           "id": "similar",
           "label": "相似与比例",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/geometry/similar.md"
         },
         {
           "id": "coords",
           "label": "坐标系",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/geometry/coords.md"
         },
         {
           "id": "trig",
           "label": "三角函数",
           "level": 3,
           "target": null,
-          "description": "把长度为 1 的箭头绕原点旋转，箭头末端的横坐标和纵坐标分别记为余弦与正弦。转一整圈回到同一点，两个坐标随角度周期性重复。"
+          "description": "把长度为 1 的箭头绕原点旋转，箭头末端的横坐标和纵坐标分别记为余弦与正弦。转一整圈回到同一点，两个坐标随角度周期性重复。",
+          "chapter": "chapters/geometry/trig.md"
         },
         {
           "id": "vectors",
           "label": "位移与向量",
           "level": 3,
-          "target": "linear"
+          "target": "linear",
+          "chapter": "chapters/geometry/vectors.md"
         },
         {
           "id": "curves",
           "label": "曲线与方程",
           "level": 3,
-          "target": "elementary"
+          "target": "elementary",
+          "chapter": "chapters/geometry/curves.md"
         },
         {
           "id": "analytic-line",
           "label": "直线方程与交点",
           "level": 4,
           "target": null,
-          "description": "怎样判断点是否在一条直线上？在平面直角坐标系中，一次条件 Ax+By+C=0 描述直线，A、B 至少一个非零。联立两条直线的条件，可区分相交、平行和重合。"
+          "description": "怎样判断点是否在一条直线上？在平面直角坐标系中，一次条件 Ax+By+C=0 描述直线，A、B 至少一个非零。联立两条直线的条件，可区分相交、平行和重合。",
+          "chapter": "chapters/geometry/analytic-line.md"
         },
         {
           "id": "analytic-circle",
           "label": "圆的方程与直线交圆",
           "level": 5,
           "target": null,
-          "description": "固定圆心 (a,b) 和半径 r>0。把点到圆心的距离写进坐标，得到 (x−a)²+(y−b)²=r²。比较圆心到直线的距离和 r，就能预判两者有几个公共点。"
+          "description": "固定圆心 (a,b) 和半径 r>0。把点到圆心的距离写进坐标，得到 (x−a)²+(y−b)²=r²。比较圆心到直线的距离和 r，就能预判两者有几个公共点。",
+          "chapter": "chapters/geometry/analytic-circle.md"
         },
         {
           "id": "analytic-ellipse",
           "label": "椭圆",
           "level": 5,
           "target": null,
-          "description": "把一根定长的线套在两个焦点上，拉紧后笔尖能到哪些位置？到两个不同焦点的距离之和恒定，且常数大于焦距，得到椭圆。以焦点连线为横轴可推导标准方程。"
+          "description": "把一根定长的线套在两个焦点上，拉紧后笔尖能到哪些位置？到两个不同焦点的距离之和恒定，且常数大于焦距，得到椭圆。以焦点连线为横轴可推导标准方程。",
+          "chapter": "chapters/geometry/analytic-ellipse.md"
         },
         {
           "id": "analytic-hyperbola",
           "label": "双曲线",
           "level": 5,
           "target": null,
-          "description": "两个站点同时发出等速传播的信号，固定的到达时间差对应怎样的轨迹？到两个不同焦点的距离差的绝对值为常数，且常数在零与焦距之间，轨迹有两支。"
+          "description": "两个站点同时发出等速传播的信号，固定的到达时间差对应怎样的轨迹？到两个不同焦点的距离差的绝对值为常数，且常数在零与焦距之间，轨迹有两支。",
+          "chapter": "chapters/geometry/analytic-hyperbola.md"
         },
         {
           "id": "analytic-parabola",
           "label": "抛物线",
           "level": 5,
           "target": null,
-          "description": "给定一条准线和线外一个焦点。一个点到焦点的距离恰等于它到准线的垂直距离时，所有这样的位置组成抛物线。选取对称轴作坐标轴，就能把等距条件写成二次方程。"
+          "description": "给定一条准线和线外一个焦点。一个点到焦点的距离恰等于它到准线的垂直距离时，所有这样的位置组成抛物线。选取对称轴作坐标轴，就能把等距条件写成二次方程。",
+          "chapter": "chapters/geometry/analytic-parabola.md"
         },
         {
           "id": "solid-incidence",
           "label": "空间中的直线与平面",
           "level": 2,
           "target": null,
-          "description": "把两支笔放在房间里的不同高度，沿笔杆各自无限延长，所得直线可能既不平行也不相交。区分共面与异面，再用三个不共线的点确定一个平面。"
+          "description": "把两支笔放在房间里的不同高度，沿笔杆各自无限延长，所得直线可能既不平行也不相交。区分共面与异面，再用三个不共线的点确定一个平面。",
+          "chapter": "chapters/geometry/solid-incidence.md"
         },
         {
           "id": "solid-parallel",
           "label": "空间平行关系",
           "level": 3,
           "target": null,
-          "description": "怎样判定一条直线与一个平面平行？先找到这条直线上一个不属于平面的点，再在平面内寻找与它平行的直线。进一步用两条相交直线的方向刻画一个平面，判定两平面是否平行。"
+          "description": "怎样判定一条直线与一个平面平行？先找到这条直线上一个不属于平面的点，再在平面内寻找与它平行的直线。进一步用两条相交直线的方向刻画一个平面，判定两平面是否平行。",
+          "chapter": "chapters/geometry/solid-parallel.md"
         },
         {
           "id": "solid-perpendicular",
           "label": "空间垂直关系",
           "level": 3,
           "target": null,
-          "description": "怎样确认立柱垂直于地面？立柱与地面相交，在交点处检验地面上两条不同方向的直线。若立柱同时与这两条直线垂直，便垂直于地面中的所有过交点的直线。"
+          "description": "怎样确认立柱垂直于地面？立柱与地面相交，在交点处检验地面上两条不同方向的直线。若立柱同时与这两条直线垂直，便垂直于地面中的所有过交点的直线。",
+          "chapter": "chapters/geometry/solid-perpendicular.md"
         },
         {
           "id": "solid-volume",
           "label": "截面与体积",
           "level": 4,
           "target": null,
-          "description": "从数单位立方体开始，得到直棱柱的体积等于底面积乘高。在相同高度逐层比较截面面积，可以转向斜棱柱、圆柱，以及具有相同底面积和高的锥体之间的体积比较。"
+          "description": "从数单位立方体开始，得到直棱柱的体积等于底面积乘高。在相同高度逐层比较截面面积，可以转向斜棱柱、圆柱，以及具有相同底面积和高的锥体之间的体积比较。",
+          "chapter": "chapters/geometry/solid-volume.md"
         },
         {
           "id": "solid-coordinates",
           "label": "空间直角坐标与向量",
           "level": 4,
           "target": null,
-          "description": "在长方体的一角沿三条两两垂直的方向建立坐标轴。点的位置由三个数表示，两点的坐标差给出位移。于是几何中的方向和平移可以逐分量计算。"
+          "description": "在长方体的一角沿三条两两垂直的方向建立坐标轴。点的位置由三个数表示，两点的坐标差给出位移。于是几何中的方向和平移可以逐分量计算。",
+          "chapter": "chapters/geometry/solid-coordinates.md"
         },
         {
           "id": "solid-metric",
           "label": "空间角、距离与法向量",
           "level": 5,
           "target": null,
-          "description": "用方向向量表示直线，用垂直于平面的非零法向量表示平面的方向。内积可以检验两个方向是否正交，连接平面外一点与平面中一点，把这段位移投影到法向上即可求点到平面的距离。"
+          "description": "用方向向量表示直线，用垂直于平面的非零法向量表示平面的方向。内积可以检验两个方向是否正交，连接平面外一点与平面中一点，把这段位移投影到法向上即可求点到平面的距离。",
+          "chapter": "chapters/geometry/solid-metric.md"
         },
         {
           "id": "plane-proof",
           "label": "平面几何证明",
           "target": "plane-geometry",
           "level": 2,
-          "description": "从长度、角度和全等进入三角形、四边形与圆。展开关联板块，可沿圆周角找到四点共圆及其用法。"
+          "description": "从长度、角度和全等进入三角形、四边形与圆。展开关联板块，可沿圆周角找到四点共圆及其用法。",
+          "chapter": "chapters/geometry/plane-proof.md"
         }
       ],
       "edges": [

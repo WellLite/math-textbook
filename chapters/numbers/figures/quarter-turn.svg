@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="240" viewBox="0 0 430 240" role="img" aria-labelledby="title desc">
+  <title id="title">乘两次 i</title>
+  <desc id="desc">三个单位箭头共用原点，依次指向右、上、左。每乘一次 i，箭头逆时针转过一个直角。</desc>
+  <defs>
+    <marker id="tip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#087c74"/>
+    </marker>
+    <marker id="turn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#ad4d21"/>
+    </marker>
+  </defs>
+  <rect width="430" height="240" rx="12" fill="#f8faf7"/>
+  <path d="M30 177h370M215 219V16" stroke="#80918e" stroke-dasharray="5 5" fill="none"/>
+  <g stroke="#087c74" stroke-width="3" fill="none" marker-end="url(#tip)">
+    <path d="M215 177h124"/><path d="M215 177V53"/><path d="M215 177H91"/>
+  </g>
+  <g stroke="#ad4d21" stroke-width="2.5" fill="none" marker-end="url(#turn)">
+    <path d="M296 167a82 82 0 0 0-71-71"/><path d="M205 96a82 82 0 0 0-71 71"/>
+  </g>
+  <circle cx="215" cy="177" r="3.5" fill="#274645"/>
+  <g font-family="Georgia, serif" font-size="19" fill="#274645" text-anchor="middle">
+    <text x="215" y="202">0</text><text x="342" y="199">1</text><text x="88" y="199">−1</text><text x="230" y="56">i</text>
+    <text x="294" y="102" fill="#96411e">× i</text><text x="135" y="102" fill="#96411e">× i</text>
+  </g>
+</svg>

@@ -92,6 +92,28 @@ def page(title, body, root):
 '''
 
 
+def chapter_directory(atlas, titles):
+    jump_links = []
+    sections = []
+    for world in atlas['views']:
+        paths = dict.fromkeys(PurePosixPath(node['chapter'])
+                              for node in sorted(world['nodes'], key=lambda node: node['level'])
+                              if 'chapter' in node)
+        if not paths:
+            continue
+        heading = escape(world['title'])
+        anchor = 'world-' + world['id']
+        jump_links.append(f'<a href="#{quote(anchor, safe="")}">{heading}</a>')
+        entries = []
+        for path in paths:
+            link = quote(path.relative_to('chapters').with_suffix('.html').as_posix())
+            entries.append(f'<li><a href="{link}">{escape(titles[path])}</a></li>')
+        sections.append(f'<section><h2 id="{escape(anchor)}">{heading}</h2>'
+                        f'<ul class="chapter-directory">{"".join(entries)}</ul></section>')
+    return ('<h1>教材正文</h1><nav aria-label="按板块查阅">'
+            + ' · '.join(jump_links) + '</nav>' + ''.join(sections))
+
+
 class ChapterLinks(HTMLParser):
     def __init__(self, document, site):
         super().__init__()
@@ -134,13 +156,14 @@ def build(stage):
 
     if not shutil.which('pandoc'):
         raise RuntimeError('请先安装 Pandoc 并确认 pandoc 命令在 PATH 中。')
-    listings = []
+    titles = {}
     for source, topics in chapters.items():
         text = (ROOT / source).read_text(encoding='utf-8')
         first = next((line for line in text.splitlines() if line.strip()), '')
         if not first.startswith('# '):
             raise ValueError(f'{source} 请用一级标题开篇')
         title = first[2:].strip()
+        titles[source] = title
         filename = source.with_suffix('.html')
         output = stage / filename
         root = '../' * (len(filename.parts) - 1)
@@ -155,9 +178,7 @@ def build(stage):
         body = f'<article>{chapter}</article><nav class="map-return" aria-label="知识地图">地图中的知识点 {back}</nav>'
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(page(title, body, root), encoding='utf-8')
-        listing_url = quote(filename.relative_to('chapters').as_posix())
-        listings.append(f'<li><a href="{listing_url}">{escape(title)}</a></li>')
-    index = '<h1>教材正文</h1><ul class="chapter-directory">' + ''.join(listings) + '</ul>'
+    index = chapter_directory(atlas, titles)
     (stage / 'chapters/index.html').write_text(page('教材正文', index, '../'), encoding='utf-8')
     for document in (stage / 'chapters').rglob('*.html'):
         ChapterLinks(document, stage).feed(document.read_text(encoding='utf-8'))

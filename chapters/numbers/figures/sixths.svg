@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="490" height="205" viewBox="0 0 490 205" role="img" aria-labelledby="title desc">
+  <title id="title">把同一长度分别量成半份、三分之一份与六分之一份</title>
+  <desc id="desc">每个长条都代表同样大的一张纸。第一条填满一半，第二条填满三分之一。第三条分成六格，前三格填第一种颜色，接着两格填第二种颜色，剩下一格空白。</desc>
+  <rect width="490" height="205" rx="12" fill="#f8faf7"/>
+  <g stroke="#4d6565" stroke-width="1.6" fill="white">
+    <path d="M88 22h372v36H88z M88 82h372v36H88z M88 142h372v36H88z"/>
+  </g>
+  <path d="M89 23h185v34H89z M89 143h185v34H89z" fill="#87c3b5"/>
+  <path d="M89 83h123v34H89z M274 143h124v34H274z" fill="#ecbb88"/>
+  <g fill="none" stroke="#465d5d" stroke-width="1.5">
+    <path d="M274 22v36 M212 82v36 M336 82v36 M150 142v36 M212 142v36 M274 142v36 M336 142v36 M398 142v36"/>
+    <path d="M150 23v34 M212 23v34 M336 23v34 M398 23v34 M150 83v34 M274 83v34 M398 83v34" stroke-dasharray="3 4" stroke-opacity=".6"/>
+  </g>
+  <g font-family="Georgia, serif" font-size="21" fill="#294646" text-anchor="end">
+    <text x="70" y="47">1/2</text><text x="70" y="107">1/3</text><text x="70" y="167">5/6</text>
+  </g>
+</svg>
