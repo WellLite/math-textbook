@@ -15,7 +15,7 @@ from urllib.parse import quote, unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_FILES = ('index.html', 'app.js', 'style.css', 'chapter.css', 'ocean.css',
-              'ocean-layout.js', 'learning-view.css', 'learning-view.js', 'learning-graph.js')
+              'ocean-layout.js', 'learning-view.css', 'learning-view.js', 'learning-graph.js', 'reader.js')
 RELATIONS = {'prerequisite', 'perspective', 'route'}
 MARKER = '.math-textbook-build'
 
@@ -79,16 +79,18 @@ def chapter_sources(atlas):
     return chapters
 
 
-def page(title, body, root):
+def page(title, body, root, directory=False):
+    reading_tools = '' if directory else '<button id="large-type" type="button" aria-pressed="false" hidden>大字阅读</button>'
+    page_class = 'directory' if directory else 'chapter'
     return f'''<!doctype html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self' https:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' https:; base-uri 'none'; form-action 'none'">
 <title>{escape(title)} · 数学地图</title>
-<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css">
+<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css"><script src="{root}reader.js" defer></script>
 </head>
-<body class="chapter-page"><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><a href="{root}chapters/index.html">教材目录</a></header>
-<main class="chapter">{body}</main></body></html>
+<body class="chapter-page"><a class="skip-reading" href="#reading">跳到正文</a><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><nav aria-label="阅读导航">{reading_tools}<a href="{root}chapters/index.html">教材目录</a></nav></header>
+<main class="{page_class}" id="reading">{body}</main></body></html>
 '''
 
 
@@ -96,22 +98,50 @@ def chapter_directory(atlas, titles):
     jump_links = []
     sections = []
     for world in atlas['views']:
-        paths = dict.fromkeys(PurePosixPath(node['chapter'])
-                              for node in sorted(world['nodes'], key=lambda node: node['level'])
-                              if 'chapter' in node)
+        paths = {}
+        for node in sorted(world['nodes'], key=lambda node: node['level']):
+            if 'chapter' in node:
+                paths.setdefault(PurePosixPath(node['chapter']), node['label'])
         if not paths:
             continue
         heading = escape(world['title'])
         anchor = 'world-' + world['id']
         jump_links.append(f'<a href="#{quote(anchor, safe="")}">{heading}</a>')
         entries = []
-        for path in paths:
+        for path, label in paths.items():
             link = quote(path.relative_to('chapters').with_suffix('.html').as_posix())
-            entries.append(f'<li><a href="{link}">{escape(titles[path])}</a></li>')
-        sections.append(f'<section><h2 id="{escape(anchor)}">{heading}</h2>'
+            title = titles[path]
+            topic = '' if title == label else f'<small>{escape(label)}</small>'
+            entries.append(f'<li><a href="{link}">{topic}<span>{escape(title)}</span></a></li>')
+        sections.append(f'<section class="directory-section"><h2 id="{escape(anchor)}">{heading}</h2>'
                         f'<ul class="chapter-directory">{"".join(entries)}</ul></section>')
-    return ('<h1>教材正文</h1><nav aria-label="按板块查阅">'
-            + ' · '.join(jump_links) + '</nav>' + ''.join(sections))
+    return (f'<header class="directory-heading"><div><h1>教材目录</h1><p>{len(titles)} 篇正文</p></div>'
+            '<a class="resume-link" data-resume-reading hidden></a></header>'
+            '<div class="directory-find" hidden><label for="find-lesson">找一篇课文</label>'
+            '<input type="search" id="find-lesson" placeholder="输入知识点或题目中的词">'
+            '<span id="found-lessons" role="status"></span></div>'
+            '<div class="directory-layout"><nav aria-label="按板块查阅">'
+            + ''.join(jump_links) + '</nav><div>' + ''.join(sections) + '</div></div>')
+
+
+def related_reading(worlds, topics, source):
+    """Offer available lessons connected by real outgoing learning edges."""
+    links = {}
+    for world_id, node_id, _ in topics:
+        world = worlds[world_id]
+        targets = {edge['target']: edge.get('label', '') for edge in world['edges']
+                   if edge['source'] == node_id and edge['kind'] in {'route', 'prerequisite'}}
+        for node in world['nodes']:
+            if node['id'] in targets and node.get('chapter') and node['chapter'] != str(source):
+                links.setdefault(node['chapter'], (node['label'], targets[node['id']]))
+    if not links:
+        return ''
+    entries = []
+    for path, (label, connection) in links.items():
+        href = quote(os.path.relpath(PurePosixPath(path).with_suffix('.html'), source.parent))
+        why = f'<small>{escape(connection)}</small>' if connection and connection != label else ''
+        entries.append(f'<a href="{href}"><span>{escape(label)} <span aria-hidden="true">→</span></span>{why}</a>')
+    return '<nav class="next-reading" aria-label="接着读"><h2>接着读</h2>' + ''.join(entries) + '</nav>'
 
 
 class ChapterLinks(HTMLParser):
@@ -157,6 +187,7 @@ def build(stage):
     if not shutil.which('pandoc'):
         raise RuntimeError('请先安装 Pandoc 并确认 pandoc 命令在 PATH 中。')
     titles = {}
+    worlds = {view['id']: view for view in atlas['views']}
     for source, topics in chapters.items():
         text = (ROOT / source).read_text(encoding='utf-8')
         first = next((line for line in text.splitlines() if line.strip()), '')
@@ -175,11 +206,20 @@ def build(stage):
         ).stdout
         back = ''.join(f'<a href="{root}index.html#topic/{quote(w, safe="")}/{quote(n, safe="")}">'
                        f'{escape(label)}</a>' for w, n, label in topics)
-        body = f'<article>{chapter}</article><nav class="map-return" aria-label="知识地图">地图中的知识点 {back}</nav>'
+        world_id = topics[0][0]
+        collection = escape(worlds[world_id]['title'])
+        crumb = f'<a href="{root}chapters/index.html#world-{quote(world_id, safe="")}">{collection}</a>'
+        topic = escape(topics[0][2])
+        context = (f'<p class="reading-context">{crumb}<span aria-hidden="true">/</span>'
+                   f'<span data-reading-topic>{topic}</span></p>')
+        body = (f'{context}<article>{chapter}</article><footer class="reading-end">'
+                + related_reading(worlds, topics, source)
+                + f'<nav class="map-return" aria-label="返回导航">在地图中查看 {back}'
+                  f'<a class="directory-return" href="{root}chapters/index.html#world-{quote(world_id, safe="")}">返回本板块目录</a></nav></footer>')
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(page(title, body, root), encoding='utf-8')
     index = chapter_directory(atlas, titles)
-    (stage / 'chapters/index.html').write_text(page('教材正文', index, '../'), encoding='utf-8')
+    (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True), encoding='utf-8')
     for document in (stage / 'chapters').rglob('*.html'):
         ChapterLinks(document, stage).feed(document.read_text(encoding='utf-8'))
     (stage / '.nojekyll').touch()

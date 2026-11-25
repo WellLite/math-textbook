@@ -33,6 +33,7 @@ let data,
   selection = null;
 let camera = { x: 0, y: 0, k: 1 },
   gesture = null,
+  pendingMapClick = null,
   toastTimer = null;
 let navigationReady = false,
   keepTopicCentered = false,
@@ -87,6 +88,7 @@ function oceanData() {
 const overview = () => data.views.find((v) => v.id === 'overview');
 const view = (id) => data.views.find((v) => v.id === id);
 const worlds = () => data.views.filter((v) => v.id !== 'overview');
+const chapterHref = (node) => node.chapter.replace(/\.md$/, '.html');
 const worldTitle = (id) => overview().nodes.find((n) => n.target === id)?.label || view(id)?.title || id;
 const color = (id) =>
   COLORS[
@@ -255,12 +257,17 @@ function select(ref) {
   replaceTopicAddress();
   renderCanvas();
   renderInspector();
-  if (ref && matchMedia('(max-width:640px)').matches) {
+  revealInspector();
+}
+function revealInspector() {
+  inspector.closest('.workspace').classList.toggle('topic-open', Boolean(inspector.querySelector('.chapter-link')));
+  if (selection && matchMedia('(max-width:640px)').matches) {
     inspector.scrollIntoView({ block: 'start' });
   }
 }
 function enter(id) {
   frameWholeOcean = false;
+  inspector.closest('.workspace').classList.remove('topic-open');
   scope = id;
   selection = id === 'overview' ? null : { type: 'world', world: id };
   render();
@@ -280,6 +287,7 @@ function interactive(g, ref, label) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       actionNode(ref);
+      if (ref.type === 'node') inspector.querySelector('.chapter-link')?.focus({ preventScroll: true });
     }
   });
 }
@@ -462,6 +470,16 @@ function renderNav() {
         : '知识深度图'
       : worldTitle(scope);
   $('back').hidden = scope === 'overview' && !oceanField;
+}
+function renderFirstChapters() {
+  const roots = overview().nodes;
+  const firstLevel = Math.min(...roots.map((node) => node.level));
+  const list = $('first-chapters');
+  list.replaceChildren();
+  for (const root of roots.filter((node) => node.level === firstLevel)) {
+    const first = view(root.target).nodes.filter((node) => node.chapter).sort((a, b) => a.level - b.level)[0];
+    if (first) list.append(html('a', { href: chapterHref(first) }, first.label));
+  }
 }
 function heading(kicker, title) {
   inspector.append(html('div', { class: 'eyebrow' }, kicker), html('h2', {}, title));
@@ -660,10 +678,21 @@ function renderReadingSelection(ref) {
       id: 'student-lesson',
       'aria-label': node.label + '的讲解',
     });
-    if (node.chapter)
-      article.append(
-        html('a', { class: 'chapter-link', href: node.chapter.replace(/\.md$/, '.html') }, '阅读本节正文'),
+    if (node.chapter) {
+      const actions = html('div', { class: 'reading-actions' });
+      actions.append(
+        html('a', { class: 'chapter-link', href: chapterHref(node) }, '阅读本节正文'),
       );
+      if (scope !== 'overview') {
+        actions.append(button('回到图上', () => {
+          inspector.closest('.workspace').classList.remove('topic-open');
+          keepTopicCentered = true;
+          $('map-panel').scrollIntoView({ block: 'start' });
+          $('map-panel').focus({ preventScroll: true });
+        }, 'return-to-map'));
+      }
+      article.append(actions);
+    }
     appendLessonText(article, lessonParagraphs(node.lesson));
     if (!article.childElementCount && !String(node.description || '').trim())
       article.append(html('p', { class: 'empty' }, '这个知识点的讲解尚未写好。'));
@@ -686,6 +715,7 @@ function renderReadingSelection(ref) {
 function renderInspector() {
   const overviewOnly = scope === 'overview' && !selection;
   document.querySelector('.workspace').classList.toggle('wide-map', overviewOnly);
+  $('reading-start').hidden = !overviewOnly || Boolean(oceanField) || !$('first-chapters').childElementCount;
   inspector.replaceChildren();
   if (!data || overviewOnly) return;
   if (scope === 'overview') inspector.append(button('返回深度图', () => select(null)));
@@ -752,6 +782,7 @@ svg.addEventListener(
 
 svg.addEventListener('pointerdown', (event) => {
   if (event.button !== 0) return;
+  pendingMapClick = null;
   const element = event.target;
   gesture = {
     start: { x: event.clientX, y: event.clientY },
@@ -777,10 +808,15 @@ svg.addEventListener('pointermove', (event) => {
 });
 svg.addEventListener('pointerup', () => {
   if (!gesture) return;
-  const hit = gesture;
+  pendingMapClick = gesture;
   gesture = null;
   svg.classList.remove('dragging');
-  if (hit.moved) return;
+});
+svg.addEventListener('click', () => {
+  // Finish the click before replacing the canvas with a mobile topic panel.
+  const hit = pendingMapClick;
+  pendingMapClick = null;
+  if (!hit || hit.moved) return;
   if (hit.ref) actionNode(JSON.parse(hit.ref));
   else if (hit.learningEdges) showLearningEdges(JSON.parse(hit.learningEdges));
   else if (hit.edge) select(JSON.parse(hit.edge));
@@ -788,6 +824,7 @@ svg.addEventListener('pointerup', () => {
 });
 svg.addEventListener('pointercancel', () => {
   gesture = null;
+  pendingMapClick = null;
   svg.classList.remove('dragging');
 });
 function topicHash(worldId, nodeId) {
@@ -810,6 +847,7 @@ function centerOnTopic() {
   if (selection?.type !== 'node' || scope !== selection.world) return;
   const point = nodePos(scope, selection.node),
     rect = svg.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
   const scale = Math.max(0.9, Math.min(1.2, rect.width / 460));
   camera = { k: scale, x: rect.width / 2 - point.x * scale, y: (rect.height - 32) / 2 - point.y * scale };
   renderCanvas();
@@ -824,7 +862,7 @@ function openTopic(worldId, nodeId) {
   centerOnTopic();
   const panel = inspector.closest('aside');
   panel.scrollTop = 0;
-  if (matchMedia('(max-width:640px)').matches) inspector.scrollIntoView({ block: 'start' });
+  revealInspector();
   return true;
 }
 function readTopicAddress() {
@@ -1096,7 +1134,7 @@ function updateSearchResults() {
   for (const { world, node } of matches) {
     const li = html('li'),
       hash = topicHash(world.id, node.id),
-      link = html('a', { href: hash });
+      link = html('a', { class: 'search-topic', href: hash, 'aria-label': node.label + '，在地图中查看' });
     link.append(html('span', {}, node.label), html('small', {}, worldTitle(world.id)));
     link.addEventListener('click', (event) => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -1107,6 +1145,11 @@ function updateSearchResults() {
       openTopic(world.id, node.id);
     });
     li.append(link);
+    if (node.chapter) {
+      li.append(html('a', {
+        class: 'search-read', href: chapterHref(node), 'aria-label': '阅读「' + node.label + '」正文',
+      }, '读正文'));
+    }
     list.append(li);
   }
 }
@@ -1121,20 +1164,23 @@ $('close-search').onclick = () => $('topic-search').close();
 $('topic-query').addEventListener('input', updateSearchResults);
 $('topic-search').addEventListener('keydown', (event) => {
   if (event.isComposing || event.keyCode === 229) return;
-  const links = [...$('topic-results').querySelectorAll('a')];
+  const links = [...$('topic-results').querySelectorAll('.search-topic')];
   if (!links.length) return;
-  const index = links.indexOf(event.target);
+  const index = links.indexOf(event.target.closest('li')?.querySelector('.search-topic'));
   if (event.key === 'Enter' && event.target === $('topic-query')) {
     event.preventDefault();
     links[0].click();
   }
-  if (event.key === 'ArrowDown') {
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault();
-    links[Math.min(links.length - 1, index + 1)].focus();
-  }
-  if (event.key === 'ArrowUp') {
-    event.preventDefault();
-    (index <= 0 ? $('topic-query') : links[index - 1]).focus();
+    if (event.key === 'ArrowUp' && index <= 0) {
+      $('topic-query').focus();
+      return;
+    }
+    const step = event.key === 'ArrowDown' ? 1 : -1;
+    const next = links[Math.min(links.length - 1, index + step)];
+    const read = event.target.matches('.search-read') && next.closest('li').querySelector('.search-read');
+    (read || next).focus();
   }
 });
 
@@ -1143,7 +1189,7 @@ window.addEventListener('hashchange', () => {
 });
 
 new ResizeObserver(() => {
-  if (!data) return;
+  if (!data || !svg.clientWidth || !svg.clientHeight) return;
   if (keepTopicCentered && selection?.type === 'node' && scope === selection.world) centerOnTopic();
   else fit();
 }).observe($('canvas'));
@@ -1153,6 +1199,7 @@ async function start() {
     const response = await fetch('content/map.json');
     if (!response.ok) throw new Error('无法读取教材地图');
     data = await response.json();
+    renderFirstChapters();
     navigationReady = true;
     $('open-search').disabled = false;
     $('open-olympiad').disabled = false;

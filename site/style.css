@@ -46,6 +46,16 @@ button.active:hover, button[aria-pressed=true]:hover, button.primary:hover {back
 .brand-mark::after {transform: rotate(42deg); opacity: .52}
 .brand-mark i {position: absolute; top: 5px; right: 1px; width: 7px; height: 7px; border-radius: 50%; background: var(--atlas-accent); outline: 2px solid var(--atlas-paper)}
 .header-actions {display: flex; align-items: center; gap: .6rem}
+.section-link {
+  display:inline-flex; align-items:center; justify-content:center; gap:.65rem; min-height:44px;
+  padding:.35rem .85rem; border:1px solid #acc6b9; border-radius:5px; color:#214f49; background:#e8f1eb;
+  text-decoration:none; white-space:nowrap; font-size:.92rem; font-weight:650;
+}
+.section-link:hover {background:#d9e9dd; border-color:#729b89}
+.section-link::after, .chapter-link::after {
+  content:""; display:block; width:.4em; height:.4em; border:solid currentColor;
+  border-width:1.6px 1.6px 0 0; transform:rotate(45deg);
+}
 .header-actions > button {border-color: transparent; min-height: 38px; font-weight: 550}
 .header-actions #open-olympiad {background: none; border-color: transparent; color: var(--atlas-ink)}
 .header-actions #open-olympiad:hover {background: var(--atlas-tint)}
@@ -74,6 +84,22 @@ button.active:hover, button[aria-pressed=true]:hover, button.primary:hover {back
 .crumb {min-height: 33px}
 .crumb strong {font-family: var(--atlas-serif); font-size: 1.15rem; letter-spacing: .02em; font-weight: 700}
 .tools {flex-wrap: wrap}
+#reading-start {
+  display:flex; align-items:center; flex-wrap:wrap; gap:0 1rem; padding:.1rem 1.2rem;
+  border-bottom:1px solid var(--atlas-rule); background:#f5f8f3; font-size:.9rem;
+}
+.reading-start-label {color:var(--atlas-muted); font-size:.78rem; white-space:nowrap}
+#first-chapters {display:flex; align-items:center; flex-wrap:wrap; gap:0 .9rem}
+#reading-start a {
+  display:inline-flex; align-items:center; min-height:40px; color:var(--blue);
+  text-decoration:underline; text-decoration-color:#96aca3; text-underline-offset:.22em;
+}
+#reading-start a:hover {color:var(--atlas-accent); text-decoration-color:currentColor}
+.map-resume {
+  flex:1; min-width:0; align-content:center; min-height:34px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  text-align:right; color:var(--blue); font-size:.85rem; font-weight:650; text-underline-offset:.22em;
+}
+#map-panel:has(#reading-start[hidden]) .map-resume {display:none}
 .tools button, .crumb button {border: 0; font-size: .875rem; padding: .35rem .45rem; min-height: 34px}
 .crumb button {padding-left: 0; color: var(--atlas-muted)}
 .crumb button::after {content: "/"; margin-left: .55rem; color: #94a69e}
@@ -137,6 +163,14 @@ body[data-view="student"] .workspace > aside {padding-inline: clamp(1.2rem, 2.15
 :is(.student-article,#student-lesson) .empty {margin: .75rem 0 1.15rem}
 body[data-view="student"] #inspector a {color: #215b56; text-underline-offset: .2em; text-decoration-thickness: 1px}
 body[data-view="student"] #inspector a:hover {color: #88452e}
+.reading-actions {display:flex; align-items:center; flex-wrap:wrap; gap:.4rem .7rem; margin:.4rem 0 1.15rem}
+body[data-view="student"] #inspector .chapter-link {
+  display:inline-flex; align-items:center; justify-content:center; gap:.85rem; min-height:44px;
+  padding:.55rem 1rem; border-radius:5px; color:white; background:#285b54;
+  font-weight:650; line-height:1.45; text-decoration:none;
+}
+body[data-view="student"] #inspector .chapter-link:hover {background:#19483f}
+.return-to-map {display:none}
 #inspector h2, #inspector h3, #topic-search h2 {font-family: var(--atlas-serif)}
 #inspector h2 {font-size: 1.55rem; line-height: 1.45; margin: .32rem 0 1rem; text-wrap: pretty}
 #inspector h3 {font-size: 1.06rem; margin: 1.6rem 0 .55rem}
@@ -179,6 +213,12 @@ dialog p {line-height: 1.8; color: var(--atlas-muted)}
 #topic-results small {color: var(--atlas-muted); font-size: .79rem}
 #topic-results li+li {border-top: 1px solid var(--atlas-rule)}
 #topic-results a:focus-visible {outline-offset: -3px}
+#topic-results li {display:flex; align-items:center; gap:.4rem}
+#topic-results .search-topic {flex:1; min-width:0; min-height:44px; align-items:center}
+#topic-results .search-read {
+  flex:none; align-items:center; min-height:44px; padding-inline:.55rem;
+  font-size:.85rem; font-weight:650; color:var(--blue); text-decoration:underline; text-underline-offset:.2em;
+}
 
 @media (min-width:1500px) {
   .workspace {grid-template-columns: 220px minmax(320px,1fr) 346px}
@@ -220,6 +260,7 @@ dialog p {line-height: 1.8; color: var(--atlas-muted)}
   .header-actions {grid-column: 1 / -1; grid-row: 2; display: flex; align-items: center; gap: .35rem}
   .header-actions > button {min-height: 35px; padding: .3rem .55rem; font-size: .875rem}
   .header-actions #open-olympiad {margin-left: -.3rem}
+}
 
 @media (max-width:640px) {
   .atlas-header {position: sticky; top: 0; z-index: 3}
@@ -228,6 +269,10 @@ dialog p {line-height: 1.8; color: var(--atlas-muted)}
   .workspace > main {height: 67dvh; min-height: 425px}
   .workspace.wide-map > main {height: calc(100dvh - var(--atlas-header-height)); min-height: 430px}
   .workspace > aside {border-left: 0; border-top: 1px solid var(--atlas-rule); padding: 1.35rem 1rem 2.2rem}
+  .workspace.topic-open > main {display:none}
+  .workspace.topic-open > aside {min-height:calc(100dvh - var(--atlas-header-height)); border-top:0}
+  #map-panel {scroll-margin-top:var(--atlas-header-height)}
+  .topic-open .return-to-map {display:inline-flex; align-items:center; min-height:44px; border-color:transparent; color:var(--blue)}
   .toolbar {padding: .4rem .65rem; column-gap: .45rem; row-gap: 0}
   .crumb strong {font-size: 1.06rem}
   .tools {gap: .1rem .28rem}
@@ -381,12 +426,11 @@ body:has(#olympiad[open]) {overflow:hidden}
   .atlas-index-list {gap:9px 16px}
   .atlas-index-list a {font-size:15px}
 }
-.section-link {font-size:.875rem; font-weight:550; text-decoration:none; color:var(--blue); padding:.45rem .55rem}
-.section-link:hover {text-decoration:underline}
-.chapter-link {display:inline-block; margin:.65rem 0; font-weight:650}
 @media(max-width:490px){
-  body[data-view="student"] {--atlas-header-height:84px}
+  body[data-view="student"] {--atlas-header-height:88px}
   body[data-view="student"] .atlas-header {display:flex; flex-wrap:wrap; justify-content:flex-start; align-content:center; row-gap:.15rem}
   .header-actions {width:100%}
-  .section-link {padding-left:0}
+  .section-link {padding-inline:.65rem}
+  #reading-start {padding-inline:.65rem; column-gap:.65rem; font-size:.85rem}
+  #first-chapters {column-gap:.65rem}
 }

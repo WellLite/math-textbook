@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 220" width="495" height="330" role="img" aria-labelledby="title desc">
+  <title id="title">两种次序得到同一支合位移箭头</title>
+  <desc id="desc">从左下角起点 O 沿实线向右走 u 到 A，再沿实线斜向上走 v 到终点 C。改沿虚线，先斜向上走 v 到 B，再向右走 u，也到 C。深色对角线从 O 直指 C。</desc>
+  <rect width="330" height="220" rx="10" fill="#f8faf7"/>
+  <g fill="none" stroke-width="3.4" stroke-linecap="round">
+    <path d="M38 170H202" stroke="#08746e"/>
+    <path d="M202 170L274 52" stroke="#a74e22"/>
+    <path d="M38 170L110 52" stroke="#a74e22" stroke-dasharray="6 5"/>
+    <path d="M110 52H274" stroke="#08746e" stroke-dasharray="6 5"/>
+    <path d="M38 170L274 52" stroke="#283c50" stroke-width="2.7"/>
+  </g>
+  <g fill="#08746e">
+    <path d="M0 0L-12 -5V5Z" transform="translate(143 170)"/>
+    <path d="M0 0L-12 -5V5Z" transform="translate(215 52)"/>
+  </g>
+  <g fill="#a74e22">
+    <path d="M0 0L-12 -5V5Z" transform="translate(81.2 99.2) rotate(-58.6)"/>
+    <path d="M0 0L-12 -5V5Z" transform="translate(245.2 99.2) rotate(-58.6)"/>
+  </g>
+  <path d="M0 0L-12 -5V5Z" transform="translate(226.8 75.6) rotate(-26.57)" fill="#283c50"/>
+  <g fill="#283c50">
+    <circle cx="38" cy="170" r="3.4"/><circle cx="202" cy="170" r="3.4"/>
+    <circle cx="110" cy="52" r="3.4"/><circle cx="274" cy="52" r="3.4"/>
+  </g>
+  <g text-anchor="middle" font-family="Georgia, serif" font-size="19" fill="#223a40">
+    <text x="111" y="39">B</text><text x="204" y="192">A</text>
+    <text x="115" y="194" font-style="italic" fill="#06645f">u</text>
+    <text x="176" y="40" font-style="italic" fill="#06645f">u</text>
+    <text x="61" y="110" font-style="italic" fill="#91431e">v</text>
+    <text x="260" y="122" font-style="italic" fill="#91431e">v</text>
+  </g>
+  <g fill="#283c50" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">
+    <text x="42" y="196">起点 O</text><text x="277" y="38">终点 C</text>
+    <text x="151" y="120" stroke="#f8faf7" stroke-width="6" stroke-linejoin="round" paint-order="stroke" transform="rotate(-26.57 151 120)">合位移</text>
+  </g>
+</svg>

@@ -146,8 +146,7 @@ $$
 A
 \begin{pmatrix}
 x\\y
-\end{pmatrix}
-=
+\end{pmatrix}=
 \begin{pmatrix}
 ax+by\\cx+dy
 \end{pmatrix}.
@@ -239,8 +238,7 @@ $$
 \begin{pmatrix}
 1\cdot1&1\cdot0\\
 0\cdot0&1\cdot2
-\end{pmatrix}
-=
+\end{pmatrix}=
 \begin{pmatrix}
 1&0\\
 0&2
