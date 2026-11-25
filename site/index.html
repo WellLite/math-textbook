@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>数学地图 · 学生视图</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="ocean.css" />
+    <link rel="stylesheet" href="learning-view.css" />
+  </head>
+  <body data-view="student">
+    <header class="atlas-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><i></i></span>
+        <h1>数学地图</h1>
+      </div>
+      <div class="header-actions">
+        <a class="section-link" href="chapters/index.html">教材正文</a>
+        <button id="open-olympiad" aria-haspopup="dialog" disabled>奥赛专题</button>
+        <button id="open-search" aria-haspopup="dialog" disabled>
+          <span class="search-mark" aria-hidden="true"></span>查找知识点
+        </button>
+      </div>
+    </header>
+    <div class="workspace">
+      <nav aria-label="数学板块">
+        <div class="nav-heading">教材目录</div>
+        <button class="nav-all" id="nav-all">查看全部板块</button>
+        <div id="world-list"></div>
+      </nav>
+      <main>
+        <div class="toolbar">
+          <div class="crumb">
+            <button id="back" hidden>全部板块</button><strong id="view-title">知识深度图</strong>
+          </div>
+          <div class="tools">
+            <button id="all-links" aria-pressed="false" title="切换逐层路线和全部原始连线">全部连线</button>
+          </div>
+        </div>
+        <div id="canvas">
+          <svg id="map" aria-label="数学知识地图">
+            <defs>
+              <marker
+                id="arrow"
+                viewBox="0 0 10 10"
+                refX="8"
+                refY="5"
+                markerWidth="5"
+                markerHeight="5"
+                orient="auto-start-reverse"
+              >
+                <path d="M0,0 L10,5 L0,10 Z" fill="context-stroke" />
+              </marker>
+            </defs>
+            <g id="scene"></g>
+          </svg>
+          <div class="map-bottom">
+            <div class="legend">
+              <span class="legend-item"><i class="line route"></i>推进路线</span
+              ><span class="legend-item"><i class="line prerequisite"></i>必要前置</span
+              ><span class="legend-item" id="relay-key" hidden
+                ><i class="relay-key-symbol" aria-hidden="true"></i>续接上游联系</span
+              ><span class="legend-item" id="perspective-key"><i class="line perspective"></i>理解联系</span>
+            </div>
+            <div class="zoom">
+              <button id="zoom-out" aria-label="缩小">−</button><span id="zoom-value">100%</span
+              ><button id="zoom-in" aria-label="放大">＋</button><button id="fit">适合画布</button>
+            </div>
+          </div>
+          <div id="map-hint">点击大圆展开，点击小圆查看。拖动空白移动，滚轮缩放。</div>
+        </div>
+      </main>
+      <aside aria-label="教材内容"><div id="inspector"></div></aside>
+    </div>
+    <div id="toast" role="status" hidden></div>
+    <dialog id="olympiad" aria-labelledby="olympiad-title">
+      <div class="atlas-bar">
+        <div class="atlas-masthead">
+          <span class="atlas-mark" aria-hidden="true"><i></i></span><span>数学地图</span>
+        </div>
+        <div class="atlas-tools">
+          <button type="button" id="atlas-search" aria-haspopup="dialog">
+            <span class="search-glyph" aria-hidden="true"></span>查找知识点</button
+          ><button type="button" id="close-olympiad">返回地图</button>
+        </div>
+      </div>
+      <div class="atlas-edition">
+        <h1 id="olympiad-title">数学奥林匹克</h1>
+        <div id="olympiad-fields" aria-label="竞赛方向"></div>
+      </div>
+      <div id="olympiad-directory"></div>
+    </dialog>
+    <template id="plate-geometry">
+      <figure class="math-plate">
+        <svg
+          role="img"
+          aria-label="从圆外点 P 引两条割线，分别于 A、B 和 C、D 处与同一圆相交。"
+          viewBox="0 0 440 215"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <circle class="construction" cx="265" cy="105" r="95" />
+          <circle class="outline" cx="265" cy="105" r="89" />
+          <path class="fine" d="M258.00 105.00 L272.00 105.00" />
+          <path class="fine" d="M265.00 98.00 L265.00 112.00" />
+          <path class="secant" d="M65.00 137.00 L339.52 14.41" />
+          <path class="secant" d="M65.00 137.00 L345.98 185.23" />
+          <path class="guide" d="M177.93 86.57 L313.46 179.65" />
+          <path class="guide" d="M194.42 159.22 L309.39 27.86" />
+          <circle class="mark" cx="177.93" cy="86.57" r="3" />
+          <text class="point-name" x="167.93" y="76.57" text-anchor="middle">A</text>
+          <circle class="mark" cx="309.39" cy="27.86" r="3" />
+          <text class="point-name" x="315.39" y="16.86" text-anchor="middle">B</text>
+          <circle class="mark" cx="194.42" cy="159.22" r="3" />
+          <text class="point-name" x="181.42" y="176.22" text-anchor="middle">C</text>
+          <circle class="mark" cx="313.46" cy="179.65" r="3" />
+          <text class="point-name" x="326.46" y="192.65" text-anchor="middle">D</text>
+          <circle class="warm-dot" cx="65.00" cy="137.00" r="4" />
+          <text class="point-name" x="53.00" y="143.00" text-anchor="middle">P</text>
+          <text class="center-name" x="278.00" y="112.00" text-anchor="middle">O</text>
+        </svg>
+        <figcaption>PA · PB = PC · PD</figcaption>
+      </figure> </template
+    ><template id="plate-algebra">
+      <figure class="math-plate">
+        <svg
+          role="img"
+          aria-label="向量 u 在向量 v 所在直线上的投影，长度至多为 u 的长度。"
+          viewBox="0 0 440 215"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path class="guide" d="M78.00 175.00 L366.00 175.00" />
+          <path class="guide" d="M93.00 195.00 L93.00 26.00" />
+          <path class="secant" d="M93.00 175.00 L336.00 175.00" />
+          <path class="outline" d="M93.00 175.00 L248.00 48.00" />
+          <path class="guide" d="M248.00 48.00 L248.00 175.00" />
+          <path class="guide" d="M235 175v-13h13" />
+          <path class="outline" d="M131 175a38 38 0 0 0 -9 -24" />
+          <circle class="mark" cx="93.00" cy="175.00" r="3" />
+          <circle class="mark" cx="248.00" cy="48.00" r="3" />
+          <circle class="warm-dot" cx="336.00" cy="175.00" r="4" />
+          <text class="point-name" x="80.00" y="190.00" text-anchor="middle">O</text>
+          <text class="point-name" x="258.00" y="45.00" text-anchor="middle">u</text>
+          <text class="point-name" x="351.00" y="181.00" text-anchor="middle">v</text>
+          <text class="point-name" x="144.00" y="163.00" text-anchor="middle">θ</text>
+        </svg>
+        <figcaption>|u · v| ≤ ‖u‖ ‖v‖</figcaption>
+      </figure> </template
+    ><template id="plate-number">
+      <figure class="math-plate">
+        <svg
+          role="img"
+          aria-label="1 到 18 中有六个 3 的倍数，其中有两个还是 9 的倍数。"
+          viewBox="0 0 440 215"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <circle class="mark" cx="55.00" cy="53.00" r="4" />
+          <text class="num-label" x="55.00" y="39.00" text-anchor="middle">1</text>
+          <circle class="mark" cx="75.00" cy="53.00" r="4" />
+          <circle class="mark" cx="95.00" cy="53.00" r="4" />
+          <text class="num-label" x="95.00" y="39.00" text-anchor="middle">3</text>
+          <circle class="mark" cx="115.00" cy="53.00" r="4" />
+          <circle class="mark" cx="135.00" cy="53.00" r="4" />
+          <circle class="mark" cx="155.00" cy="53.00" r="4" />
+          <text class="num-label" x="155.00" y="39.00" text-anchor="middle">6</text>
+          <circle class="mark" cx="175.00" cy="53.00" r="4" />
+          <circle class="mark" cx="195.00" cy="53.00" r="4" />
+          <circle class="warm-dot" cx="215.00" cy="53.00" r="4" />
+          <text class="num-label" x="215.00" y="39.00" text-anchor="middle">9</text>
+          <circle class="mark" cx="235.00" cy="53.00" r="4" />
+          <circle class="mark" cx="255.00" cy="53.00" r="4" />
+          <circle class="mark" cx="275.00" cy="53.00" r="4" />
+          <text class="num-label" x="275.00" y="39.00" text-anchor="middle">12</text>
+          <circle class="mark" cx="295.00" cy="53.00" r="4" />
+          <circle class="mark" cx="315.00" cy="53.00" r="4" />
+          <circle class="mark" cx="335.00" cy="53.00" r="4" />
+          <text class="num-label" x="335.00" y="39.00" text-anchor="middle">15</text>
+          <circle class="mark" cx="355.00" cy="53.00" r="4" />
+          <circle class="mark" cx="375.00" cy="53.00" r="4" />
+          <circle class="warm-dot" cx="395.00" cy="53.00" r="4" />
+          <text class="num-label" x="395.00" y="39.00" text-anchor="middle">18</text>
+          <circle class="mark" cx="95.00" cy="105.00" r="4" />
+          <path class="guide" d="M95.00 59.00 L95.00 97.00" />
+          <circle class="mark" cx="155.00" cy="105.00" r="4" />
+          <path class="guide" d="M155.00 59.00 L155.00 97.00" />
+          <circle class="warm-dot" cx="215.00" cy="105.00" r="4" />
+          <path class="guide" d="M215.00 59.00 L215.00 97.00" />
+          <circle class="mark" cx="275.00" cy="105.00" r="4" />
+          <path class="guide" d="M275.00 59.00 L275.00 97.00" />
+          <circle class="mark" cx="335.00" cy="105.00" r="4" />
+          <path class="guide" d="M335.00 59.00 L335.00 97.00" />
+          <circle class="warm-dot" cx="395.00" cy="105.00" r="4" />
+          <path class="guide" d="M395.00 59.00 L395.00 97.00" />
+          <circle class="warm-dot" cx="215.00" cy="157.00" r="5" />
+          <path class="guide" d="M215.00 111.00 L215.00 149.00" />
+          <circle class="warm-dot" cx="395.00" cy="157.00" r="5" />
+          <path class="guide" d="M395.00 111.00 L395.00 149.00" />
+          <text class="point-name" x="29.00" y="59.00" text-anchor="middle">n</text>
+          <text class="num-label" x="31.00" y="111.00" text-anchor="middle">3 ∣ n</text>
+          <text class="num-label" x="31.00" y="163.00" text-anchor="middle">9 ∣ n</text>
+        </svg>
+        <figcaption>v₃(18!) = 6 + 2 = 8</figcaption>
+      </figure> </template
+    ><template id="plate-combinatorics">
+      <figure class="math-plate">
+        <svg
+          role="img"
+          aria-label="六人分成两组三人，只在不同组之间握手，共九次，没有三人两两握手。"
+          viewBox="0 0 440 215"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path class="guide" d="M135.00 45.00 L135.00 165.00" />
+          <path class="guide" d="M135.00 45.00 L220.00 165.00" />
+          <path class="guide" d="M135.00 45.00 L305.00 165.00" />
+          <path class="secant" d="M220.00 45.00 L135.00 165.00" />
+          <path class="secant" d="M220.00 45.00 L220.00 165.00" />
+          <path class="secant" d="M220.00 45.00 L305.00 165.00" />
+          <path class="guide" d="M305.00 45.00 L135.00 165.00" />
+          <path class="guide" d="M305.00 45.00 L220.00 165.00" />
+          <path class="guide" d="M305.00 45.00 L305.00 165.00" />
+          <circle class="warm-dot" cx="135.00" cy="45.00" r="6" />
+          <text class="point-name" x="135.00" y="28.00" text-anchor="middle">A</text>
+          <circle class="warm-dot" cx="220.00" cy="45.00" r="6" />
+          <text class="point-name" x="220.00" y="28.00" text-anchor="middle">B</text>
+          <circle class="warm-dot" cx="305.00" cy="45.00" r="6" />
+          <text class="point-name" x="305.00" y="28.00" text-anchor="middle">C</text>
+          <circle class="mark" cx="135.00" cy="165.00" r="6" />
+          <text class="point-name" x="135.00" y="192.00" text-anchor="middle">D</text>
+          <circle class="mark" cx="220.00" cy="165.00" r="6" />
+          <text class="point-name" x="220.00" y="192.00" text-anchor="middle">E</text>
+          <circle class="mark" cx="305.00" cy="165.00" r="6" />
+          <text class="point-name" x="305.00" y="192.00" text-anchor="middle">F</text>
+        </svg>
+        <figcaption>K₃,₃　·　6 人，9 次握手</figcaption>
+      </figure>
+    </template>
+    <dialog id="topic-search" aria-labelledby="topic-search-title">
+      <div class="search-heading">
+        <h2 id="topic-search-title">查找知识点</h2>
+        <button type="button" id="close-search" aria-label="关闭查找">关闭</button>
+      </div>
+      <input
+        type="search"
+        id="topic-query"
+        aria-label="知识点名称或别名"
+        aria-controls="topic-results"
+        placeholder="输入知识点名称或别名"
+        autocomplete="off"
+        autofocus
+      />
+      <p id="topic-match-count" role="status"></p>
+      <ul id="topic-results" aria-label="匹配的知识点"></ul>
+    </dialog>
+    <script src="ocean-layout.js"></script>
+    <script src="learning-graph.js"></script>
+    <script src="learning-view.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

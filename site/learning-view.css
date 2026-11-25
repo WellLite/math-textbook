@@ -1,0 +1,82 @@
+.learning-map {
+  --learning-ink: #173c40;
+  --learning-halo: #eef3e7;
+  --relay-water: #e1ebdf;
+}
+.learning-map .deep {
+  --learning-ink: #fffbed;
+  --learning-halo: #477075;
+  --relay-water: #456b70;
+}
+.learning-map .world-ring {
+  stroke: var(--learning-ink);
+  stroke-opacity: .4;
+}
+.learning-map .learning-world .world-label {
+  fill: var(--learning-ink);
+  stroke: var(--learning-halo);
+  stroke-width: 2;
+  paint-order: stroke;
+  pointer-events: all;
+  cursor: pointer;
+}
+.learning-map .learning-world-control {cursor:pointer}
+.learning-map .world-count,
+.learning-map .node-number {pointer-events:none}
+.learning-map .learning-world-control:is(:hover,:focus-visible) circle {
+  stroke: #a84f36;
+  stroke-width: 2.6;
+}
+.learning-map .learning-world:has(.learning-world-control:is(:hover,:focus-visible), .ocean-captions:hover) .world-label {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.learning-map .learning-world .ocean-entry {
+  fill:var(--learning-ink);
+  opacity:.83;
+  stroke:var(--learning-halo);
+  stroke-width:2;
+}
+.learning-world-control:focus-visible, .learning-satellite:focus-visible,
+.learning-topic:focus-visible, .learning-relay:focus-visible {outline:none}
+.learning-map .learning-topic .node-label {pointer-events:all}
+.learning-depth {pointer-events:none}
+.learning-depth path {stroke-width:1.25;vector-effect:non-scaling-stroke}
+.learning-map .learning-segment > .edge {
+  stroke: var(--flow-ink);
+  opacity:.66;
+  stroke-width:1.25;
+  stroke-linecap:round;
+  pointer-events:none;
+}
+.learning-map .learning-segment > .edge.prerequisite {stroke-width:1.9;opacity:.93}
+.learning-map .learning-segment.learning-muted > .edge:not(.selected) {opacity:.18}
+.learning-map .learning-topic.learning-muted {opacity:.54}
+.learning-map .learning-relay.learning-muted {opacity:.25}
+.learning-map .learning-segment > .edge.selected,
+.learning-map .learning-segment:has(.edge-hit:is(:hover,:focus-visible)) > .edge {
+  stroke:#b45636;
+  stroke-width:2.6;
+  opacity:1;
+}
+.learning-map .edge-hit {stroke-width:14;pointer-events:stroke}
+.learning-map .edge-hit:focus-visible {outline:none}
+.learning-relay {cursor:pointer}
+.learning-relay .relay-diamond {
+  fill: var(--relay-water);
+  stroke: #3a6766;
+  stroke-width: 1.45;
+  vector-effect: non-scaling-stroke;
+}
+.learning-relay.deep .relay-diamond {stroke:#e1efe2}
+.learning-relay:is(:hover,:focus-visible) .relay-diamond {
+  fill:#b45636;
+  stroke:#fff9eb;
+  stroke-width:2.3;
+}
+.learning-relay .relay-source {display:none; pointer-events:none}
+.learning-relay .relay-source rect {fill:#294a4c}
+.learning-relay .relay-source text {fill:#fffbed}
+.learning-relay:is(:hover,:focus-visible) .relay-source {display:block}
+.learning-map.relay-traced .learning-segment:not(.relay-trace-match) > .edge:not(.selected) {opacity:.18}
+.learning-map.relay-traced .learning-segment.relay-trace-match > .edge {stroke:#ad5539;opacity:1}

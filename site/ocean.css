@@ -1,0 +1,24 @@
+.ocean-overview { background:#e9efe7; }
+.ocean-water { user-select:none; }
+.ocean-water .ocean-contour { fill:none; stroke:#f6f8ea; stroke-opacity:.27; stroke-width:.8; vector-effect:non-scaling-stroke; }
+.ocean-water .ocean-tick { stroke-linecap:round; opacity:.72; stroke-width:1.2; vector-effect:non-scaling-stroke; }
+.depth-label, .ocean-overview .world-label { font-family:"Songti SC","STSong","Noto Serif CJK SC",serif; font-weight:650; }
+.depth-label { letter-spacing:.09em; }
+.depth-caption { font-weight:450; }
+.ocean-overview .world-ring { stroke:var(--ocean-ink); stroke-width:.9; stroke-opacity:.47; vector-effect:non-scaling-stroke; }
+.ocean-overview .world-core circle { fill:color-mix(in srgb,var(--world) 48%,#1d5357); stroke:#f5faf0; stroke-width:1.5; vector-effect:non-scaling-stroke; filter:none; }
+.ocean-overview .world-count { font-family:"Baskerville","Songti SC",Georgia,serif; font-variant-numeric:lining-nums; fill:#fffdf3; font-weight:600; }
+.ocean-overview .world-label, .ocean-overview .ocean-entry { fill:var(--ocean-ink); stroke:var(--ocean-halo); stroke-width:2.2; paint-order:stroke; stroke-linejoin:round; }
+.ocean-overview .ocean-entry { fill:var(--ocean-note); font-weight:450; }
+.ocean-overview .satellite { stroke:color-mix(in srgb,var(--world) 50%,#244e53); stroke-width:1; fill:#f3f5e9; vector-effect:non-scaling-stroke; }
+.ocean-overview .knowledge-node.selected .satellite { fill:#a54837; stroke:#fff4e4; stroke-width:2; }
+.ocean-overview .world-core:is(:hover,:focus-visible) circle { stroke:#a54837; stroke-width:2.8; }
+.ocean-overview .knowledge-node:is(:hover,:focus-visible) .satellite { fill:#bf624d; stroke:#fff6e6; stroke-width:2; }
+.ocean-overview .edge { stroke:url(#atlas-route-ink); opacity:.64; stroke-width:1.15; }
+.ocean-overview .edge.prerequisite { opacity:1; stroke-width:1.9; }
+.ocean-overview .edge.perspective { stroke-dasharray:3 4; }
+.ocean-overview g:has(> .edge-hit:is(:hover,:focus-visible)) > .edge,
+.ocean-overview .edge.selected { stroke:#a54837; stroke-width:2.7; opacity:1; }
+#canvas:has(.ocean-overview) .legend, #canvas:has(.ocean-overview) .zoom { background:#f6f8eef5; border-color:#c1d0c5; }
+#canvas:has(.ocean-overview) #map-hint { color:#304f50; }
+.ocean-captions { cursor:pointer; }
