@@ -124,8 +124,16 @@ local function keep_figure(figure)
   return figure, false
 end
 
+local is_overview = false
+
 return {
   {Link = chapter_link, Para = split_equations, Plain = split_equations,
    Table = function(element) return scroll_block("table-scroll", element) end},
-  {traverse = "topdown", Figure = keep_figure, Para = make_figure, Plain = make_figure}
+  {traverse = "topdown", Figure = keep_figure, Para = make_figure, Plain = make_figure},
+  {Meta = function(meta) is_overview = meta['chapter-overview'] == true end},
+  {Math = function(math)
+    if is_overview and math.mathtype == 'InlineMath' then
+      return pandoc.Span({math}, pandoc.Attr('', {'inline-formula'}))
+    end
+  end}
 }

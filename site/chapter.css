@@ -52,7 +52,28 @@
 .chapter article h2 {font-size: 1.3em; margin: 2.1em 0 .7em; line-height: 1.55; text-wrap: pretty}
 .chapter article h3 {font-size: 1.09em; margin: 1.75em 0 .6em; line-height: 1.6}
 .chapter article p {margin: .86em 0}
-.chapter article strong {font-weight: 660; color: #203c36}
+.chapter article strong {font-weight: 720; color: #203c36}
+.outline-intro {display:flex; align-items:center; gap:.55rem; min-height:44px; padding:.4rem 1rem;
+  border-block:1px solid var(--reading-rule); font-size:.88rem; text-decoration:none}
+.outline-intro::before {content:""; width:.6rem; height:.72rem; border:1.5px solid currentColor;
+  border-inline-start-width:3px; border-radius:2px; flex:none}
+.outline-intro[aria-current] {background:#dfeadf; font-weight:700}
+.outline-intro:hover, .outline-intro:focus-visible {text-decoration:underline}
+.overview-actions {display:flex; flex-wrap:wrap; gap:.15rem 1.5rem; margin:1.15em 0;
+  border-block:1px solid var(--reading-rule); padding:.3em 0}
+.overview-actions a {display:inline-flex; align-items:center; min-height:44px; font-size:.92em}
+.chapter-overview .overview-status {color:var(--reading-muted); font-size:.84em}
+.definition-find:not([hidden]) {display:flex; flex-wrap:wrap; align-items:center; gap:.45rem .7rem; font-size:.86em}
+.definition-find input {min-width:0; max-width:100%; width:13em; min-height:40px; color:inherit; background:#fff;
+  border:1px solid #aab9ad; border-radius:4px; padding:.35em .65em}
+.chapter .definition-group ul {list-style:none; padding:0}
+.chapter .definition-group li {margin:.6em 0}
+.definition-group li > strong:first-child {margin-inline-end:.2em}
+.chapter-overview .inline-formula {display:inline-block; vertical-align:middle; max-width:100%;
+  overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:thin}
+.definition-group h3 a {text-decoration-thickness:1px; text-underline-offset:.18em}
+@media (min-width:641px) {.directory-layout nav {max-height:calc(100dvh - 6rem); overflow-y:auto}}
+@media (max-width:419px) {.outline-panel.has-toggle:not(.is-open) .outline-intro {justify-content:center; padding:0}}
 .chapter article :is(ul, ol) {padding-inline-start: 1.5em}
 .chapter article li {margin: .55em 0}
 .chapter article li::marker {color: #546e65}

@@ -267,10 +267,9 @@ function revealInspector() {
 }
 function enter(id) {
   if (id !== 'overview') {
-    const nodes = [...view(id).nodes].sort((a, b) => a.level - b.level);
-    const opening = nodes.find(node => node.chapter) || nodes[0];
-    if (opening && chapterHref(opening)) {
-      location.assign(chapterHref(opening));
+    const front = view(id)?.overviewPage;
+    if (front) {
+      location.assign(front);
       return;
     }
   }
@@ -490,8 +489,8 @@ function renderFirstChapters() {
   const list = $('first-chapters');
   list.replaceChildren();
   for (const root of roots.filter((node) => node.level === firstLevel)) {
-    const first = view(root.target).nodes.filter((node) => node.chapter).sort((a, b) => a.level - b.level)[0];
-    if (first) list.append(html('a', { href: chapterHref(first) }, first.label));
+    const world = view(root.target);
+    if (world.overviewPage) list.append(html('a', { href: world.overviewPage }, root.label));
   }
 }
 function heading(kicker, title) {

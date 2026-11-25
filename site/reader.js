@@ -59,6 +59,38 @@
   }
 
   const header = document.querySelector('.chapter-header');
+  const definitionSearch = document.getElementById('find-definition');
+  if (definitionSearch) {
+    const field = definitionSearch.parentElement;
+    const groups = document.querySelectorAll('.definition-group');
+    // Only formulas that actually scroll need a stop in the keyboard reading order.
+    const formulaSize = new ResizeObserver(entries => {
+      for (const {target} of entries) {
+        if (target.scrollWidth > target.clientWidth + 1) target.tabIndex = 0;
+        else target.removeAttribute('tabindex');
+      }
+    });
+    document.querySelectorAll('.chapter-overview .inline-formula').forEach(formula => formulaSize.observe(formula));
+    const normalize = text => text.normalize('NFKC').toLocaleLowerCase().trim();
+    function findDefinition() {
+      const query = normalize(definitionSearch.value);
+      let matches = 0;
+      for (const group of groups) {
+        const heading = normalize(group.querySelector('h3').textContent);
+        let visible = 0;
+        for (const entry of group.querySelectorAll('li')) {
+          entry.hidden = Boolean(query) && !heading.includes(query) && !normalize(entry.textContent).includes(query);
+          if (!entry.hidden) visible++;
+        }
+        matches += visible;
+        group.hidden = Boolean(query) && !visible;
+      }
+      field.querySelector('[role=status]').textContent = !query ? '' : matches ? '找到 ' + matches + ' 条' : '本章没有匹配的术语';
+    }
+    definitionSearch.addEventListener('input', findDefinition);
+    window.addEventListener('pageshow', findDefinition);
+    field.hidden = false;
+  }
   const outline = document.getElementById('chapter-outline');
   if (outline) {
     const panel = outline.closest('.outline-panel');
@@ -75,7 +107,7 @@
       if (previous.to === location.pathname && Number.isFinite(previous.top)) outline.scrollTop = previous.top;
       save(railKey, null, 'sessionStorage');
     }
-    const chapterLinks = new Set([...outline.querySelectorAll('.outline-topics a')].map(a => a.href));
+    const chapterLinks = new Set([...outline.querySelectorAll('.outline-topics a, .outline-intro')].map(a => a.href));
     document.addEventListener('click', event => {
       if (event.button || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || event.defaultPrevented) return;
       const link = event.target.closest('a');

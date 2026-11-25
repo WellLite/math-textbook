@@ -108,6 +108,7 @@ def reader_paths(worlds):
     paths = {}
     used = set()
     for world in worlds:
+        world['overviewPage'] = f'chapters/overviews/{quote(quote(world["id"], safe=""), safe="")}.html'
         for node in world['nodes']:
             world_key, node_key = (quote(key, safe='') for key in (world['id'], node['id']))
             if node.get('chapter'):
@@ -125,6 +126,8 @@ def reader_paths(worlds):
 
 
 def chapter_outline(world, current, path, paths, map_href):
+    front = quote(os.path.relpath(unquote(world['overviewPage']), path.parent))
+    current_front = ' aria-current="page"' if current is None else ''
     rows = []
     for node in sorted(world['nodes'], key=lambda item: item['level']):
         href = quote(os.path.relpath(paths[world['id'], node['id']], path.parent))
@@ -137,6 +140,7 @@ def chapter_outline(world, current, path, paths, map_href):
     return ('<aside class="outline-panel" aria-label="章节导航">'
             '<button type="button" class="outline-toggle" aria-controls="chapter-outline" aria-expanded="false" hidden>本章脉络</button>'
             f'<nav id="chapter-outline" aria-label="本章脉络"><h2>{escape(world["title"])}</h2>'
+            f'<a class="outline-intro" href="{front}"{current_front} title="本章概览"><span class="outline-label">本章概览</span></a>'
             f'<ol class="outline-topics">{"".join(rows)}</ol>'
             f'<a class="outline-map-link" href="{map_href}">完整关系图</a>'
             f'<script type="application/json" class="outline-edges">{edges}</script></nav></aside>')
@@ -146,16 +150,17 @@ def chapter_directory(atlas, titles):
     jump_links = []
     sections = []
     for world in atlas['views']:
+        if world['id'] == 'overview':
+            continue
         paths = {}
         for node in sorted(world['nodes'], key=lambda node: node['level']):
             if 'chapter' in node:
                 paths.setdefault(PurePosixPath(node['chapter']), node['label'])
-        if not paths:
-            continue
         heading = escape(world['title'])
         anchor = 'world-' + world['id']
         jump_links.append(f'<a href="#{quote(anchor, safe="")}">{heading}</a>')
-        entries = []
+        overview_href = escape(world['overviewPage'].removeprefix('chapters/'))
+        entries = [f'<li><a href="{overview_href}"><span>本章概览</span></a></li>']
         for path, label in paths.items():
             link = quote(path.relative_to('chapters').with_suffix('.html').as_posix())
             title = titles[path]
@@ -163,7 +168,7 @@ def chapter_directory(atlas, titles):
             entries.append(f'<li><a href="{link}">{topic}<span>{escape(title)}</span></a></li>')
         sections.append(f'<section class="directory-section"><h2 id="{escape(anchor)}">{heading}</h2>'
                         f'<ul class="chapter-directory">{"".join(entries)}</ul></section>')
-    return (f'<header class="directory-heading"><div><h1>教材目录</h1><p>{len(titles)} 篇正文</p></div>'
+    return (f'<header class="directory-heading"><div><h1>教材目录</h1><p>{len(sections)} 篇章首概览 · {len(titles)} 篇小节正文</p></div>'
             '<a class="resume-link" data-resume-reading hidden></a></header>'
             '<div class="directory-find" hidden><label for="find-lesson">找一篇课文</label>'
             '<input type="search" id="find-lesson" placeholder="输入知识点或题目中的词">'
@@ -211,6 +216,62 @@ class ChapterLinks(HTMLParser):
             raise ValueError(f'{self.document.name} 中的链接无法打开：{target}')
 
 
+def render_markdown(text, *, overview=False):
+    return subprocess.run(
+        ['pandoc', '--from=gfm+tex_math_dollars', '--to=html5', '--mathml', '--wrap=none',
+         '--fail-if-warnings', *(['--metadata=chapter-overview:true'] if overview else []),
+         '--lua-filter', str(ROOT / 'tools/chapter-links.lua')],
+        input=text, text=True, encoding='utf-8', stdout=subprocess.PIPE, check=True,
+    ).stdout
+
+
+def write_overview(stage, world, paths):
+    source = ROOT / 'overviews' / (quote(world['id'], safe='') + '.md')
+    path = PurePosixPath(unquote(world['overviewPage']))
+    nodes = {n['id']: n for n in world['nodes']}
+    text = source.read_text(encoding='utf-8')
+    intro, separator, glossary = text.partition('\n## 本章定义\n')
+    if not intro.startswith('# ') or not separator or not glossary.strip():
+        raise ValueError(f'{source.name} 需要章首导读和本章定义')
+
+    def topic_link(match):
+        node = match[1]
+        if node not in nodes:
+            raise ValueError(f'{source.name} 引用了未知知识点 {node}')
+        return '](' + quote(os.path.relpath(paths[world['id'], node], path.parent)) + ')'
+
+    intro_html, glossary_html = (render_markdown(re.sub(r'\]\(topic:([^\s)]+)\)', topic_link, section), overview=True)
+                                 for section in (intro, glossary))
+    glossary_html = glossary_html.replace('</strong>　', '</strong> ')
+    glossary_html = ''.join(f'<section class="definition-group">{part}</section>' if part.startswith('<h3') else part
+                            for part in re.split(r'(?=<h3\b)', glossary_html))
+    root = '../../'
+    title = world['title'] + ' · 本章概览'
+    map_href = root + 'index.html'
+    starts = sorted(nodes.values(), key=lambda n: n['level'])
+    available = sum(bool(n.get('chapter')) for n in starts)
+    status = ''
+    if available < len(starts):
+        status = f'{len(starts)} 个知识点中，{available} 篇小节正文可读' if available else '本章各节正文待写'
+        status = f'<p class="overview-status">{status}</p>'
+    start_link = ''
+    if starts:
+        opening = next((n for n in starts if n.get('chapter')), starts[0])
+        href = quote(os.path.relpath(paths[world['id'], opening['id']], path.parent))
+        verb = '读正文' if opening.get('chapter') else '看知识点'
+        start_link = f'<a href="{href}">{verb} · {escape(opening["label"])} →</a>'
+        map_href += f'#topic/{quote(world["id"], safe="")}/{quote(starts[0]["id"], safe="")}'
+    outline = chapter_outline(world, None, path, paths, map_href)
+    body = (f'<p class="reading-context" data-reading-topic>{escape(title)}</p><article class="chapter-overview">{intro_html}'
+            f'{status}<nav class="overview-actions" aria-label="本章阅读">{start_link}<a href="#definitions">查本章定义 ↓</a></nav>'
+            '<h2 id="definitions">本章定义</h2><div class="definition-find" hidden>'
+            '<label for="find-definition">查定义</label><input type="search" id="find-definition" placeholder="输入术语">'
+            '<span role="status"></span></div>' + glossary_html + '</article>')
+    output = stage / path
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(page(title, body, root, outline=outline), encoding='utf-8')
+
+
 def build(stage):
     atlas_path = ROOT / 'content/map.json'
     atlas = json.loads(atlas_path.read_text(encoding='utf-8'))
@@ -245,13 +306,9 @@ def build(stage):
             raise ValueError(f'{source} 请用一级标题开篇')
         title = first[2:].strip()
         titles[source] = title
-        articles[source] = subprocess.run(
-            ['pandoc', '--from=gfm+tex_math_dollars', '--to=html5', '--mathml', '--wrap=none',
-             '--fail-if-warnings', '--lua-filter', str(ROOT / 'tools/chapter-links.lua')],
-            input=text, text=True, encoding='utf-8',
-            stdout=subprocess.PIPE, check=True,
-        ).stdout
+        articles[source] = render_markdown(text)
     for world_id, world in worlds.items():
+        write_overview(stage, world, paths)
         for node in world['nodes']:
             path = paths[world_id, node['id']]
             output = stage / path
