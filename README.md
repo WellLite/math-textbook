@@ -2,7 +2,7 @@
 
 一本从基础出发、由读者和数学作者共同写作的中文教材。
 
-[读矩阵乘法样章](chapters/matrix-multiplication.md) · [读四点共圆](chapters/concyclic.md) · [参与写作](CONTRIBUTING.md)
+[打开教材与知识地图](https://welllite.github.io/math-textbook/) · [读矩阵乘法样章](chapters/matrix-multiplication.md) · [读四点共圆](chapters/concyclic.md) · [参与写作](CONTRIBUTING.md)
 
 ## 我为什么想写这本书
 
