@@ -2,11 +2,13 @@
 import argparse
 from collections import defaultdict
 from graphlib import TopologicalSorter
+from hashlib import sha256
 from html import escape
 from html.parser import HTMLParser
 import json
 from pathlib import Path, PurePosixPath
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -220,8 +222,15 @@ def build(stage):
         output.write_text(page(title, body, root), encoding='utf-8')
     index = chapter_directory(atlas, titles)
     (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True), encoding='utf-8')
-    for document in (stage / 'chapters').rglob('*.html'):
-        ChapterLinks(document, stage).feed(document.read_text(encoding='utf-8'))
+    # Browsers can retain yesterday's map scripts or data when a reader reopens the book.
+    assets = {name: sha256((stage / name).read_bytes()).hexdigest()[:12]
+              for name in (*SITE_FILES, 'content/map.json') if not name.endswith('.html')}
+    asset_ref = re.compile(r'((?:<script src|<link rel="stylesheet" href|data-map-source)="(?:\.\./)*)([^"]+)(")')
+    for document in stage.rglob('*.html'):
+        markup = document.read_text(encoding='utf-8')
+        markup = asset_ref.sub(lambda m: f'{m[1]}{m[2]}?v={assets[m[2]]}{m[3]}', markup)
+        document.write_text(markup, encoding='utf-8')
+        ChapterLinks(document, stage).feed(markup)
     (stage / '.nojekyll').touch()
     (stage / MARKER).touch()
 

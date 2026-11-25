@@ -1196,7 +1196,7 @@ new ResizeObserver(() => {
 
 async function start() {
   try {
-    const response = await fetch('content/map.json');
+    const response = await fetch(document.body.dataset.mapSource);
     if (!response.ok) throw new Error('无法读取教材地图');
     data = await response.json();
     renderFirstChapters();
