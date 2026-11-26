@@ -204,6 +204,16 @@ window.LearningView = (() => {
       radius, font, labelY, lines, entry, entryY, entryFont};
   }
 
+  function worldRoutes(map, zoom, edges = map.view.edges) {
+    const chapters = new Map(map.view.nodes.map(n => {
+      const p = map.position(n.id), m = metrics(map,map.graph.vertices.get(n.id),zoom);
+      const width = Math.max(...m.lines.map(s => widthInEm(s)*m.font), ...m.entry.map(s => widthInEm(s)*m.entryFont), 0);
+      return [n.id,{...p, radius:m.radius+6, labelWidth:width,
+        labelTop:m.labelY-m.font*.88, labelBottom:m.bottom}];
+    }));
+    return window.OceanMap.chapterRoutes(edges,chapters);
+  }
+
   function describe(map, indices) {
     return indices.map(i => {
       const e = map.view.edges[i];
@@ -302,8 +312,10 @@ window.LearningView = (() => {
     const title = settings.worldTitle?.(id) || node.label;
     const color = settings.color?.(id) || '#527d73';
     const group = svg('g',{class:'learning-world ocean-world' + (deep ? ' deep' : ''), 'data-row':vertex.row,
-      'data-id':vertex.id, transform:'translate('+p.x+' '+p.y+')', style:'--world:'+color});
+      'data-id':vertex.id, 'data-world':id, transform:'translate('+p.x+' '+p.y+')', style:'--world:'+color});
     group.append(svg('circle',{r:m.radius, class:'world-ring'}));
+    group.append(svg('circle',{r:m.radius, fill:'transparent', 'aria-hidden':'true',
+      'data-ref':JSON.stringify({type:'world',world:id})}));
     const core = svg('g',{class:'world-core learning-world-control'});
     const children = world?.nodes || [];
     const countFont = Math.min(29,Math.max(19,11/settings.camera.k));
@@ -368,5 +380,5 @@ window.LearningView = (() => {
     }
   }
 
-  return {layout, fit, render};
+  return {layout, fit, render, worldRoutes};
 })();

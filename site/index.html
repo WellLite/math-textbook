@@ -24,11 +24,6 @@
       </nav>
     </header>
     <div class="workspace">
-      <nav aria-label="数学板块">
-        <div class="nav-heading">数学板块</div>
-        <button class="nav-all" id="nav-all">查看全部板块</button>
-        <div id="world-list"></div>
-      </nav>
       <main id="map-panel" tabindex="-1">
         <div class="toolbar">
           <div class="crumb">
@@ -62,11 +57,12 @@
           </svg>
           <div class="map-bottom">
             <div class="legend">
-              <span class="legend-item"><i class="line route"></i>推进路线</span
-              ><span class="legend-item"><i class="line prerequisite"></i>必要前置</span
+              <span class="legend-item" id="route-key"><i class="line route"></i>推进路线</span
+              ><span class="legend-item" id="prerequisite-key"><i class="line prerequisite"></i>必要前置</span
               ><span class="legend-item" id="relay-key" hidden
                 ><i class="relay-key-symbol" aria-hidden="true"></i>续接上游联系</span
-              ><span class="legend-item" id="perspective-key"><i class="line perspective"></i>理解联系</span>
+              ><span class="legend-item" id="perspective-key"><i class="line perspective"></i>理解联系</span
+              ><span class="legend-item" id="section-key" hidden><i class="line section"></i>跨章小节</span>
             </div>
             <div class="zoom">
               <button id="zoom-out" aria-label="缩小">−</button><span id="zoom-value">100%</span

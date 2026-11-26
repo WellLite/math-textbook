@@ -64,20 +64,9 @@ button.active:hover, button[aria-pressed=true]:hover, button.primary:hover {back
 .search-mark::after {content: ""; position: absolute; width: 5px; height: 1.5px; background: currentColor; bottom: -2px; right: -4px; transform: rotate(45deg)}
 
 
-.workspace {display: grid; grid-template-columns: 196px minmax(280px,1fr) 314px; height: calc(100dvh - var(--atlas-header-height))}
-.workspace.wide-map {grid-template-columns: 196px minmax(0,1fr)}
+.workspace {display: grid; grid-template-columns: minmax(0,1fr) clamp(345px,32vw,37rem); height: calc(100dvh - var(--atlas-header-height))}
+.workspace.wide-map {grid-template-columns: minmax(0,1fr)}
 .workspace.wide-map > aside {display: none}
-.workspace > nav {padding: 1.25rem .85rem 2rem; background: #f7f9f4; border-right: 1px solid var(--atlas-rule); overflow: auto}
-.nav-heading {display: flex; justify-content: space-between; align-items: center; margin: 0 .35rem .4rem; font-family: var(--atlas-serif); font-size: 1.16rem; font-weight: 700}
-.nav-heading button {min-width: 32px; border: 0; padding: .1rem .3rem; color: var(--atlas-muted); font: normal 1.4rem/1.4 system-ui,sans-serif}
-.nav-all {width: 100%; text-align: left; padding: .35rem .5rem; border: 0; color: var(--atlas-muted); font-size: .875rem}
-#world-list {display: flex; flex-direction: column}
-.nav-depth {margin: 1.35rem .5rem .38rem; color: #64756c; font-size: .75rem; font-weight: 550; letter-spacing: .035em}
-.world-nav {border: 0; border-radius: 3px; display: flex; align-items: center; gap: .55rem; min-height: 2.3rem; padding: .35rem .5rem; text-align: left}
-.world-nav .swatch {width: 6px; height: 6px; border-radius: 50%; flex: none}
-.world-nav .nav-name {flex: 1; white-space: normal; line-height: 1.55}
-.world-nav .count {font: .77rem/1.5 ui-monospace,monospace; color: #5f726b}
-.world-nav.current {color: #174a48; background: #e0ece5}
 .workspace > main {min-width: 0; min-height: 0; display: flex; flex-direction: column}
 .toolbar {display: flex; align-items: center; justify-content: space-between; gap: .45rem 1rem; flex-wrap: wrap; padding: .58rem 1.2rem; border-bottom: 1px solid var(--atlas-rule); background: var(--atlas-paper)}
 .crumb, .tools {display: flex; align-items: center; gap: .32rem}
@@ -124,8 +113,6 @@ button.active:hover, button[aria-pressed=true]:hover, button.primary:hover {back
 .edge.perspective {stroke: #6e8a88; stroke-dasharray: 4 4}
 .edge.selected {stroke: #ac5538; stroke-width: 3}
 .edge-hit {fill: none; stroke: transparent; vector-effect: non-scaling-stroke; stroke-width: 12; cursor: pointer}
-.ocean-overview #scene.trace-world [data-endpoints]:not(.trace-link) .edge:not(.selected) {opacity: .16}
-.ocean-overview #scene.trace-world .trace-link .edge:not(.selected) {stroke-width: 2.3; opacity: 1}
 .map-bottom {position: absolute; bottom: 13px; left: 14px; right: 14px; display: flex; align-items: flex-end; justify-content: space-between; gap: .6rem; pointer-events: none}
 .legend, .zoom {background: #fcfcf8ed; border-radius: 6px; color: #395c5c; border: 1px solid #d4e0d9; font-size: .78rem}
 .legend {display: flex; align-items: center; flex-wrap: wrap; gap: .35rem .65rem; padding: .44rem .65rem}
@@ -133,6 +120,7 @@ button.active:hover, button[aria-pressed=true]:hover, button.primary:hover {back
 .line {width: 15px; border-top: 1.5px solid #688982}
 .line.prerequisite {border-top: 2.5px solid #365f59}
 .line.perspective {border-top: 1.5px dashed #668580}
+.line.section {border-top: 2px dotted #39635f}
 .relay-key-symbol {display: inline-block; width: 7px; height: 7px; border: 1.4px solid #436c68; transform: rotate(45deg); margin-inline: 3px}
 .legend-item[hidden] {display: none}
 #all-links {border: 1px solid var(--atlas-rule); border-radius: 5px; padding-inline: .6rem}
@@ -220,28 +208,13 @@ dialog p {line-height: 1.8; color: var(--atlas-muted)}
   font-size:.85rem; font-weight:650; color:var(--blue); text-decoration:underline; text-underline-offset:.2em;
 }
 
-@media (min-width:1500px) {
-  .workspace {grid-template-columns: 220px minmax(320px,1fr) 346px}
-  .workspace.wide-map {grid-template-columns: 220px minmax(0,1fr)}
-}
-@media (min-width:901px) {
-  body[data-view="student"] .workspace:not(.wide-map) {
-    grid-template-columns: clamp(166px,14vw,220px) minmax(280px,1fr) clamp(345px,32vw,37rem);
-  }
-}
 @media (min-width:641px) and (max-width:900px) {
-  body[data-view="student"] .workspace:not(.wide-map) {grid-template-columns: minmax(280px,1fr) clamp(286px,42vw,378px)}
+  .workspace:not(.wide-map) {grid-template-columns: minmax(0,1fr) clamp(286px,42vw,378px)}
 }
 @media (max-width:1120px) {
-  .workspace {grid-template-columns: 166px minmax(260px,1fr) 278px}
-  .workspace.wide-map {grid-template-columns: 166px minmax(0,1fr)}
-  .workspace > nav {padding-inline: .65rem}
   .toolbar {padding-inline: .8rem}
 }
 @media (max-width:900px) {
-  .workspace {grid-template-columns: minmax(280px,1fr) 270px}
-  .workspace.wide-map {grid-template-columns: minmax(0,1fr)}
-  .workspace > nav {display: none}
   .atlas-header {padding-inline: .85rem; gap: .65rem}
   .header-actions {gap: .2rem}
   .header-actions > button {padding-inline: .4rem}

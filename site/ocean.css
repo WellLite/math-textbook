@@ -22,3 +22,22 @@
 #canvas:has(.ocean-overview) .legend, #canvas:has(.ocean-overview) .zoom { background:#f6f8eef5; border-color:#c1d0c5; }
 #canvas:has(.ocean-overview) #map-hint { color:#304f50; }
 .ocean-captions { cursor:pointer; }
+.ocean-world > circle[data-ref] { cursor:pointer; }
+.ocean-overview #scene.trace-world [data-endpoints],
+.ocean-overview #scene.trace-world .learning-relay { visibility:hidden; }
+.ocean-overview #scene.trace-world .ocean-world:not(.trace-origin):not(.trace-neighbor) { opacity:.34; }
+.ocean-overview #scene .trace-origin .world-ring,
+.ocean-overview #scene .trace-neighbor .world-ring { stroke-opacity:1; }
+.ocean-overview #scene .trace-origin .world-ring { stroke:#a14930; stroke-width:3; }
+.ocean-overview #scene .trace-origin .world-core circle { fill:#98452f; stroke:#fff6e7; stroke-width:2.4; }
+.ocean-overview #scene .trace-neighbor .world-ring { stroke:var(--ocean-ink,var(--learning-ink)); stroke-width:2.2; }
+.ocean-overview #scene .trace-neighbor .world-core circle { fill:#215957; stroke:#fff9e9; stroke-width:2; }
+.ocean-overview #scene :is(.trace-neighbor,.trace-origin) .world-label { font-weight:800; }
+.chapter-thread, .chapter-thread-halo { fill:none; vector-effect:non-scaling-stroke; stroke-linejoin:round; stroke-linecap:round; pointer-events:none; }
+.chapter-thread-halo { stroke:#fff9e9; stroke-width:4; opacity:.86; }
+.chapter-thread { stroke:#315e5a; stroke-width:1.7; marker-end:url(#arrow); }
+.chapter-connection[data-kind="prerequisite"] .chapter-thread { stroke:#214e49; stroke-width:2.6; }
+.chapter-connection[data-kind="perspective"] .chapter-thread { stroke-dasharray:6 4; }
+.chapter-connection[data-kind="section"] .chapter-thread { stroke-dasharray:1 4; }
+.chapter-connection .edge-hit { pointer-events:stroke; }
+.chapter-connection:is(:hover,:focus-visible) .chapter-thread { stroke:#99432d; stroke-width:2.6; }

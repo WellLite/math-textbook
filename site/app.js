@@ -40,6 +40,7 @@ let navigationReady = false,
   topicLayout = null;
 let showAllLinks = false,
   learningLayout = null;
+let chapterTrace = null, hoverPoint = null, traceExitTimer;
 const adjacentMode = () => !showAllLinks;
 const olympiadFields = {
   algebra: {
@@ -300,6 +301,7 @@ function interactive(g, ref, label) {
       e.preventDefault();
       actionNode(ref);
       if (ref.type === 'node') inspector.querySelector('.chapter-link')?.focus({ preventScroll: true });
+      if (ref.type === 'chapter-connection') inspector.querySelector('button')?.focus({ preventScroll: true });
     }
   });
 }
@@ -339,13 +341,18 @@ function edgeElement(edge, ref, path) {
 }
 function renderCanvas() {
   if (!data) return;
+  clearTimeout(traceExitTimer);
+  chapterTrace = null;
   scene.classList.remove('trace-world');
   svg.classList.toggle('ocean-overview', scope === 'overview');
   scene.replaceChildren();
   scene.setAttribute('transform', `translate(${camera.x},${camera.y}) scale(${camera.k})`);
   $('zoom-value').textContent = Math.round(camera.k * 100) + '%';
   svg.classList.toggle('adjacent-map', adjacentMode());
+  $('route-key').hidden = false;
+  $('prerequisite-key').hidden = false;
   $('perspective-key').hidden = adjacentMode();
+  $('section-key').hidden = true;
   $('relay-key').hidden = true;
   if (adjacentMode()) {
     const { map, course, graph, layout } = learningMap();
@@ -449,32 +456,17 @@ function renderCanvas() {
   }
 
   $('map-hint').textContent = scope === 'overview'
-    ? '点大圆读一章，点小圆直接读一个知识点。点连线看联系。'
+    ? matchMedia('(hover: hover)').matches
+      ? '指向大圆看章节联系，点连线看缘由。点大圆读一章，点小圆读一节。'
+      : '点大圆读一章，点小圆读一节。拖动地图可以继续向下看。'
     : adjacentMode()
     ? '沿箭头逐层往下读，点线查看两端的联系。'
     : '点知识点查看相关内容，点连线查看两端的联系。';
-}
-function renderNav() {
-  const list = $('world-list');
-  list.replaceChildren();
-  for (const band of OceanMap.bands(data)) {
-    const nodes = overview().nodes.filter((node) => node.level === band.level);
-    if (!nodes.length) continue;
-    list.append(html('div', { class: 'nav-depth' }, [band.title, band.subtitle].filter(Boolean).join(' · ')));
-    for (const node of nodes) {
-      const world = view(node.target);
-      const item = button('', () => enter(world.id), 'world-nav' + (scope === world.id ? ' current' : ''));
-      item.setAttribute('aria-label', '打开板块 ' + node.label);
-      const swatch = html('span', { class: 'swatch' });
-      swatch.style.background = color(world.id);
-      item.append(
-        swatch,
-        html('span', { class: 'nav-name' }, node.label),
-        html('span', { class: 'count' }, String(world.nodes.length)),
-      );
-      list.append(item);
-    }
+  if (scope === 'overview' && !gesture) {
+    traceTarget(hoverPoint && document.elementFromPoint(hoverPoint.x, hoverPoint.y));
   }
+}
+function renderMapHeading() {
   $('view-title').textContent =
     scope === 'overview'
       ? oceanField
@@ -671,8 +663,24 @@ function appendEdgePassage(ref, edge) {
   }
   inspector.append(passage);
 }
+function appendChapterConnection(ref) {
+  heading('章节联系', worldTitle(ref.from) + ' → ' + worldTitle(ref.to));
+  for (const index of ref.chapters) {
+    const edge = overview().edges[index];
+    inspector.append(html('h3', {}, [TYPES[edge.kind], edge.label].filter(Boolean).join(' · ')));
+    appendEdgePassage({ world: 'overview' }, edge);
+  }
+  if (ref.sections.length) inspector.append(html('h3', {}, '哪些小节用到了这条联系'));
+  for (const index of ref.sections) {
+    const edge = data.crossEdges[index];
+    inspector.append(html('strong', {}, TYPES[edge.kind] + ' · ' + (edge.label || refLabel(edge.target))));
+    appendEdgePassage({ world: 'cross' }, edge);
+  }
+}
 function renderReadingSelection(ref) {
-  if (ref.type === 'world') {
+  if (ref.type === 'chapter-connection') {
+    appendChapterConnection(ref);
+  } else if (ref.type === 'world') {
     const world = view(ref.world);
     const entry = overview().nodes.find((n) => n.target === world.id)?.entry;
     heading('数学板块', worldTitle(ref.world));
@@ -741,7 +749,7 @@ function render() {
   learningLayout = null;
   requiredParents = null;
   replaceTopicAddress();
-  renderNav();
+  renderMapHeading();
   renderCanvas();
   renderInspector();
 }
@@ -749,11 +757,10 @@ function refLabel(r) {
   return view(r.view)?.nodes.find((n) => n.id === r.node)?.label || '?';
 }
 
-$('nav-all').onclick = () => {
+$('back').onclick = () => {
   oceanField = '';
   enter('overview');
 };
-$('back').onclick = $('nav-all').onclick;
 $('all-links').onclick = () => {
   showAllLinks = !showAllLinks;
   $('all-links').setAttribute('aria-pressed', showAllLinks);
@@ -766,20 +773,113 @@ $('fit').onclick = () => {
 };
 $('zoom-in').onclick = () => zoom(1.25);
 $('zoom-out').onclick = () => zoom(0.8);
-function traceWorld(event) {
-  const target = event.target.closest?.('[data-ref]');
-  const ref = target ? JSON.parse(target.dataset.ref) : null;
-  const id = scope === 'overview' && ref?.type === 'world' && !gesture ? ref.world : null;
-  scene.classList.toggle('trace-world', Boolean(id));
-  if (!id) return;
-  for (const line of scene.querySelectorAll('[data-endpoints]')) {
-    line.classList.toggle('trace-link', JSON.parse(line.dataset.endpoints).includes(id));
+// The overview uses its own node IDs. Section links name chapters directly.
+// Keep the original evidence so a line can explain exactly what connects its ends.
+function visibleChapterConnections(course) {
+  const byId = new Map(course.nodes.map(n => [n.id, n]));
+  const byWorld = new Map(course.nodes.map(n => [n.target, n]));
+  const pairs = new Map();
+  function pair(a, b) {
+    const key = JSON.stringify([a.id, b.id]);
+    if (!pairs.has(key)) pairs.set(key, {
+      source: a.id, target: b.id, from: a.target, to: b.target, kind: 'section', chapters: [], sections: [],
+    });
+    return pairs.get(key);
   }
+  overview().edges.forEach((edge, i) => {
+    const a = byId.get(edge.source), b = byId.get(edge.target);
+    if (!a || !b || a === b) return;
+    const link = pair(a, b);
+    link.kind = edge.kind;
+    link.chapters.push(i);
+  });
+  (data.crossEdges || []).forEach((edge, i) => {
+    const a = byWorld.get(edge.source.view), b = byWorld.get(edge.target.view);
+    if (a && b && a !== b) pair(a, b).sections.push(i);
+  });
+  return [...pairs.values()];
 }
-svg.addEventListener('pointerover', traceWorld);
-svg.addEventListener('focusin', traceWorld);
-for (const event of ['pointerleave', 'focusout'])
-  svg.addEventListener(event, () => scene.classList.remove('trace-world'));
+function prepareChapterTrace() {
+  const nodes = [...scene.querySelectorAll('.ocean-world[data-world]')];
+  if (!nodes.length) return null;
+  const map = adjacentMode() ? learningMap().map : oceanData();
+  const links = visibleChapterConnections(map.views.find(v => v.id === 'overview'));
+  const paths = adjacentMode()
+    ? LearningView.worldRoutes(learningMap().layout, camera.k, links)
+    : OceanMap.routes(map, camera.k, links);
+  const layer = el('g', { class: 'chapter-connections' });
+  nodes[0].before(layer);
+  return { nodes, links, paths, layer, active: '', relaysHidden: $('relay-key').hidden, idleHint: $('map-hint').textContent };
+}
+function drawChapterConnection(link, d) {
+  const g = el('g', { class: 'chapter-connection', 'data-source': link.from, 'data-target': link.to, 'data-kind': link.kind });
+  const label = worldTitle(link.from) + ' → ' + worldTitle(link.to) + ' · ' + (TYPES[link.kind] || '跨章小节');
+  g.append(el('title', {}, label),
+    el('path', { d, class: 'chapter-thread-halo' }),
+    el('path', { d, class: 'chapter-thread' }),
+    el('path', { d, class: 'edge-hit' }));
+  const ref = { type: 'chapter-connection', from: link.from, to: link.to, chapters: link.chapters, sections: link.sections };
+  interactive(g, ref, label);
+  g.addEventListener('click', event => {
+    if (event.detail === 0) actionNode(ref);
+  });
+  return g;
+}
+function traceChapter(id) {
+  const pinned = !id && selection?.type === 'chapter-connection' ? selection : null;
+  if (scope !== 'overview' || (!chapterTrace && !id && !pinned)) return;
+  chapterTrace ||= prepareChapterTrace();
+  if (!chapterTrace) return;
+  const key = pinned ? JSON.stringify([pinned.from, pinned.to]) : id || '';
+  if (chapterTrace.active === key) return;
+  chapterTrace.active = key;
+  const { nodes, links, paths, layer } = chapterTrace;
+  const neighbors = new Set(), kinds = new Set();
+  layer.replaceChildren();
+  for (const link of links) {
+    const matches = pinned ? link.from === pinned.from && link.to === pinned.to : id === link.from || id === link.to;
+    if (!matches || !paths.has(link)) continue;
+    neighbors.add(link.from);
+    neighbors.add(link.to);
+    kinds.add(link.kind);
+    layer.append(drawChapterConnection(link, paths.get(link)));
+  }
+  const origin = id || pinned?.from;
+  for (const node of nodes) {
+    node.classList.toggle('trace-origin', node.dataset.world === origin);
+    node.classList.toggle('trace-neighbor', node.dataset.world !== origin && neighbors.has(node.dataset.world));
+  }
+  scene.classList.toggle('trace-world', Boolean(key));
+  for (const kind of ['route', 'prerequisite']) $(kind + '-key').hidden = Boolean(key) && !kinds.has(kind);
+  $('section-key').hidden = !kinds.has('section');
+  $('perspective-key').hidden = key ? !kinds.has('perspective') : adjacentMode();
+  $('relay-key').hidden = Boolean(key) || chapterTrace.relaysHidden;
+  $('map-hint').textContent = id && !neighbors.size
+    ? '当前范围内没有与「' + worldTitle(id) + '」直接相连的章节。'
+    : chapterTrace.idleHint;
+}
+function traceTarget(target, allowTravel = false) {
+  clearTimeout(traceExitTimer);
+  if (scope !== 'overview' || gesture) return;
+  if (target?.closest?.('.chapter-connection')) return;
+  const world = target?.closest?.('.ocean-world')?.dataset.world;
+  // Let a pointer cross the small gap from the rim to its connection.
+  if (!world && allowTravel && chapterTrace?.active) {
+    traceExitTimer = setTimeout(() => traceChapter(null), 150);
+  } else traceChapter(world);
+}
+svg.addEventListener('pointerover', event => {
+  if (event.pointerType !== 'touch') {
+    hoverPoint = { x: event.clientX, y: event.clientY };
+    traceTarget(event.target, true);
+  }
+});
+svg.addEventListener('pointerleave', () => {
+  hoverPoint = null;
+  traceTarget(svg.querySelector(':focus-visible'));
+});
+svg.addEventListener('focusin', event => traceTarget(event.target));
+svg.addEventListener('focusout', event => traceTarget(event.relatedTarget));
 svg.addEventListener(
   'wheel',
   (e) => {
@@ -792,6 +892,7 @@ svg.addEventListener(
 
 svg.addEventListener('pointerdown', (event) => {
   if (event.button !== 0) return;
+  if (event.pointerType === 'touch') hoverPoint = null;
   pendingMapClick = null;
   const element = event.target;
   gesture = {
@@ -805,6 +906,7 @@ svg.addEventListener('pointerdown', (event) => {
   svg.setPointerCapture(event.pointerId);
 });
 svg.addEventListener('pointermove', (event) => {
+  if (event.pointerType !== 'touch') hoverPoint = { x: event.clientX, y: event.clientY };
   if (!gesture) return;
   const dx = event.clientX - gesture.start.x,
     dy = event.clientY - gesture.start.y;
@@ -1213,7 +1315,7 @@ async function start() {
     navigationReady = true;
     $('open-search').disabled = false;
     $('open-olympiad').disabled = false;
-    renderNav();
+    renderMapHeading();
     fit();
     readTopicAddress();
   } catch (error) {
