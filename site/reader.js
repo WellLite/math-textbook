@@ -12,15 +12,24 @@
   function save(key, value, storage = 'localStorage') {
     try { window[storage].setItem(key, JSON.stringify(value)); } catch { /* Storage may be disabled. */ }
   }
+  // Pages serves a lesson without its .html suffix. Keep the same file identity
+  // for both addresses and for bookmarks written by earlier editions.
+  function chapterFile(path) {
+    if (typeof path !== 'string' || !path || path.endsWith('/')) return null;
+    return path.endsWith('.html') ? path : path + '.html';
+  }
   function refreshResume() {
     const mark = read(bookmarkKey);
     const url = typeof mark?.path === 'string' && mark.path.startsWith('chapters/') ? new URL(mark.path, book) : null;
     const valid = url && url.origin === book.origin && url.pathname.startsWith(book.pathname + 'chapters/')
-      && url.pathname.endsWith('.html') && !url.search && !url.hash && typeof mark.topic === 'string';
+      && chapterFile(url.pathname) && !url.search && !url.hash && typeof mark.topic === 'string';
+    if (valid) {
+      url.pathname = chapterFile(url.pathname);
+      url.hash = 'resume';
+    }
     resumeLinks.forEach(link => {
       link.hidden = !valid;
       if (valid) {
-        url.hash = 'resume';
         link.href = url.href;
         link.textContent = '继续读 · ' + mark.topic;
       }
@@ -104,7 +113,7 @@
     const railKey = 'math-textbook:outline:' + book.pathname;
     const previous = read(railKey, 'sessionStorage');
     if (previous) {
-      if (previous.to === location.pathname && Number.isFinite(previous.top)) outline.scrollTop = previous.top;
+      if (chapterFile(previous.to) === chapterFile(location.pathname) && Number.isFinite(previous.top)) outline.scrollTop = previous.top;
       save(railKey, null, 'sessionStorage');
     }
     const chapterLinks = new Set([...outline.querySelectorAll('.outline-topics a, .outline-intro')].map(a => a.href));
@@ -166,10 +175,10 @@
     save(typeKey, large);
   });
 
-  const path = location.pathname.slice(book.pathname.length);
+  const path = chapterFile(location.pathname.slice(book.pathname.length));
   const blocks = [...document.querySelectorAll('.chapter article > *, .reading-end')];
   const last = read(bookmarkKey);
-  let restoring = location.hash === '#resume' && last?.path === path;
+  let restoring = location.hash === '#resume' && last && chapterFile(last.path) === path;
   let visible = !document.hidden;
   let timer;
   function keepPlace() {
