@@ -244,5 +244,6 @@
   .has-math-demo > img, .has-math-demo > p:has(> img) {display:block}
 }
 
-.demo-picture [data-drag-point] {touch-action:none; cursor:ns-resize}
+.demo-picture:has([data-drag-point]) {touch-action:none}
+.demo-picture [data-drag-point] {cursor:ns-resize}
 figure[id^="demo-"] {scroll-margin-top:calc(var(--chapter-header-height, 62px) + .7rem)}
