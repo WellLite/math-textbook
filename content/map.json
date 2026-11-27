@@ -1062,57 +1062,66 @@
           "id": "expr",
           "label": "表达式",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/elementary/expr.md"
         },
         {
           "id": "eq",
           "label": "方程",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/elementary/eq.md"
         },
         {
           "id": "ineq",
           "label": "不等式",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/elementary/ineq.md"
         },
         {
           "id": "func",
           "label": "函数与图像",
           "level": 1,
           "target": null,
-          "description": "每个允许的输入都得到唯一一个输出，这条对应规则叫函数。描述函数先说明输入范围和取值规则，再把每对输入、输出画成点，就可以研究它的图像。"
+          "description": "每个允许的输入都得到唯一一个输出，这条对应规则叫函数。描述函数先说明输入范围和取值规则，再把每对输入、输出画成点，就可以研究它的图像。",
+          "chapter": "chapters/elementary/func.md"
         },
         {
           "id": "poly",
           "label": "多项式",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/elementary/poly.md"
         },
         {
           "id": "explog",
           "label": "指数与对数",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/elementary/explog.md"
         },
         {
           "id": "seq",
           "label": "数列与递推",
           "level": 2,
           "target": null,
-          "description": "依次把各项标上自然数作下标，得到数列。若写下首项和从先前各项算出后一项的规则，就可以逐项计算；通项还要能从下标直接确定数值。"
+          "description": "依次把各项标上自然数作下标，得到数列。若写下首项和从先前各项算出后一项的规则，就可以逐项计算；通项还要能从下标直接确定数值。",
+          "chapter": "chapters/elementary/seq.md"
         },
         {
           "id": "systems",
           "label": "方程组",
           "level": 3,
-          "target": "linear"
+          "target": "linear",
+          "chapter": "chapters/elementary/systems.md"
         },
         {
           "id": "limits",
           "label": "极限问题",
           "level": 3,
-          "target": "calculus"
+          "target": "calculus",
+          "chapter": "chapters/elementary/limits.md"
         },
         {
           "id": "factorization",
@@ -1127,28 +1136,32 @@
               "why": "展开大整数不易判断素性；加上再减去同一个平方，就能提出公因式，并证明两个因子都大于一。",
               "url": "https://www.irmo.ie/IrMO2009paper1solutions.pdf"
             }
-          ]
+          ],
+          "chapter": "chapters/elementary/factorization.md"
         },
         {
           "id": "complete-square",
           "label": "配方法",
           "level": 3,
           "target": null,
-          "description": "x²+6x 与 (x+3)² 差多少？补上 9 就能拼成完整的平方，所以 x²+6x=(x+3)²−9。把 x 的二次项与一次项收进同一个平方，就能反求 x，也能看出表达式的最小值。"
+          "description": "x²+6x 与 (x+3)² 差多少？补上 9 就能拼成完整的平方，所以 x²+6x=(x+3)²−9。把 x 的二次项与一次项收进同一个平方，就能反求 x，也能看出表达式的最小值。",
+          "chapter": "chapters/elementary/complete-square.md"
         },
         {
           "id": "quadratic-roots",
           "label": "一元二次方程与判别式",
           "level": 4,
           "target": null,
-          "description": "面对 ax²+bx+c=0，先确认实系数 a≠0。配方得到 (2ax+b)²=b²−4ac。左端是实数的平方，右端的正、零、负分别给出两个、一个或零个不同的实根。"
+          "description": "面对 ax²+bx+c=0，先确认实系数 a≠0。配方得到 (2ax+b)²=b²−4ac。左端是实数的平方，右端的正、零、负分别给出两个、一个或零个不同的实根。",
+          "chapter": "chapters/elementary/quadratic-roots.md"
         },
         {
           "id": "quadratic-graph",
           "label": "二次函数的图像",
           "level": 4,
           "target": null,
-          "description": "把二次函数写为 y=a(x−h)²+k。相距 h 左右相同距离的两个输入给出相同输出，因此直线 x=h 是对称轴，(h,k) 是顶点。令 y=0 就转回寻找横轴交点的问题。"
+          "description": "把二次函数写为 y=a(x−h)²+k。相距 h 左右相同距离的两个输入给出相同输出，因此直线 x=h 是对称轴，(h,k) 是顶点。令 y=0 就转回寻找横轴交点的问题。",
+          "chapter": "chapters/elementary/quadratic-graph.md"
         },
         {
           "id": "absolute-value",
@@ -1161,7 +1174,8 @@
             "含绝对值的方程",
             "分段函数"
           ],
-          "description": "数轴上，从 x 走到 2 要走多远？当 x≥2，距离是 x−2；当 x<2，距离是 2−x。把两段接起来就是 |x−2|。对 |f(x)| 也可以找出 f 的变号点，保留横轴上方的图像，把下方的部分向上翻折。"
+          "description": "数轴上，从 x 走到 2 要走多远？当 x≥2，距离是 x−2；当 x<2，距离是 2−x。把两段接起来就是 |x−2|。对 |f(x)| 也可以找出 f 的变号点，保留横轴上方的图像，把下方的部分向上翻折。",
+          "chapter": "chapters/elementary/absolute-value.md"
         },
         {
           "id": "periodic",
@@ -1173,7 +1187,8 @@
             "周期性",
             "周期函数"
           ],
-          "description": "时钟走了一圈，同一状态又出现了。若定义域在平移 T 及 −T 后保持不变，且任意 x 都有 f(x+T)=f(x)，这个非零 T 就是周期。找到一个正周期后，还要单独说明它是不是最小的；常值函数的每个正数都是周期。"
+          "description": "时钟走了一圈，同一状态又出现了。若定义域在平移 T 及 −T 后保持不变，且任意 x 都有 f(x+T)=f(x)，这个非零 T 就是周期。找到一个正周期后，还要单独说明它是不是最小的；常值函数的每个正数都是周期。",
+          "chapter": "chapters/elementary/periodic.md"
         },
         {
           "id": "inverse-trig",
@@ -1188,7 +1203,8 @@
             "arccos",
             "arctan"
           ],
-          "description": "只知道正弦值是 1/2，能恢复哪个角？一周内就有两个答案。把正弦限制在 [−π/2,π/2]，每个允许的值才恰好对应一个角，得到 arcsin。余弦可取 [0,π]，正切可取 (−π/2,π/2)。解原方程时再找回其余分支。"
+          "description": "只知道正弦值是 1/2，能恢复哪个角？一周内就有两个答案。把正弦限制在 [−π/2,π/2]，每个允许的值才恰好对应一个角，得到 arcsin。余弦可取 [0,π]，正切可取 (−π/2,π/2)。解原方程时再找回其余分支。",
+          "chapter": "chapters/elementary/inverse-trig.md"
         },
         {
           "id": "trig-inequality",
@@ -1200,7 +1216,8 @@
             "三角函数不等式",
             "正弦不等式"
           ],
-          "description": "哪些实数 x 满足 sin x>1/2？在单位圆上画出水平线 y=1/2，保留上方的圆弧。一圈内它对应 π/6<x<5π/6，再把这个区间平移任意整数个 2π。若条件改为 ≥，弧的两个端点也要取到。"
+          "description": "哪些实数 x 满足 sin x>1/2？在单位圆上画出水平线 y=1/2，保留上方的圆弧。一圈内它对应 π/6<x<5π/6，再把这个区间平移任意整数个 2π。若条件改为 ≥，弧的两个端点也要取到。",
+          "chapter": "chapters/elementary/trig-inequality.md"
         },
         {
           "id": "finite-sums",
@@ -1215,7 +1232,8 @@
             "Π",
             "求和记号"
           ],
-          "description": "把 a₁+a₂+⋯+aₙ 写为 Σᵢ₌₁ⁿ aᵢ，只给每一项编了一个号码。把 i 换成 n+1−i 会逐个数到原来的项，所以总和不变。连乘也可同样记号化，但想消去某个因子，须先知道它非零。"
+          "description": "把 a₁+a₂+⋯+aₙ 写为 Σᵢ₌₁ⁿ aᵢ，只给每一项编了一个号码。把 i 换成 n+1−i 会逐个数到原来的项，所以总和不变。连乘也可同样记号化，但想消去某个因子，须先知道它非零。",
+          "chapter": "chapters/elementary/finite-sums.md"
         },
         {
           "id": "arith-geom-sequences",
@@ -1229,7 +1247,8 @@
             "等差求和",
             "错位相减"
           ],
-          "description": "每次加同一个 d，第 n 项就是 a₁+(n−1)d。首尾两端逐对相加，总和等于 n(a₁+aₙ)/2。若每次改乘同一个 q，把前 n 项和 S 乘上 q 再与原式相减，中间项全部抵消；q=1 时另有 S=na₁。"
+          "description": "每次加同一个 d，第 n 项就是 a₁+(n−1)d。首尾两端逐对相加，总和等于 n(a₁+aₙ)/2。若每次改乘同一个 q，把前 n 项和 S 乘上 q 再与原式相减，中间项全部抵消；q=1 时另有 S=na₁。",
+          "chapter": "chapters/elementary/arith-geom-sequences.md"
         }
       ],
       "edges": [
@@ -1390,37 +1409,47 @@
           "id": "vectors",
           "label": "向量与数乘",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/vectors.md"
         },
         {
           "id": "combine",
           "label": "线性组合",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/combine.md"
         },
         {
           "id": "basis",
           "label": "基与维数",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/basis.md"
         },
         {
           "id": "maps",
           "label": "线性变换",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/maps.md"
         },
         {
           "id": "matrix",
           "label": "矩阵表示",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/matrix.md",
+          "aliases": [
+            "矩阵加法",
+            "矩阵数乘"
+          ]
         },
         {
           "id": "systems",
           "label": "方程组与秩",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/systems.md"
         },
         {
           "id": "product",
@@ -1434,33 +1463,50 @@
           "id": "inner",
           "label": "内积与投影",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/inner.md",
+          "aliases": [
+            "点积",
+            "点乘",
+            "正交投影"
+          ]
         },
         {
           "id": "det",
           "label": "行列式",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/det.md",
+          "aliases": [
+            "叉乘",
+            "叉积",
+            "向量积",
+            "有向面积",
+            "有向体积"
+          ]
         },
         {
           "id": "eigen",
           "label": "特征结构",
           "level": 5,
-          "target": null
+          "target": null,
+          "chapter": "chapters/linear/eigen.md"
         },
         {
           "id": "rank-nullity",
           "label": "秩与零度定理",
           "level": 4,
           "target": null,
-          "description": "线性变换把多少方向压成了零？对有限维空间 V 上定义的线性映射 T，取核（被送到零的所有向量）的一组基，把它补成 V 的基。补上的基向量的像恰好构成像空间的一组基，所以 dim V=dim ker T+dim im T。"
+          "description": "线性变换把多少方向压成了零？对有限维空间 V 上定义的线性映射 T，取核（被送到零的所有向量）的一组基，把它补成 V 的基。补上的基向量的像恰好构成像空间的一组基，所以 dim V=dim ker T+dim im T。",
+          "chapter": "chapters/linear/rank-nullity.md"
         },
         {
           "id": "diagonalization",
           "label": "矩阵的对角化",
           "level": 6,
           "target": null,
-          "description": "反复施行同一个变换，能否只做乘法而不混合坐标？在所用数域上，若一个 n 阶矩阵有 n 个线性无关的特征向量，拿它们当基，矩阵就变成对角形。在这个基下做 k 次变换，每个坐标分别乘以对应特征值的 k 次方。"
+          "description": "反复施行同一个变换，能否只做乘法而不混合坐标？在所用数域上，若一个 n 阶矩阵有 n 个线性无关的特征向量，拿它们当基，矩阵就变成对角形。在这个基下做 k 次变换，每个坐标分别乘以对应特征值的 k 次方。",
+          "chapter": "chapters/linear/diagonalization.md"
         }
       ],
       "edges": [
@@ -1579,66 +1625,76 @@
           "id": "counting",
           "label": "有限计数",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/discrete/counting.md"
         },
         {
           "id": "integer",
           "label": "整数与整除",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/discrete/integer.md"
         },
         {
           "id": "recurrence",
           "label": "递推关系",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/discrete/recurrence.md"
         },
         {
           "id": "graphs",
           "label": "图与网络",
           "level": 1,
           "target": null,
-          "description": "如果问题只在意谁和谁相连，可用顶点代表对象，用边代表关系。先说明边有无方向、是否允许重边和自环。一次握手同时落在两个人的记录里，由此可以用顶点度数反推边数。"
+          "description": "如果问题只在意谁和谁相连，可用顶点代表对象，用边代表关系。先说明边有无方向、是否允许重边和自环。一次握手同时落在两个人的记录里，由此可以用顶点度数反推边数。",
+          "chapter": "chapters/discrete/graphs.md"
         },
         {
           "id": "mod",
           "label": "同余",
           "level": 1,
           "target": null,
-          "description": "只关心除以正整数 m 的余数时，可以把相差 m 的整数倍的数视为同一类，写作 a≡b (mod m)。例如 17 与 5 除以 12 余数相同。加或乘同余的数都保持同余，约去一个因子则要检查它和模数是否互素。"
+          "description": "只关心除以正整数 m 的余数时，可以把相差 m 的整数倍的数视为同一类，写作 a≡b (mod m)。例如 17 与 5 除以 12 余数相同。加或乘同余的数都保持同余，约去一个因子则要检查它和模数是否互素。",
+          "chapter": "chapters/discrete/mod.md"
         },
         {
           "id": "generating",
           "label": "生成函数",
           "level": 2,
           "target": null,
-          "description": "怎样让乘法替我们数选择？把一类选择中大小为 k 的方案数放到 xᵏ 的系数里。独立地做两类选择时，两个多项式或形式幂级数相乘，xⁿ 的系数恰好枚举所有大小之和为 n 的配对。"
+          "description": "怎样让乘法替我们数选择？把一类选择中大小为 k 的方案数放到 xᵏ 的系数里。独立地做两类选择时，两个多项式或形式幂级数相乘，xⁿ 的系数恰好枚举所有大小之和为 n 的配对。",
+          "chapter": "chapters/discrete/generating.md"
         },
         {
           "id": "algorithms",
           "label": "算法与证明",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/discrete/algorithms.md"
         },
         {
           "id": "number",
           "label": "初等数论",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/discrete/number.md"
         },
         {
           "id": "arrangements",
           "label": "排列与组合",
           "level": 1,
           "target": null,
-          "description": "从五人中选三人排成一队有 5×4×3 种结果。如果只选三人参加小组，每一组都被计入 3×2×1 次。除掉这相同的重复次数，得到十个不同的小组。"
+          "description": "从五人中选三人排成一队有 5×4×3 种结果。如果只选三人参加小组，每一组都被计入 3×2×1 次。除掉这相同的重复次数，得到十个不同的小组。",
+          "chapter": "chapters/discrete/arrangements.md"
         },
         {
           "id": "binomial-theorem",
           "label": "二项式定理",
           "level": 2,
           "target": null,
-          "description": "展开 (a+b)ⁿ 时，每个因子各选一项。要得到 aⁿ⁻ᵏbᵏ，需要从 n 个因子中选出 k 个贡献 b，其余因子贡献 a。这样的选择数正是这一项的系数，其中 n 是非负整数，0≤k≤n。"
+          "description": "展开 (a+b)ⁿ 时，每个因子各选一项。要得到 aⁿ⁻ᵏbᵏ，需要从 n 个因子中选出 k 个贡献 b，其余因子贡献 a。这样的选择数正是这一项的系数，其中 n 是非负整数，0≤k≤n。",
+          "chapter": "chapters/discrete/binomial-theorem.md"
         },
         {
           "id": "euclid",
@@ -1650,7 +1706,8 @@
             "辗转相除法",
             "最大公因数",
             "最大公约数"
-          ]
+          ],
+          "chapter": "chapters/discrete/euclid.md"
         },
         {
           "id": "euclidean-division",
@@ -1663,7 +1720,8 @@
             "除法算法",
             "余数分类"
           ],
-          "description": "每包放 b 个物品，装满所有整包后，余下的数量一定小于 b。一般地，给定整数 a 和正整数 b，有唯一一对整数 q,r 使 a=bq+r 且 0≤r<b。例如 −1=5×(−1)+4，这个范围也让负整数有唯一余数。"
+          "description": "每包放 b 个物品，装满所有整包后，余下的数量一定小于 b。一般地，给定整数 a 和正整数 b，有唯一一对整数 q,r 使 a=bq+r 且 0≤r<b。例如 −1=5×(−1)+4，这个范围也让负整数有唯一余数。",
+          "chapter": "chapters/discrete/euclidean-division.md"
         }
       ],
       "edges": [
@@ -1761,63 +1819,73 @@
           "id": "limits",
           "label": "极限",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/limits.md"
         },
         {
           "id": "continuity",
           "label": "连续",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/continuity.md"
         },
         {
           "id": "series",
           "label": "级数",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/series.md"
         },
         {
           "id": "derivative",
           "label": "导数",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/derivative.md"
         },
         {
           "id": "integral",
           "label": "积分",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/integral.md"
         },
         {
           "id": "ftc",
           "label": "微积分基本定理",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/ftc.md"
         },
         {
           "id": "multi",
           "label": "多元微积分",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/multi.md"
         },
         {
           "id": "vector",
           "label": "向量分析",
           "level": 5,
-          "target": null
+          "target": null,
+          "chapter": "chapters/calculus/vector.md"
         },
         {
           "id": "mean-value",
           "label": "拉格朗日中值定理",
           "level": 3,
           "target": null,
-          "description": "在一段路上，平均速度能否在某一时刻成为瞬时速度？若 f 在 [a,b] 上连续、在 (a,b) 内可导，且 a<b，则存在区间内部的一点 c，使 f′(c)=(f(b)−f(a))/(b−a)。从图上减去连接两端的直线，就把问题转成寻找一条水平切线。"
+          "description": "在一段路上，平均速度能否在某一时刻成为瞬时速度？若 f 在 [a,b] 上连续、在 (a,b) 内可导，且 a<b，则存在区间内部的一点 c，使 f′(c)=(f(b)−f(a))/(b−a)。从图上减去连接两端的直线，就把问题转成寻找一条水平切线。",
+          "chapter": "chapters/calculus/mean-value.md"
         },
         {
           "id": "taylor",
           "label": "泰勒公式与余项",
           "level": 4,
           "target": null,
-          "description": "在 a 附近估计 f(x)，切线只利用函数值和一次导数。让多项式在 a 处的前 n 阶导数逐一匹配，就得到 n 阶泰勒多项式。若 f 在 a 和 x 之间的闭区间上有连续的 n+1 阶导数，且该阶导数的绝对值不超过 M，误差就不超过 M|x−a|ⁿ⁺¹/(n+1)!。"
+          "description": "在 a 附近估计 f(x)，切线只利用函数值和一次导数。让多项式在 a 处的前 n 阶导数逐一匹配，就得到 n 阶泰勒多项式。若 f 在 a 和 x 之间的闭区间上有连续的 n+1 阶导数，且该阶导数的绝对值不超过 M，误差就不超过 M|x−a|ⁿ⁺¹/(n+1)!。",
+          "chapter": "chapters/calculus/taylor.md"
         }
       ],
       "edges": [
@@ -1922,69 +1990,80 @@
           "id": "finite",
           "label": "有限概率",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/finite.md"
         },
         {
           "id": "conditional",
           "label": "条件与独立",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/conditional.md"
         },
         {
           "id": "rv",
           "label": "随机变量",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/rv.md"
         },
         {
           "id": "discrete",
           "label": "离散分布",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/discrete.md"
         },
         {
           "id": "continuous",
           "label": "连续分布",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/continuous.md"
         },
         {
           "id": "expectation",
           "label": "期望与方差",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/expectation.md"
         },
         {
           "id": "laws",
           "label": "极限定理",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/laws.md"
         },
         {
           "id": "inference",
           "label": "统计推断",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/inference.md"
         },
         {
           "id": "process",
           "label": "随机过程",
           "level": 5,
-          "target": null
+          "target": null,
+          "chapter": "chapters/probability/process.md"
         },
         {
           "id": "descriptive-data",
           "label": "均值、中位数与四分位数",
           "level": 0,
           "target": null,
-          "description": "记录一组同学的通勤时间，怎样描述一个典型的早晨？均值保留总量信息，中位数看排序后居中的位置。四分位数再标出排序中约四分之一和四分之三的位置，说明中间一半数据的分布范围。"
+          "description": "记录一组同学的通勤时间，怎样描述一个典型的早晨？均值保留总量信息，中位数看排序后居中的位置。四分位数再标出排序中约四分之一和四分之三的位置，说明中间一半数据的分布范围。",
+          "chapter": "chapters/probability/descriptive-data.md"
         },
         {
           "id": "relative-frequency",
           "label": "频数与相对频率",
           "level": 0,
           "target": null,
-          "description": "每人记录一次通勤时间，按相同区间分组。每组的频数是落在这里的人数，除以总人数得到相对频率，便于比较人数不同的两个班。"
+          "description": "每人记录一次通勤时间，按相同区间分组。每组的频数是落在这里的人数，除以总人数得到相对频率，便于比较人数不同的两个班。",
+          "chapter": "chapters/probability/relative-frequency.md"
         }
       ],
       "edges": [
@@ -2089,63 +2168,73 @@
           "id": "examples",
           "label": "运算与对称",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/examples.md"
         },
         {
           "id": "groups",
           "label": "群",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/groups.md"
         },
         {
           "id": "rings",
           "label": "环",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/rings.md"
         },
         {
           "id": "maps",
           "label": "保持结构的映射",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/maps.md"
         },
         {
           "id": "fields",
           "label": "域",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/fields.md"
         },
         {
           "id": "poly",
           "label": "多项式环",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/poly.md"
         },
         {
           "id": "quotient",
           "label": "商结构",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/quotient.md"
         },
         {
           "id": "galois",
           "label": "扩域与伽罗瓦",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/structures/galois.md"
         },
         {
           "id": "lagrange-group",
           "label": "群的拉格朗日定理",
           "level": 3,
           "target": null,
-          "description": "有限群 G 中一个子群 H 能有多少个元素？每个左陪集 gH 都与 H 一样大，因为左乘 g 是双射。不同的左陪集不相交，又合起来覆盖 G，所以 |H| 整除 |G|。"
+          "description": "有限群 G 中一个子群 H 能有多少个元素？每个左陪集 gH 都与 H 一样大，因为左乘 g 是双射。不同的左陪集不相交，又合起来覆盖 G，所以 |H| 整除 |G|。",
+          "chapter": "chapters/structures/lagrange-group.md"
         },
         {
           "id": "isomorphism",
           "label": "群的第一同构定理",
           "level": 4,
           "target": null,
-          "description": "群同态 φ 把哪些元素当成同一个？φ(a)=φ(b) 恰好当 a⁻¹b 属于核 ker φ，因此相同像的元素正好填满核的一个陪集。核是正规子群，把每个陪集对应到它的像，就得到商群 G/ker φ 与像群 im φ 的同构。"
+          "description": "群同态 φ 把哪些元素当成同一个？φ(a)=φ(b) 恰好当 a⁻¹b 属于核 ker φ，因此相同像的元素正好填满核的一个陪集。核是正规子群，把每个陪集对应到它的像，就得到商群 G/ker φ 与像群 im φ 的同构。",
+          "chapter": "chapters/structures/isomorphism.md"
         }
       ],
       "edges": [
@@ -2250,69 +2339,80 @@
           "id": "real",
           "label": "实数与完备性",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/real.md"
         },
         {
           "id": "series",
           "label": "数列与级数",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/series.md"
         },
         {
           "id": "metric",
           "label": "度量与收敛",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/metric.md"
         },
         {
           "id": "functions",
           "label": "函数列与极限",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/functions.md"
         },
         {
           "id": "measure",
           "label": "测度",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/measure.md"
         },
         {
           "id": "complex",
           "label": "复分析",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/complex.md"
         },
         {
           "id": "lebesgue",
           "label": "勒贝格积分",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/lebesgue.md"
         },
         {
           "id": "fourier",
           "label": "傅里叶分析",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/fourier.md"
         },
         {
           "id": "functional",
           "label": "泛函分析",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/analysis/functional.md"
         },
         {
           "id": "uniform-limit",
           "label": "一致收敛与连续性",
           "level": 3,
           "target": null,
-          "description": "在 [0,1] 上，连续函数 xⁿ 逐点趋于一个在 1 处不连续的函数。要保住连续性，可以要求对给定误差，从同一项起就在整个定义域上满足误差要求。这就是一致收敛。连续函数列的一致极限仍连续。"
+          "description": "在 [0,1] 上，连续函数 xⁿ 逐点趋于一个在 1 处不连续的函数。要保住连续性，可以要求对给定误差，从同一项起就在整个定义域上满足误差要求。这就是一致收敛。连续函数列的一致极限仍连续。",
+          "chapter": "chapters/analysis/uniform-limit.md"
         },
         {
           "id": "dominated",
           "label": "控制收敛定理",
           "level": 4,
           "target": null,
-          "description": "能否先让函数取极限，再对极限函数积分？在同一测度空间上，若可测函数列 fₙ 几乎处处趋向 f，且存在一个可积函数 g，使得对每个 n 都有 |fₙ|≤g 几乎处处成立，则 f 可积（按几乎处处相等理解），且 ∫fₙ→∫f。控制函数限制了尖峰可以贡献的面积。"
+          "description": "能否先让函数取极限，再对极限函数积分？在同一测度空间上，若可测函数列 fₙ 几乎处处趋向 f，且存在一个可积函数 g，使得对每个 n 都有 |fₙ|≤g 几乎处处成立，则 f 可积（按几乎处处相等理解），且 ∫fₙ→∫f。控制函数限制了尖峰可以贡献的面积。",
+          "chapter": "chapters/analysis/dominated.md"
         }
       ],
       "edges": [
@@ -2410,63 +2510,73 @@
           "id": "metric",
           "label": "距离与邻近",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/metric.md"
         },
         {
           "id": "topology",
           "label": "开集与拓扑",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/topology.md"
         },
         {
           "id": "compact",
           "label": "紧致",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/compact.md"
         },
         {
           "id": "connected",
           "label": "连通",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/connected.md"
         },
         {
           "id": "manifold",
           "label": "流形",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/manifold.md"
         },
         {
           "id": "tangent",
           "label": "切空间与微分",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/tangent.md"
         },
         {
           "id": "algtop",
           "label": "代数拓扑",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/algtop.md"
         },
         {
           "id": "curvature",
           "label": "曲率与度量",
           "level": 5,
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/curvature.md"
         },
         {
           "id": "homeomorphism",
           "label": "连续映射与同胚",
           "level": 2,
           "description": "如何精确表达两个空间在拓扑意义上相同？连续映射要求每个开集的原像都是开集。若一个双射以及它的逆映射都连续，两个空间就同胚；此时两边可以相互恢复哪些集合是开集。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/homeomorphism.md"
         },
         {
           "id": "heine-borel",
           "label": "海涅–博雷尔定理",
           "level": 3,
           "description": "怎样判断欧氏空间 ℝⁿ 的一个子集是否紧致？海涅–博雷尔定理给出的充要条件是闭且有界。在实直线上，[0,1] 紧致；(0,1) 丢掉端点，ℝ 则向两端无限延伸。一般度量空间需要重新检查这个判据。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/spaces/heine-borel.md"
         }
       ],
       "edges": [
@@ -2543,63 +2653,73 @@
           "id": "model",
           "label": "问题与假设",
           "level": 0,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/model.md"
         },
         {
           "id": "equations",
           "label": "建立方程",
           "level": 1,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/equations.md"
         },
         {
           "id": "ode",
           "label": "常微分方程",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/ode.md"
         },
         {
           "id": "opt",
           "label": "优化",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/opt.md"
         },
         {
           "id": "simulation",
           "label": "随机模拟",
           "level": 2,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/simulation.md"
         },
         {
           "id": "pde",
           "label": "偏微分方程",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/pde.md"
         },
         {
           "id": "numerical",
           "label": "数值方法",
           "level": 3,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/numerical.md"
         },
         {
           "id": "error",
           "label": "误差与验证",
           "level": 4,
-          "target": null
+          "target": null,
+          "chapter": "chapters/modeling/error.md"
         },
         {
           "id": "euler",
           "label": "显式欧拉法",
           "level": 3,
           "target": null,
-          "description": "只知道初值和变化率，怎样先估计下一刻的值？对于 y′=f(t,y)，在当前点算出斜率，沿这条切线走一小步 h，得到 yₖ₊₁=yₖ+h f(tₖ,yₖ)。反复走到目标时刻，就得到一条可和数据或精确解比较的近似轨迹。"
+          "description": "只知道初值和变化率，怎样先估计下一刻的值？对于 y′=f(t,y)，在当前点算出斜率，沿这条切线走一小步 h，得到 yₖ₊₁=yₖ+h f(tₖ,yₖ)。反复走到目标时刻，就得到一条可和数据或精确解比较的近似轨迹。",
+          "chapter": "chapters/modeling/euler.md"
         },
         {
           "id": "gradient",
           "label": "梯度下降法",
           "level": 3,
           "target": null,
-          "description": "想减小一个可微的目标函数，附近先往哪里试？在欧氏空间，非零梯度的反方向是在单位方向中局部下降最快的方向。取正步长 η，更新 x 为 x−η∇f(x)。还要选择步长，走得太远可能越过低点，函数值反而上升。"
+          "description": "想减小一个可微的目标函数，附近先往哪里试？在欧氏空间，非零梯度的反方向是在单位方向中局部下降最快的方向。取正步长 η，更新 x 为 x−η∇f(x)。还要选择步长，走得太远可能越过低点，函数值反而上升。",
+          "chapter": "chapters/modeling/gradient.md"
         }
       ],
       "edges": [
@@ -2702,7 +2822,8 @@
           "aliases": [
             "内错角",
             "同位角"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/parallel-angles.md"
         },
         {
           "id": "congruence",
@@ -2715,7 +2836,8 @@
             "SAS",
             "ASA",
             "边角边"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/congruence.md"
         },
         {
           "id": "circle",
@@ -2727,7 +2849,8 @@
             "圆的定义",
             "半径",
             "直径"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/circle.md"
         },
         {
           "id": "triangle-angles",
@@ -2738,7 +2861,8 @@
           "aliases": [
             "三角形内角和",
             "外角定理"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/triangle-angles.md"
         },
         {
           "id": "isosceles",
@@ -2748,7 +2872,8 @@
           "description": "若 OA＝OB，把顶角 AOB 平分。角平分线与底边相交后，两侧三角形有两边及夹角对应相等，因此两个底角相等。连接圆心与圆上两点，就能不断遇到这样的三角形。",
           "aliases": [
             "等边对等角"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/isosceles.md"
         },
         {
           "id": "bisector",
@@ -2759,7 +2884,8 @@
           "aliases": [
             "中垂线",
             "线段的垂直平分线"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/bisector.md"
         },
         {
           "id": "parallelogram",
@@ -2769,7 +2895,8 @@
           "description": "连接一个平行四边形的对角线，两组平行线给出两对相等的内错角，两侧三角形全等，于是对边相等。反过来，两条对角线互相平分，也能通过全等证明两组对边分别平行。",
           "aliases": [
             "平行四边形"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/parallelogram.md"
         },
         {
           "id": "similarity",
@@ -2780,7 +2907,8 @@
           "aliases": [
             "AA",
             "相似三角形"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/similarity.md"
         },
         {
           "id": "circumcircle",
@@ -2792,7 +2920,8 @@
             "三点定圆",
             "外心",
             "三角形外接圆"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/circumcircle.md"
         },
         {
           "id": "inscribed-angle",
@@ -2803,7 +2932,8 @@
           "aliases": [
             "圆心角与圆周角",
             "同弧所对圆周角"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/inscribed-angle.md"
         },
         {
           "id": "incircle",
@@ -2815,7 +2945,8 @@
             "内心",
             "内切圆",
             "角平分线"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/incircle.md"
         },
         {
           "id": "rectangles",
@@ -2827,7 +2958,8 @@
             "矩形",
             "菱形",
             "正方形"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/rectangles.md"
         },
         {
           "id": "pythagoras",
@@ -2838,7 +2970,8 @@
           "aliases": [
             "毕达哥拉斯定理",
             "勾股"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/pythagoras.md"
         },
         {
           "id": "right-diameter",
@@ -2850,7 +2983,8 @@
             "直径所对圆周角是直角",
             "泰勒斯定理",
             "直角判定共圆"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/right-diameter.md"
         },
         {
           "id": "fixed-angle",
@@ -2862,7 +2996,8 @@
             "等角轨迹",
             "同弦同侧等角",
             "同弦所对圆周角"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/fixed-angle.md"
         },
         {
           "id": "tangent",
@@ -2873,7 +3008,8 @@
           "aliases": [
             "圆的切线",
             "切线长定理"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/tangent.md"
         },
         {
           "id": "concyclic",
@@ -2915,7 +3051,8 @@
           ],
           "exampleProblems": [
             "IMO-2010-4"
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/circle-power.md"
         },
         {
           "id": "angle-transfer",
@@ -2935,21 +3072,24 @@
               "why": "作两个对称点，把图中角移到两组相似三角形中；一个平行四边形给出补角，推出目标交点落在外接圆上。",
               "url": "https://www.imo-official.org/assets/documents/problems/2014/2014_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/plane-geometry/angle-transfer.md"
         },
         {
           "id": "chord-distance",
           "label": "弦、弦心距与垂径定理",
           "level": 3,
           "description": "从圆心 O 向弦 AB 作垂线，垂足为 M。半径 OA、OB 等长，所以垂足平分弦。由直角三角形 OMA 得 AM²＝OA²−OM²。于是同一圆中，弦长越大，弦到圆心的距离越小；等弦到圆心等距，直径是最长的弦。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/plane-geometry/chord-distance.md"
         },
         {
           "id": "alternate-segment",
           "label": "弦切角定理",
           "level": 4,
           "description": "弦 AB 与 A 点的切线形成两个邻补角，应取哪一个？取圆上异于 A、B 的一点 C，在切线上选 T，使 T 和 C 在直线 AB 的两侧。此时 ∠TAB＝∠ACB。半径垂直于切线，把弦切角换成与半径的夹角，再用等腰三角形和圆周角定理即可求出它。",
-          "target": null
+          "target": null,
+          "chapter": "chapters/plane-geometry/alternate-segment.md"
         },
         {
           "id": "rigid-motions",
@@ -2965,7 +3105,8 @@
             "旋转",
             "平移"
           ],
-          "description": "想比较两条不挨着的线段，可以先把一条搬到另一条附近。平移给每个点加同一个位移，旋转让每个点绕同一中心转同样的角，轴对称把点送到垂线另一侧等距处。三者都保持距离与普通角度，只有轴对称翻转图形的朝向。"
+          "description": "想比较两条不挨着的线段，可以先把一条搬到另一条附近。平移给每个点加同一个位移，旋转让每个点绕同一中心转同样的角，轴对称把点送到垂线另一侧等距处。三者都保持距离与普通角度，只有轴对称翻转图形的朝向。",
+          "chapter": "chapters/plane-geometry/rigid-motions.md"
         },
         {
           "id": "ruler-compass",
@@ -2978,7 +3119,8 @@
             "垂直平分线作图",
             "作图题"
           ],
-          "description": "怎样只用无刻度直尺和圆规找线段 AB 的中点？分别以 A、B 为圆心、同一大于 AB/2 的长度为半径画圆。两交点都到 A、B 等距，过它们的直线就是垂直平分线。作图理由来自两条轨迹的交会，还须检查交点存在以及能得到哪些解。"
+          "description": "怎样只用无刻度直尺和圆规找线段 AB 的中点？分别以 A、B 为圆心、同一大于 AB/2 的长度为半径画圆。两交点都到 A、B 等距，过它们的直线就是垂直平分线。作图理由来自两条轨迹的交会，还须检查交点存在以及能得到哪些解。",
+          "chapter": "chapters/plane-geometry/ruler-compass.md"
         }
       ],
       "edges": [
@@ -3222,7 +3364,8 @@
             "SOS",
             "平方和分解",
             "作差法"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/squares.md"
         },
         {
           "id": "equality",
@@ -3235,7 +3378,8 @@
             "取等条件",
             "最优常数",
             "上确界"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/equality.md"
         },
         {
           "id": "amgm",
@@ -3248,7 +3392,8 @@
             "AM-GM",
             "加权均值不等式",
             "算术几何平均不等式"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/amgm.md"
         },
         {
           "id": "cauchy",
@@ -3271,7 +3416,8 @@
               "why": "把每一项写成相邻差的加权和，再用柯西不等式控制它的平方。",
               "url": "https://mathnet.mit.edu/data_v2/full/china/chn_2006_82a3ed.json"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/cauchy.md"
         },
         {
           "id": "scale",
@@ -3285,7 +3431,8 @@
             "代换法",
             "三角形换元",
             "对称换元"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/scale.md"
         },
         {
           "id": "rearrange",
@@ -3300,7 +3447,8 @@
             "Chebyshev",
             "切比雪夫和不等式",
             "交换论证"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/rearrange.md"
         },
         {
           "id": "convex",
@@ -3314,7 +3462,8 @@
             "Jensen",
             "琴生不等式",
             "加权詹森"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/convex.md"
         },
         {
           "id": "tangent",
@@ -3326,7 +3475,8 @@
             "切线法",
             "支撑直线",
             "线性放缩"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/tangent.md"
         },
         {
           "id": "holder",
@@ -3341,7 +3491,8 @@
             "闵可夫斯基",
             "Minkowski",
             "Lp范数"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/holder.md"
         },
         {
           "id": "means",
@@ -3355,7 +3506,8 @@
             "平方平均",
             "幂均值",
             "广义平均不等式"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/means.md"
         },
         {
           "id": "smoothing",
@@ -3369,7 +3521,8 @@
             "平滑法",
             "smoothing",
             "捏合"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/smoothing.md"
         },
         {
           "id": "schur",
@@ -3382,7 +3535,8 @@
             "轮换和",
             "对称和",
             "舒尔不等式"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/schur.md"
         },
         {
           "id": "symmetric",
@@ -3395,7 +3549,8 @@
             "uvw法",
             "判别式法",
             "两元相等法"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/symmetric.md"
         },
         {
           "id": "bound",
@@ -3407,7 +3562,8 @@
             "放缩法",
             "望远镜估计",
             "分组估计"
-          ]
+          ],
+          "chapter": "chapters/oly-inequalities/bound.md"
         }
       ],
       "edges": [
@@ -3547,7 +3703,8 @@
             "待定系数",
             "系数比较",
             "多项式恒等式"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/identity.md"
         },
         {
           "id": "division",
@@ -3560,7 +3717,8 @@
             "余数定理",
             "余式定理",
             "因子定理"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/division.md"
         },
         {
           "id": "roots",
@@ -3574,7 +3732,8 @@
             "重数",
             "多项式根数",
             "代数基本定理"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/roots.md"
         },
         {
           "id": "vieta",
@@ -3587,7 +3746,8 @@
             "Vieta",
             "韦达关系",
             "根的对称式"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/vieta.md"
         },
         {
           "id": "gcd",
@@ -3600,7 +3760,8 @@
             "互素多项式",
             "多项式欧几里得算法",
             "裴蜀等式"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/gcd.md"
         },
         {
           "id": "rationalroots",
@@ -3612,7 +3773,8 @@
             "有理根定理",
             "整系数多项式",
             "整除推理"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/rationalroots.md"
         },
         {
           "id": "difference",
@@ -3625,7 +3787,8 @@
             "差分表",
             "牛顿前向差分",
             "二项式基底"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/difference.md"
         },
         {
           "id": "integer-values",
@@ -3637,7 +3800,8 @@
             "整值多项式",
             "二项式多项式",
             "整系数与整值"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/integer-values.md"
         },
         {
           "id": "interpolate",
@@ -3649,7 +3813,8 @@
             "Lagrange插值",
             "拉格朗日插值",
             "插值公式"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/interpolate.md"
         },
         {
           "id": "newton",
@@ -3662,7 +3827,8 @@
             "牛顿和",
             "牛顿公式",
             "幂和"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/newton.md"
         },
         {
           "id": "sympoly",
@@ -3675,7 +3841,8 @@
             "范德蒙德乘积",
             "Vandermonde",
             "轮换式"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/sympoly.md"
         },
         {
           "id": "unity",
@@ -3688,7 +3855,8 @@
             "单位根筛",
             "roots of unity",
             "循环求和"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/unity.md"
         },
         {
           "id": "factor-tests",
@@ -3701,7 +3869,8 @@
             "Eisenstein",
             "艾森斯坦判别法",
             "模素数判别"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/factor-tests.md"
         },
         {
           "id": "bounds",
@@ -3713,7 +3882,8 @@
             "介值定理",
             "根的分离",
             "根的分布"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/bounds.md"
         },
         {
           "id": "conjugate",
@@ -3726,7 +3896,8 @@
             "共轭根",
             "复数根成对",
             "实系数多项式非实根共轭成对"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/conjugate.md"
         },
         {
           "id": "de-moivre",
@@ -3741,7 +3912,8 @@
             "欧拉公式",
             "复数三角形式",
             "复数开方"
-          ]
+          ],
+          "chapter": "chapters/oly-polynomials/de-moivre.md"
         }
       ],
       "edges": [
@@ -3891,7 +4063,8 @@
               "why": "先让四个输入相等以得到平方关系，再选一组特殊输入，把每个函数值压缩到两个候选值，最后检验哪些选择能同时成立。",
               "url": "https://www.imo-official.org/assets/documents/problems/2008/2008_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-functions/domain.md"
         },
         {
           "id": "sequence",
@@ -3903,7 +4076,8 @@
             "数列通项",
             "数学归纳法验证",
             "递推唯一性"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/sequence.md"
         },
         {
           "id": "inject",
@@ -3918,7 +4092,8 @@
             "对合",
             "单射性",
             "满射性"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/inject.md"
         },
         {
           "id": "symmetry",
@@ -3932,7 +4107,8 @@
             "奇偶性",
             "消去未知函数",
             "函数方程消元"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/symmetry.md"
         },
         {
           "id": "cauchy-fe",
@@ -3945,7 +4121,8 @@
             "Cauchy函数方程",
             "加法型函数方程",
             "稠密性"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/cauchy-fe.md"
         },
         {
           "id": "multiplicative",
@@ -3958,7 +4135,8 @@
             "指数型函数方程",
             "Jensen函数方程",
             "中点方程"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/multiplicative.md"
         },
         {
           "id": "iterate",
@@ -3972,7 +4150,8 @@
             "周期点",
             "轨道",
             "对合函数"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/iterate.md"
         },
         {
           "id": "bounds-fe",
@@ -3985,7 +4164,8 @@
             "稠密集夹逼",
             "有理逼近",
             "单调性"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/bounds-fe.md"
         },
         {
           "id": "linear-rec",
@@ -4001,7 +4181,8 @@
             "Fibonacci",
             "特征根",
             "常系数递推"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/linear-rec.md"
         },
         {
           "id": "telescoping",
@@ -4015,7 +4196,8 @@
             "阿贝尔变换",
             "数列求和",
             "错位相减"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/telescoping.md"
         },
         {
           "id": "invariant-rec",
@@ -4028,7 +4210,8 @@
             "周期数列",
             "递推换元",
             "递推轨迹"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/invariant-rec.md"
         },
         {
           "id": "convergence",
@@ -4040,7 +4223,8 @@
             "不动点迭代",
             "夹逼数列",
             "单调有界定理"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/convergence.md"
         },
         {
           "id": "floor",
@@ -4062,7 +4246,8 @@
               "why": "参数加二不改变整除条件；归约后找第一次越过整数边界的项，此前的取整值全部相同。",
               "url": "https://www.imo-official.org/assets/documents/problems/2024/2024_eng.pdf#page=1"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-functions/floor.md"
         },
         {
           "id": "trig-id",
@@ -4076,7 +4261,8 @@
             "倍角公式",
             "三角函数方程",
             "三角恒等式"
-          ]
+          ],
+          "chapter": "chapters/oly-functions/trig-id.md"
         }
       ],
       "edges": [
@@ -4204,7 +4390,8 @@
             "旁心",
             "切线长",
             "半周长"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/angle-bisector.md"
         },
         {
           "id": "area",
@@ -4217,7 +4404,8 @@
             "面积比法",
             "共底等高",
             "面积坐标"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/area.md"
         },
         {
           "id": "sine-cosine",
@@ -4230,7 +4418,8 @@
             "扩充正弦定理",
             "正弦定理",
             "余弦定理"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/sine-cosine.md"
         },
         {
           "id": "heron",
@@ -4242,7 +4431,8 @@
             "海伦公式",
             "Heron",
             "面积与内切圆"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/heron.md"
         },
         {
           "id": "stewart",
@@ -4255,7 +4445,8 @@
             "Stewart",
             "中线长",
             "劈线定理"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/stewart.md"
         },
         {
           "id": "ceva",
@@ -4270,7 +4461,8 @@
             "Ceva定理",
             "共点",
             "三角形共点"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/ceva.md"
         },
         {
           "id": "menelaus",
@@ -4284,7 +4476,8 @@
             "梅涅劳斯",
             "梅内劳斯",
             "共线"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/menelaus.md"
         },
         {
           "id": "trig-ceva",
@@ -4296,7 +4489,8 @@
             "三角塞瓦",
             "正弦塞瓦",
             "三角比共点"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/trig-ceva.md"
         },
         {
           "id": "centers",
@@ -4309,7 +4503,8 @@
             "垂心",
             "三高共点",
             "三中线共点"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/centers.md"
         },
         {
           "id": "euler",
@@ -4323,7 +4518,8 @@
             "九点圆心",
             "费尔巴哈圆",
             "欧拉直线"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/euler.md"
         },
         {
           "id": "isogonal",
@@ -4338,7 +4534,8 @@
             "陪位中线",
             "勒穆瓦纳点",
             "symmedian"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/isogonal.md"
         },
         {
           "id": "barycentric",
@@ -4350,7 +4547,8 @@
             "barycentric",
             "面积坐标法",
             "齐次重心坐标"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/barycentric.md"
         },
         {
           "id": "mass",
@@ -4362,7 +4560,8 @@
             "质量点法",
             "杠杆法",
             "质点法"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/mass.md"
         },
         {
           "id": "projection",
@@ -4375,7 +4574,8 @@
             "直角三角形射影定理",
             "几何平均定理",
             "射影法"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/projection.md"
         },
         {
           "id": "arc-midpoint",
@@ -4388,7 +4588,8 @@
             "鸡爪定理",
             "三叉戟定理",
             "外接圆弧中点"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/arc-midpoint.md"
         },
         {
           "id": "geom-ineq",
@@ -4402,7 +4603,8 @@
             "R≥2r",
             "定周长最大面积",
             "三角形边长与面积"
-          ]
+          ],
+          "chapter": "chapters/oly-triangle/geom-ineq.md"
         }
       ],
       "edges": [
@@ -4543,7 +4745,8 @@
             "角追",
             "角度追踪",
             "模180度"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/directed.md"
         },
         {
           "id": "metric",
@@ -4557,7 +4760,8 @@
             "解析几何法",
             "数量积",
             "点积"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/metric.md"
         },
         {
           "id": "rigid",
@@ -4575,7 +4779,8 @@
             "折线最短",
             "辅助线",
             "辅助点"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/rigid.md"
         },
         {
           "id": "homothety",
@@ -4588,7 +4793,8 @@
             "内外位似中心",
             "相似中心",
             "圆的位似"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/homothety.md"
         },
         {
           "id": "radical",
@@ -4610,7 +4816,8 @@
               "why": "先从题设等角找出两组共圆点，再考察两圆的根轴；也能沿题解中的另一条路线追有向角。",
               "url": "https://www.imo-official.org/assets/documents/problems/2019/2019_eng.pdf#page=1"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-circles/radical.md"
         },
         {
           "id": "ptolemy",
@@ -4623,7 +4830,8 @@
             "托勒密不等式",
             "托勒密等式",
             "圆内接四边形"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/ptolemy.md"
         },
         {
           "id": "complex-geom",
@@ -4637,7 +4845,8 @@
             "单位圆法",
             "共轭法",
             "复数坐标"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/complex-geom.md"
         },
         {
           "id": "fermat",
@@ -4650,7 +4859,8 @@
             "Torricelli点",
             "费马托里拆利点",
             "Fermat点"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/fermat.md"
         },
         {
           "id": "spiral",
@@ -4663,7 +4873,8 @@
             "螺旋相似",
             "旋转相似",
             "spiral similarity"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/spiral.md"
         },
         {
           "id": "miquel",
@@ -4684,7 +4895,8 @@
               "why": "官方第一解把三组相似三角形都连到同一个米克尔点，并识别一对关于外接圆互为反演的点。",
               "url": "https://www.imo-official.org/assets/documents/problems/2024/IMO2024SL.pdf#page=82"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-circles/miquel.md"
         },
         {
           "id": "simson",
@@ -4700,7 +4912,8 @@
             "Simson线",
             "Simson line",
             "华莱士线"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/simson.md"
         },
         {
           "id": "inversion",
@@ -4722,7 +4935,8 @@
               "why": "一条解法把两条切线条件都翻成三角形相似；另一条以已知切点为中心反演，把一个过中心的圆变成直线。",
               "url": "https://www.imo-official.org/assets/documents/problems/2017/2017_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-circles/inversion.md"
         },
         {
           "id": "tangent-circles",
@@ -4735,7 +4949,8 @@
             "相切圆",
             "圆的相切",
             "内切与外切"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/tangent-circles.md"
         },
         {
           "id": "harmonic",
@@ -4750,7 +4965,8 @@
             "射影几何",
             "交比不变性",
             "射影变换"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/harmonic.md"
         },
         {
           "id": "polar",
@@ -4764,7 +4980,8 @@
             "极点极线对偶",
             "极线定理",
             "pole and polar"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/polar.md"
         },
         {
           "id": "pascal",
@@ -4778,7 +4995,8 @@
             "巴斯卡定理",
             "圆锥曲线六点",
             "帕斯卡线"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/pascal.md"
         },
         {
           "id": "locus",
@@ -4791,7 +5009,8 @@
             "轨迹法",
             "定比圆",
             "轨迹与作图"
-          ]
+          ],
+          "chapter": "chapters/oly-circles/locus.md"
         }
       ],
       "edges": [
@@ -4945,7 +5164,8 @@
               "why": "先代入一和函数值，得到复合函数的约束，再把整数拆成一个素数幂和互素的余因子，逐个追踪哪些素数整除函数值。",
               "url": "https://www.imo-official.org/assets/documents/problems/2024/IMO2024SL.pdf#page=112"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/prime-factors.md"
         },
         {
           "id": "euclid-lemma",
@@ -4958,7 +5178,8 @@
             "互质",
             "互素分解"
           ],
-          "description": "若 6 整除 2b，还能推出 6 整除 b 吗？当 a 与 m 互素时，m 整除 ab 才能消掉因子 a。素数整除乘积必整除某一因子是关键特例。"
+          "description": "若 6 整除 2b，还能推出 6 整除 b 吗？当 a 与 m 互素时，m 整除 ab 才能消掉因子 a。素数整除乘积必整除某一因子是关键特例。",
+          "chapter": "chapters/oly-modular/euclid-lemma.md"
         },
         {
           "id": "bezout",
@@ -4978,7 +5199,8 @@
               "why": "裴蜀等式提供行列式为一的整数矩阵，把指定的互素格点移到 (1,0)，为逐点构造多项式做准备。",
               "url": "https://www.imo-official.org/assets/documents/problems/2017/2017_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/bezout.md"
         },
         {
           "id": "gcd-lcm",
@@ -4991,7 +5213,8 @@
             "最大公约数",
             "最小公倍数"
           ],
-          "description": "同时比较两堆素因子时，公共部分逐个取较少的份数，同时容纳两数的最小倍数则取较多的份数。对正整数 a,b，这也解释了 gcd(a,b)·lcm(a,b)=ab。"
+          "description": "同时比较两堆素因子时，公共部分逐个取较少的份数，同时容纳两数的最小倍数则取较多的份数。对正整数 a,b，这也解释了 gcd(a,b)·lcm(a,b)=ab。",
+          "chapter": "chapters/oly-modular/gcd-lcm.md"
         },
         {
           "id": "infinite-primes",
@@ -5002,7 +5225,8 @@
             "无穷多素数",
             "素数构造"
           ],
-          "description": "给定一张有限素数表，怎样保证制造一个表外素因子？把所有表内素数相乘再加 1。所得数可以是合数，但它的每一个素因子都在表外。"
+          "description": "给定一张有限素数表，怎样保证制造一个表外素因子？把所有表内素数相乘再加 1。所得数可以是合数，但它的每一个素因子都在表外。",
+          "chapter": "chapters/oly-modular/infinite-primes.md"
         },
         {
           "id": "divisor-functions",
@@ -5016,7 +5240,8 @@
             "τ函数",
             "σ函数"
           ],
-          "description": "确定一个约数，相当于为每个素因子选择指数。由此可以求正约数的个数与和，也能解释为何对互素的两个数可将两份答案相乘。"
+          "description": "确定一个约数，相当于为每个素因子选择指数。由此可以求正约数的个数与和，也能解释为何对互素的两个数可将两份答案相乘。",
+          "chapter": "chapters/oly-modular/divisor-functions.md"
         },
         {
           "id": "linear-congruence",
@@ -5036,7 +5261,8 @@
               "why": "从无限集中选出一个同余类后，取多少个元素决定子集和的余数。用逆元和中国剩余定理规定它在一个素数幂下为 1、在其他模数下为 0，再合并互不相交的子集。",
               "url": "https://mathnet.mit.edu/data_v2/full/china/chn_2008_3cc293.json"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/linear-congruence.md"
         },
         {
           "id": "crt",
@@ -5056,7 +5282,8 @@
               "why": "第二种解法先在每个素数幂模数下造齐次多项式，再把总次数统一，用中国剩余定理逐个拼接系数，最后用插值校正指定点上的取值。",
               "url": "https://www.imo-official.org/assets/documents/problems/2017/2017_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/crt.md"
         },
         {
           "id": "phi",
@@ -5068,7 +5295,8 @@
             "Euler totient",
             "简化剩余系"
           ],
-          "description": "模 m 的乘法表里，哪些行把可逆剩余类完整地重排一次？数出 1 到 m 中与 m 互素的整数；剔除各个素因子的倍数就得到 φ(m)。"
+          "description": "模 m 的乘法表里，哪些行把可逆剩余类完整地重排一次？数出 1 到 m 中与 m 互素的整数；剔除各个素因子的倍数就得到 φ(m)。",
+          "chapter": "chapters/oly-modular/phi.md"
         },
         {
           "id": "fermat",
@@ -5080,7 +5308,8 @@
             "Euler theorem",
             "费马小定理"
           ],
-          "description": "把所有可逆剩余类同时乘以与 m 互素的 a，它们只会重新排列。比较乘积可得 a^φ(m)≡1 (mod m)；素数模 p 时指数变成 p−1。"
+          "description": "把所有可逆剩余类同时乘以与 m 互素的 a，它们只会重新排列。比较乘积可得 a^φ(m)≡1 (mod m)；素数模 p 时指数变成 p−1。",
+          "chapter": "chapters/oly-modular/fermat.md"
         },
         {
           "id": "order",
@@ -5092,7 +5321,8 @@
             "乘法的阶",
             "multiplicative order"
           ],
-          "description": "欧拉定理给出一个回到 1 的时刻，但最早是什么时候？对与 m 互素的 a，最小正指数 d 满足 a^d≡1，并且每个回到 1 的正指数都是 d 的倍数。"
+          "description": "欧拉定理给出一个回到 1 的时刻，但最早是什么时候？对与 m 互素的 a，最小正指数 d 满足 a^d≡1，并且每个回到 1 的正指数都是 d 的倍数。",
+          "chapter": "chapters/oly-modular/order.md"
         },
         {
           "id": "wilson",
@@ -5103,7 +5333,8 @@
             "Wilson 定理",
             "阶乘同余"
           ],
-          "description": "把模素数 p 的非零剩余类和各自的逆元配对。对奇素数，配不出去的只有 1 与 −1，从而 (p−1)!≡−1 (mod p)；这个同余也刻画素数。"
+          "description": "把模素数 p 的非零剩余类和各自的逆元配对。对奇素数，配不出去的只有 1 与 −1，从而 (p−1)!≡−1 (mod p)；这个同余也刻画素数。",
+          "chapter": "chapters/oly-modular/wilson.md"
         },
         {
           "id": "quadratic-residue",
@@ -5124,7 +5355,8 @@
               "why": "当素数模 4 余 3 时，两个相反的非零平方根中恰有一个是二次剩余。因此在非零二次剩余上不断平方，图会分裂成互不相交的有向圈，可以逐圈安排所需标号。",
               "url": "https://mathnet.mit.edu/data_v2/full/china/chn_2024_465231.json"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/quadratic-residue.md"
         },
         {
           "id": "primitive-root",
@@ -5136,7 +5368,8 @@
             "离散对数",
             "模素数原根"
           ],
-          "description": "能否用同一个底数的连续幂列出模素数 p 的所有非零剩余类？原根的阶为 p−1；选定原根后，乘法化成指数模 p−1 的加法。"
+          "description": "能否用同一个底数的连续幂列出模素数 p 的所有非零剩余类？原根的阶为 p−1；选定原根后，乘法化成指数模 p−1 的加法。",
+          "chapter": "chapters/oly-modular/primitive-root.md"
         },
         {
           "id": "reciprocity",
@@ -5148,7 +5381,8 @@
             "勒让德符号",
             "quadratic reciprocity"
           ],
-          "description": "想判断大素数 q 模 p 是否为平方，若交换 p、q 会不会更容易？对不同奇素数，两边的勒让德符号仅在二者都模 4 余 3 时异号，并可配合 −1 与 2 的补充定律递归计算。"
+          "description": "想判断大素数 q 模 p 是否为平方，若交换 p、q 会不会更容易？对不同奇素数，两边的勒让德符号仅在二者都模 4 余 3 时异号，并可配合 −1 与 2 的补充定律递归计算。",
+          "chapter": "chapters/oly-modular/reciprocity.md"
         },
         {
           "id": "valuation",
@@ -5169,7 +5403,8 @@
               "why": "从 6! 开始，阶乘总有至少两个因子 3；加 3 后只剩一个，因而可以排除绝大多数候选。",
               "url": "https://maths.ucd.ie/~dukes/Irish_Maths_Olympiad_Compendium.pdf"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/valuation.md"
         },
         {
           "id": "factorial-valuation",
@@ -5189,7 +5424,8 @@
               "why": "用勒让德公式计算阶乘中素因子的重数，同时用指数提升分析幂差中 3 的重数。分别比较 2 和 3 的贡献，就能把参数压到有限个候选。",
               "url": "https://www.imo-official.org/assets/documents/problems/2019/2019_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/factorial-valuation.md"
         },
         {
           "id": "lte",
@@ -5209,7 +5445,8 @@
               "why": "分别数等式两侧因子 2 和 3 的个数；阶乘的估计与幂差的升指数公式共同给出 n 的上界。",
               "url": "https://www.imo-official.org/assets/documents/problems/2019/2019_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-modular/lte.md"
         },
         {
           "id": "lucas",
@@ -5222,7 +5459,8 @@
             "组合数同余",
             "进位"
           ],
-          "description": "把 n、k 写成 p 进制，能逐位读出组合数吗？卢卡斯定理将模素数 p 的组合数拆成各位小组合数的积；库默定理则数 k 与 n−k 相加的进位次数，得到其 p 进赋值。"
+          "description": "把 n、k 写成 p 进制，能逐位读出组合数吗？卢卡斯定理将模素数 p 的组合数拆成各位小组合数的积；库默定理则数 k 与 n−k 相加的进位次数，得到其 p 进赋值。",
+          "chapter": "chapters/oly-modular/lucas.md"
         },
         {
           "id": "mobius",
@@ -5234,7 +5472,8 @@
             "默比乌斯反演",
             "算术函数"
           ],
-          "description": "只知道“整除 n”的累计数量，怎样找回“恰好等于 n”的数量？对 F(n)=Σ_{d∣n} f(d)，用 μ(d) 给约数项 F(n/d) 加权求和，重复包含的项正好抵消。"
+          "description": "只知道“整除 n”的累计数量，怎样找回“恰好等于 n”的数量？对 F(n)=Σ_{d∣n} f(d)，用 μ(d) 给约数项 F(n/d) 加权求和，重复包含的项正好抵消。",
+          "chapter": "chapters/oly-modular/mobius.md"
         },
         {
           "id": "residue-system",
@@ -5248,7 +5487,8 @@
             "剩余类",
             "完全系"
           ],
-          "description": "把整数按除以 m 的余数分组，每组恰取一人就是完全剩余系；只在与 m 互素的类中取代表便是简化剩余系。乘以可逆数会重排这些代表所属的类，这解释了竞赛中常见的“把所有余数乘一遍”。"
+          "description": "把整数按除以 m 的余数分组，每组恰取一人就是完全剩余系；只在与 m 互素的类中取代表便是简化剩余系。乘以可逆数会重排这些代表所属的类，这解释了竞赛中常见的“把所有余数乘一遍”。",
+          "chapter": "chapters/oly-modular/residue-system.md"
         }
       ],
       "edges": [
@@ -5415,7 +5655,8 @@
             "二元一次不定方程",
             "丢番图方程"
           ],
-          "description": "若 a,b 不全为零，d=gcd(a,b)，ax+by=c 能到达哪些 c？当 d 整除 c 时由一组解得到所有解 (x₀+tb/d,y₀−ta/d)，再用范围限制参数 t。"
+          "description": "若 a,b 不全为零，d=gcd(a,b)，ax+by=c 能到达哪些 c？当 d 整除 c 时由一组解得到所有解 (x₀+tb/d,y₀−ta/d)，再用范围限制参数 t。",
+          "chapter": "chapters/oly-diophantine/linear-equation.md"
         },
         {
           "id": "factor-pairs",
@@ -5427,7 +5668,8 @@
             "西蒙配方法",
             "整除夹逼"
           ],
-          "description": "若 xy−2x−3y=5，同时加上 6 就得到 (x−3)(y−2)=11。右端为固定非零整数时，所有整数解都藏在有限多个带符号因数对里。"
+          "description": "若 xy−2x−3y=5，同时加上 6 就得到 (x−3)(y−2)=11。右端为固定非零整数时，所有整数解都藏在有限多个带符号因数对里。",
+          "chapter": "chapters/oly-diophantine/factor-pairs.md"
         },
         {
           "id": "local-obstruction",
@@ -5439,7 +5681,8 @@
             "平方剩余",
             "模4模8"
           ],
-          "description": "平方模 4 只有 0、1。于是 x²+y²=4k+3 可立即排除；通过了一个模数的检验，还须回到原式寻找实际整数解。"
+          "description": "平方模 4 只有 0、1。于是 x²+y²=4k+3 可立即排除；通过了一个模数的检验，还须回到原式寻找实际整数解。",
+          "chapter": "chapters/oly-diophantine/local-obstruction.md"
         },
         {
           "id": "square-gap",
@@ -5451,7 +5694,8 @@
             "整数间隙",
             "介于相邻平方"
           ],
-          "description": "若某个表达式严格落在两个相邻平方之间，就无需逐个试平方根。先用最高次项猜近似平方，再保留足够误差把两端不等式证严。"
+          "description": "若某个表达式严格落在两个相邻平方之间，就无需逐个试平方根。先用最高次项猜近似平方，再保留足够误差把两端不等式证严。",
+          "chapter": "chapters/oly-diophantine/square-gap.md"
         },
         {
           "id": "descent",
@@ -5463,7 +5707,8 @@
             "最小反例",
             "无穷递降"
           ],
-          "description": "假设存在正整数解，取大小指标最小的一组。若从它能构造另一个同类解且指标严格更小，原假设就与正整数必有最小元冲突。"
+          "description": "假设存在正整数解，取大小指标最小的一组。若从它能构造另一个同类解且指标严格更小，原假设就与正整数必有最小元冲突。",
+          "chapter": "chapters/oly-diophantine/descent.md"
         },
         {
           "id": "vieta",
@@ -5483,7 +5728,8 @@
               "why": "把整除式写成 (a−b)²=k(4ab−1)，固定 b 和 k 后对 a 换根。若 k>0，另一个根给出更小的正整数解，与最小解的选择矛盾。",
               "url": "https://www.imo-official.org/assets/documents/problems/2007/2007_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-diophantine/vieta.md"
         },
         {
           "id": "primitive-triples",
@@ -5495,7 +5741,8 @@
             "毕达哥拉斯三元组",
             "勾股三元组"
           ],
-          "description": "x²+y²=z² 中先除去公因子。本原解调整两直角边次序后，可写成 m²−n²、2mn、m²+n²，其中 m>n>0、互素且一奇一偶。"
+          "description": "x²+y²=z² 中先除去公因子。本原解调整两直角边次序后，可写成 m²−n²、2mn、m²+n²，其中 m>n>0、互素且一奇一偶。",
+          "chapter": "chapters/oly-diophantine/primitive-triples.md"
         },
         {
           "id": "pell",
@@ -5506,7 +5753,8 @@
             "Pell方程",
             "连分数与佩尔方程"
           ],
-          "description": "当正整数 D 不是平方数，为什么 x²−Dy²=1 会有成串的正整数解？把解写成 x+y√D，乘法保留范数，从最小正解的幂可以生成全部正解。"
+          "description": "当正整数 D 不是平方数，为什么 x²−Dy²=1 会有成串的正整数解？把解写成 x+y√D，乘法保留范数，从最小正解的幂可以生成全部正解。",
+          "chapter": "chapters/oly-diophantine/pell.md"
         },
         {
           "id": "approximation",
@@ -5519,7 +5767,8 @@
             "渐近分数",
             "连分数"
           ],
-          "description": "给定分母上界，怎样让 qα 靠近整数？对 0,α,…,Nα 的小数部分用抽屉原理找出 q，再用反复取整数部分和倒数构造连分数渐近分数。"
+          "description": "给定分母上界，怎样让 qα 靠近整数？对 0,α,…,Nα 的小数部分用抽屉原理找出 q，再用反复取整数部分和倒数构造连分数渐近分数。",
+          "chapter": "chapters/oly-diophantine/approximation.md"
         },
         {
           "id": "floor-digits",
@@ -5533,7 +5782,8 @@
             "数位和",
             "进制"
           ],
-          "description": "记录 x=⌊x⌋+{x} 后，两个取整之和与和的取整只可能差一次进位。换成基数 b≥2 的数位再问，为什么数字和与原数模 b−1 同余？"
+          "description": "记录 x=⌊x⌋+{x} 后，两个取整之和与和的取整只可能差一次进位。换成基数 b≥2 的数位再问，为什么数字和与原数模 b−1 同余？",
+          "chapter": "chapters/oly-diophantine/floor-digits.md"
         },
         {
           "id": "exponential",
@@ -5545,7 +5795,8 @@
             "幂差",
             "指数方程"
           ],
-          "description": "指数长得快，却不总能直接比较。把幂差拆成因子、用模数限制指数、再比较素数重数，分别减少底数与指数的可能取值。"
+          "description": "指数长得快，却不总能直接比较。把幂差拆成因子、用模数限制指数、再比较素数重数，分别减少底数与指数的可能取值。",
+          "chapter": "chapters/oly-diophantine/exponential.md"
         },
         {
           "id": "coin",
@@ -5557,7 +5808,8 @@
             "鸡块定理",
             "弗罗贝尼乌斯数"
           ],
-          "description": "同一方程若不许使用负枚数，可达性会改变。对互素且均大于 1 的两种面额 a,b，按模 a 将 b 的非负倍数排序，可得最大不可凑金额为 ab−a−b。"
+          "description": "同一方程若不许使用负枚数，可达性会改变。对互素且均大于 1 的两种面额 a,b，按模 a 将 b 的非负倍数排序，可得最大不可凑金额为 ab−a−b。",
+          "chapter": "chapters/oly-diophantine/coin.md"
         },
         {
           "id": "residue-construction",
@@ -5569,7 +5821,8 @@
             "同余构造",
             "整除构造"
           ],
-          "description": "能否找到任意长的一串连续合数？给第 i 项预先指定一个不同的素因子，拼接余数后再把整个数列平移一个共同周期，使每项都大于指定因子。"
+          "description": "能否找到任意长的一串连续合数？给第 i 项预先指定一个不同的素因子，拼接余数后再把整个数列平移一个共同周期，使每项都大于指定因子。",
+          "chapter": "chapters/oly-diophantine/residue-construction.md"
         },
         {
           "id": "unit-fractions",
@@ -5580,7 +5833,8 @@
             "埃及分数",
             "Egyptian fractions"
           ],
-          "description": "每次从正真分数 a/b 中减去不超过它的最大单位分数 1/⌈b/a⌉。用约分后分子的严格递减，说明这一选择最终会把余数清零。"
+          "description": "每次从正真分数 a/b 中减去不超过它的最大单位分数 1/⌈b/a⌉。用约分后分子的严格递减，说明这一选择最终会把余数清零。",
+          "chapter": "chapters/oly-diophantine/unit-fractions.md"
         },
         {
           "id": "residue-recurrence",
@@ -5593,7 +5847,8 @@
             "纯周期",
             "最终周期"
           ],
-          "description": "递推式里若下一项依赖前两项，就要记录一对余数。有限状态必然重现；确定性保证此后重复，状态转移可逆时从初态起便是纯周期。"
+          "description": "递推式里若下一项依赖前两项，就要记录一对余数。有限状态必然重现；确定性保证此后重复，状态转移可逆时从初态起便是纯周期。",
+          "chapter": "chapters/oly-diophantine/residue-recurrence.md"
         },
         {
           "id": "primitive-divisor",
@@ -5605,7 +5860,8 @@
             "幂差的最大公因数",
             "原始质因子"
           ],
-          "description": "同一底数 a>1 的两个幂减一，为什么 gcd(a^m−1,a^n−1)=a^gcd(m,n)−1？在指数上做辗转相除，再问一个素因子第一次出现在哪个指数。"
+          "description": "同一底数 a>1 的两个幂减一，为什么 gcd(a^m−1,a^n−1)=a^gcd(m,n)−1？在指数上做辗转相除，再问一个素因子第一次出现在哪个指数。",
+          "chapter": "chapters/oly-diophantine/primitive-divisor.md"
         },
         {
           "id": "integer-systems",
@@ -5617,7 +5873,8 @@
             "整系数方程组",
             "整点共同解"
           ],
-          "description": "每一道整数方程各自有解，同一组整数能同时满足它们吗？可先参数化其中一道，再向其余各式代回；一次系统以消元和整除条件筛参数，非线性系统也可利用对称式或模障碍。"
+          "description": "每一道整数方程各自有解，同一组整数能同时满足它们吗？可先参数化其中一道，再向其余各式代回；一次系统以消元和整除条件筛参数，非线性系统也可利用对称式或模障碍。",
+          "chapter": "chapters/oly-diophantine/integer-systems.md"
         }
       ],
       "edges": [
@@ -5688,7 +5945,8 @@
             "补数法",
             "补集"
           ],
-          "description": "与其直接数 k 个元素的子集，不妨取补集，改数 n−k 个元素的子集。配对必须能反向还原；若按补集相减，则先说明全集里有哪些对象。"
+          "description": "与其直接数 k 个元素的子集，不妨取补集，改数 n−k 个元素的子集。配对必须能反向还原；若按补集相减，则先说明全集里有哪些对象。",
+          "chapter": "chapters/oly-counting/bijection.md"
         },
         {
           "id": "double-count",
@@ -5708,7 +5966,8 @@
               "why": "固定一个人，把其他人分为熟人和陌生人；两组之间的边从两端计数，给出熟人和陌生人数之间的等式。",
               "url": "https://www.irmo.ie/IrMO2009paper2solutions.pdf"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-counting/double-count.md"
         },
         {
           "id": "pigeonhole",
@@ -5728,7 +5987,8 @@
               "why": "把非零余数按 r 和 −r 配对。放入 n 个整数时，必有同余或互为相反数的一对，继而约束除以最大公因数后的和。",
               "url": "https://mathnet.mit.edu/data_v2/full/china/chn_2007_ce1f06.json"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-counting/pigeonhole.md"
         },
         {
           "id": "inclusion",
@@ -5740,7 +6000,8 @@
             "筛法",
             "inclusion-exclusion"
           ],
-          "description": "统计至少违反一个条件的对象时，直接相加会把同时违规的对象重复统计。跟踪同时违反 r 个条件的一个对象，交替地加减各阶交集，它最后恰被算一次。"
+          "description": "统计至少违反一个条件的对象时，直接相加会把同时违规的对象重复统计。跟踪同时违反 r 个条件的一个对象，交替地加减各阶交集，它最后恰被算一次。",
+          "chapter": "chapters/oly-counting/inclusion.md"
         },
         {
           "id": "stars-bars",
@@ -5753,7 +6014,8 @@
             "星与棒",
             "插板法"
           ],
-          "description": "给 k 个人分 n 个相同小球，可用 n 个点和 k−1 块板记录每人份额。允许空份时解数为 C(n+k−1,k−1)；有上限时要再处理超额。"
+          "description": "给 k 个人分 n 个相同小球，可用 n 个点和 k−1 块板记录每人份额。允许空份时解数为 C(n+k−1,k−1)；有上限时要再处理超额。",
+          "chapter": "chapters/oly-counting/stars-bars.md"
         },
         {
           "id": "binomial-identities",
@@ -5765,7 +6027,8 @@
             "Vandermonde",
             "帕斯卡恒等式"
           ],
-          "description": "从两群人中一共选 k 人，按第一群中选了几个分类，得到 Σ C(m,i)C(n,k−i)=C(m+n,k)。这是证明恒等式时“每一项在数什么”的原型。"
+          "description": "从两群人中一共选 k 人，按第一群中选了几个分类，得到 Σ C(m,i)C(n,k−i)=C(m+n,k)。这是证明恒等式时“每一项在数什么”的原型。",
+          "chapter": "chapters/oly-counting/binomial-identities.md"
         },
         {
           "id": "permutation",
@@ -5778,7 +6041,8 @@
             "对换",
             "轮换"
           ],
-          "description": "把每个人送到指定座位，沿着交接关系走会回到起点。循环分解记录交换结构；每次对换都会翻转逆序数的奇偶性，可用来判定拼图能否复原。"
+          "description": "把每个人送到指定座位，沿着交接关系走会回到起点。循环分解记录交换结构；每次对换都会翻转逆序数的奇偶性，可用来判定拼图能否复原。",
+          "chapter": "chapters/oly-counting/permutation.md"
         },
         {
           "id": "derangement",
@@ -5790,7 +6054,8 @@
             "错排数",
             "derangement"
           ],
-          "description": "每封信都投错信封有多少种方式？把“第 i 封信投对”当作坏事件做容斥，或追踪第一个信封收到谁的信而得到递推。"
+          "description": "每封信都投错信封有多少种方式？把“第 i 封信投对”当作坏事件做容斥，或追踪第一个信封收到谁的信而得到递推。",
+          "chapter": "chapters/oly-counting/derangement.md"
         },
         {
           "id": "coefficient",
@@ -5803,7 +6068,8 @@
             "卷积",
             "母函数"
           ],
-          "description": "每一类物品的允许件数写成一串幂次。多项式乘积中 x^n 的系数恰数总件数为 n 的选择，可用截断、因式分解或递推读取该项。"
+          "description": "每一类物品的允许件数写成一串幂次。多项式乘积中 x^n 的系数恰数总件数为 n 的选择，可用截断、因式分解或递推读取该项。",
+          "chapter": "chapters/oly-counting/coefficient.md"
         },
         {
           "id": "reflection",
@@ -5816,7 +6082,8 @@
             "括号匹配",
             "格路反射"
           ],
-          "description": "走格路时要求上步数始终不超过右步数。把首次越界之前的一段反射，可将坏路径与另一终点的一批路径配对。等量步数时得到 C(2n,n)/(n+1)。"
+          "description": "走格路时要求上步数始终不超过右步数。把首次越界之前的一段反射，可将坏路径与另一终点的一批路径配对。等量步数时得到 C(2n,n)/(n+1)。",
+          "chapter": "chapters/oly-counting/reflection.md"
         },
         {
           "id": "burnside",
@@ -5829,7 +6096,8 @@
             "项链染色",
             "波利亚计数"
           ],
-          "description": "旋转后相同的项链应合并，但有些花样会比别的更早转回自身。有限群作用下，按“变换、被它固定的花样”双计数，轨道数等于各变换不动点数的平均。"
+          "description": "旋转后相同的项链应合并，但有些花样会比别的更早转回自身。有限群作用下，按“变换、被它固定的花样”双计数，轨道数等于各变换不动点数的平均。",
+          "chapter": "chapters/oly-counting/burnside.md"
         },
         {
           "id": "polya",
@@ -5841,7 +6109,8 @@
             "Polya",
             "循环指标多项式"
           ],
-          "description": "只算轨道总数还不够，若指定红珠恰有三颗呢？被一次置换固定的着色在每个循环内都同色，按循环长度记录颜色和数量，平均后可取指定系数。"
+          "description": "只算轨道总数还不够，若指定红珠恰有三颗呢？被一次置换固定的着色在每个循环内都同色，按循环长度记录颜色和数量，平均后可取指定系数。",
+          "chapter": "chapters/oly-counting/polya.md"
         },
         {
           "id": "probabilistic",
@@ -5854,7 +6123,8 @@
             "期望的线性性",
             "概率法"
           ],
-          "description": "要求找一个切断很多边的二分方案时，先随机给每个点挑选一边。每条边贡献一个 0 或 1，期望之和给出平均表现，因而至少一个方案达到该平均值。"
+          "description": "要求找一个切断很多边的二分方案时，先随机给每个点挑选一边。每条边贡献一个 0 或 1，期望之和给出平均表现，因而至少一个方案达到该平均值。",
+          "chapter": "chapters/oly-counting/probabilistic.md"
         },
         {
           "id": "poset",
@@ -5867,7 +6137,8 @@
             "偏序集",
             "整除偏序"
           ],
-          "description": "整数按整除、子集按包含排列时，两个对象可能无法比较。把能彼此比较的一组叫作链，把两两不可比的一组叫作反链，它们对同一批对象提出相反的限制。"
+          "description": "整数按整除、子集按包含排列时，两个对象可能无法比较。把能彼此比较的一组叫作链，把两两不可比的一组叫作反链，它们对同一批对象提出相反的限制。",
+          "chapter": "chapters/oly-counting/poset.md"
         },
         {
           "id": "dilworth",
@@ -5880,7 +6151,8 @@
             "Mirsky",
             "链覆盖"
           ],
-          "description": "若有一个 k 元反链，至少要 k 条链才能盖住它。有限偏序集里这个下界总能达到；构造链覆盖可以转化为二分图中能接起多少对对象。"
+          "description": "若有一个 k 元反链，至少要 k 条链才能盖住它。有限偏序集里这个下界总能达到；构造链覆盖可以转化为二分图中能接起多少对对象。",
+          "chapter": "chapters/oly-counting/dilworth.md"
         },
         {
           "id": "sperner",
@@ -5893,7 +6165,8 @@
             "反链界",
             "LYM"
           ],
-          "description": "一条从空集逐次加元素通往全集的极大链，只能碰到反链一次。对所有元素次序平均，可得 Σ 1/C(n,∣A∣)≤1，从而中间层是最大的子集反链。"
+          "description": "一条从空集逐次加元素通往全集的极大链，只能碰到反链一次。对所有元素次序平均，可得 Σ 1/C(n,∣A∣)≤1，从而中间层是最大的子集反链。",
+          "chapter": "chapters/oly-counting/sperner.md"
         },
         {
           "id": "intersecting",
@@ -5906,7 +6179,8 @@
             "压缩法",
             "shifting"
           ],
-          "description": "若每两个 k 元子集都相交，最多能选多少个？固定一个公共元素能选 C(n−1,k−1) 个；当 n≥2k、k≥1，这达到上界。移位可以在保持族大小和相交性的同时整理极值例子。"
+          "description": "若每两个 k 元子集都相交，最多能选多少个？固定一个公共元素能选 C(n−1,k−1) 个；当 n≥2k、k≥1，这达到上界。移位可以在保持族大小和相交性的同时整理极值例子。",
+          "chapter": "chapters/oly-counting/intersecting.md"
         },
         {
           "id": "sumset",
@@ -5919,7 +6193,8 @@
             "柯西–达文波特定理",
             "零和子集"
           ],
-          "description": "模素数 p 取非空集合 A,B，许多和 a+b 可碰撞，但能否保证结果仍多？Cauchy–Davenport 给出 ∣A+B∣≥min(p,∣A∣+∣B∣−1)；部分和碰撞也可找到非空连续零和段。"
+          "description": "模素数 p 取非空集合 A,B，许多和 a+b 可碰撞，但能否保证结果仍多？Cauchy–Davenport 给出 ∣A+B∣≥min(p,∣A∣+∣B∣−1)；部分和碰撞也可找到非空连续零和段。",
+          "chapter": "chapters/oly-counting/sumset.md"
         },
         {
           "id": "polynomial-method",
@@ -5940,7 +6215,8 @@
               "why": "把各平面的线性式相乘，使积在被覆盖的格点上消失。假设平面数少于 3n，就能造出一个在整张网格上为零、指定最高次系数却非零的多项式。",
               "url": "https://www.imo-official.org/assets/documents/problems/2007/2007_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-counting/polynomial-method.md"
         },
         {
           "id": "circular",
@@ -5952,7 +6228,8 @@
             "环排列",
             "项链排列"
           ],
-          "description": "n 个不同的人围圆桌坐，若仅把整体旋转视为相同，固定某一人的座位就恰好留下 (n−1)! 种排法。有相同物品或再允许翻转时，先检查哪些变换会固定一个安排。"
+          "description": "n 个不同的人围圆桌坐，若仅把整体旋转视为相同，固定某一人的座位就恰好留下 (n−1)! 种排法。有相同物品或再允许翻转时，先检查哪些变换会固定一个安排。",
+          "chapter": "chapters/oly-counting/circular.md"
         },
         {
           "id": "multiset",
@@ -5966,7 +6243,8 @@
             "重复排列",
             "有重复元素的排列"
           ],
-          "description": "有 a 个红球、b 个蓝球，全排一列时同色标签互换不会产生新排法。若题目改为从 k 种物品中有放回地选 n 个且忽略顺序，答案变为各选择次数之和为 n 的非负解数。"
+          "description": "有 a 个红球、b 个蓝球，全排一列时同色标签互换不会产生新排法。若题目改为从 k 种物品中有放回地选 n 个且忽略顺序，答案变为各选择次数之和为 n 的非负解数。",
+          "chapter": "chapters/oly-counting/multiset.md"
         },
         {
           "id": "partitions",
@@ -5980,7 +6258,8 @@
             "分组问题",
             "集合分拆"
           ],
-          "description": "把 n 个有名字的孩子分成 k 个无名字的非空组。新孩子可以单独成组，也可进已有 k 组之一，故 S(n,k)=S(n−1,k−1)+kS(n−1,k)；把所有组数相加得到贝尔数。"
+          "description": "把 n 个有名字的孩子分成 k 个无名字的非空组。新孩子可以单独成组，也可进已有 k 组之一，故 S(n,k)=S(n−1,k−1)+kS(n−1,k)；把所有组数相加得到贝尔数。",
+          "chapter": "chapters/oly-counting/partitions.md"
         },
         {
           "id": "integer-partitions",
@@ -5993,7 +6272,8 @@
             "杨图",
             "分拆数"
           ],
-          "description": "把 n 拆成若干正整数且忽略次序，按每个部分的大小列成点阵。转置点阵便能在“至多 k 部分”和“最大部分不超过 k”之间建立双射。"
+          "description": "把 n 拆成若干正整数且忽略次序，按每个部分的大小列成点阵。转置点阵便能在“至多 k 部分”和“最大部分不超过 k”之间建立双射。",
+          "chapter": "chapters/oly-counting/integer-partitions.md"
         }
       ],
       "edges": [
@@ -6148,7 +6428,8 @@
             "奇度顶点",
             "度数列"
           ],
-          "description": "宴会上把每次握手分别记在两人名下，所有人的次数和恰为握手数的两倍。因此有限无向图的奇度顶点个数为偶数。"
+          "description": "宴会上把每次握手分别记在两人名下，所有人的次数和恰为握手数的两倍。因此有限无向图的奇度顶点个数为偶数。",
+          "chapter": "chapters/oly-graph/degree.md"
         },
         {
           "id": "path-cycle",
@@ -6163,7 +6444,8 @@
             "割点",
             "桥"
           ],
-          "description": "允许沿边走时，哪些点可从同一起点到达？能互相到达的点形成分量；去掉一条边若使分量增多，这条边便是桥。"
+          "description": "允许沿边走时，哪些点可从同一起点到达？能互相到达的点形成分量；去掉一条边若使分量增多，这条边便是桥。",
+          "chapter": "chapters/oly-graph/path-cycle.md"
         },
         {
           "id": "trees",
@@ -6176,7 +6458,8 @@
             "树上归纳",
             "最长路"
           ],
-          "description": "在一个连通的有限无向图中逐条删去圈上的边，仍能到达每一点，最后得到树。树上两点间的简单路径唯一，n 个顶点恰有 n−1 条边，可删叶归纳。"
+          "description": "在一个连通的有限无向图中逐条删去圈上的边，仍能到达每一点，最后得到树。树上两点间的简单路径唯一，n 个顶点恰有 n−1 条边，可删叶归纳。",
+          "chapter": "chapters/oly-graph/trees.md"
         },
         {
           "id": "bipartite",
@@ -6189,7 +6472,8 @@
             "二着色",
             "奇环"
           ],
-          "description": "把邻点涂成相反颜色，沿路径颜色交替。如果走一圈用奇数步，回到起点时颜色就冲突；反过来没有奇圈便能逐个分量完成二染色。"
+          "description": "把邻点涂成相反颜色，沿路径颜色交替。如果走一圈用奇数步，回到起点时颜色就冲突；反过来没有奇圈便能逐个分量完成二染色。",
+          "chapter": "chapters/oly-graph/bipartite.md"
         },
         {
           "id": "dag",
@@ -6203,7 +6487,8 @@
             "动态规划",
             "拓扑序"
           ],
-          "description": "把“必须先做”画成箭头。有限有向无环图总有入度为零的点，可依次取走；按这个顺序，抵达某点的路径数可从各直接前驱相加。"
+          "description": "把“必须先做”画成箭头。有限有向无环图总有入度为零的点，可依次取走；按这个顺序，抵达某点的路径数可从各直接前驱相加。",
+          "chapter": "chapters/oly-graph/dag.md"
         },
         {
           "id": "euler",
@@ -6215,7 +6500,8 @@
             "Euler trail",
             "欧拉道路"
           ],
-          "description": "想将每条边恰走一次，中途每次进入都要留一次离开。在有限无向图中，非孤立顶点连通时，恰有零个或两个奇度点即可一笔画；零个时能回到起点。"
+          "description": "想将每条边恰走一次，中途每次进入都要留一次离开。在有限无向图中，非孤立顶点连通时，恰有零个或两个奇度点即可一笔画；零个时能回到起点。",
+          "chapter": "chapters/oly-graph/euler.md"
         },
         {
           "id": "hamilton",
@@ -6228,7 +6514,8 @@
             "狄拉克定理",
             "Dirac"
           ],
-          "description": "若要求每个顶点恰访问一次，单靠度数奇偶不能判断。可先取一条最长路研究其端点；一个充分条件是 n≥3 的简单图每点度数至少 n/2，此时有哈密顿回路。"
+          "description": "若要求每个顶点恰访问一次，单靠度数奇偶不能判断。可先取一条最长路研究其端点；一个充分条件是 n≥3 的简单图每点度数至少 n/2，此时有哈密顿回路。",
+          "chapter": "chapters/oly-graph/hamilton.md"
         },
         {
           "id": "matching",
@@ -6241,7 +6528,8 @@
             "增广路径",
             "Berge引理"
           ],
-          "description": "已配对的点有时得先拆开才能多配一对。找一条两端未匹配、已选边与未选边交替的路径，翻转后匹配数加一；不存在这样的路径便已最大。"
+          "description": "已配对的点有时得先拆开才能多配一对。找一条两端未匹配、已选边与未选边交替的路径，翻转后匹配数加一；不存在这样的路径便已最大。",
+          "chapter": "chapters/oly-graph/matching.md"
         },
         {
           "id": "hall",
@@ -6253,7 +6541,8 @@
             "不同代表系",
             "SDR"
           ],
-          "description": "给左侧每人安排一个不同的右侧对象，每一群 S 至少要有 ∣S∣ 个可选邻点。对有限二分图，这个显然必要的条件也充分。"
+          "description": "给左侧每人安排一个不同的右侧对象，每一群 S 至少要有 ∣S∣ 个可选邻点。对有限二分图，这个显然必要的条件也充分。",
+          "chapter": "chapters/oly-graph/hall.md"
         },
         {
           "id": "konig",
@@ -6266,7 +6555,8 @@
             "柯尼希定理",
             "最小点覆盖"
           ],
-          "description": "若要选点堵住所有边，一个匹配里的各条边必须分别有人堵。有限二分图中最大匹配数恰是最小点覆盖数，交替路能从一个最优方案造出另一个。"
+          "description": "若要选点堵住所有边，一个匹配里的各条边必须分别有人堵。有限二分图中最大匹配数恰是最小点覆盖数，交替路能从一个最优方案造出另一个。",
+          "chapter": "chapters/oly-graph/konig.md"
         },
         {
           "id": "flow",
@@ -6280,7 +6570,8 @@
             "点不交路",
             "Menger定理"
           ],
-          "description": "每条有向边容量有限，任何把源汇分开的割都会限制总流量。最大流等于最小割；将边或拆开的点赋单位容量，可以计数互不相交的通道。"
+          "description": "每条有向边容量有限，任何把源汇分开的割都会限制总流量。最大流等于最小割；将边或拆开的点赋单位容量，可以计数互不相交的通道。",
+          "chapter": "chapters/oly-graph/flow.md"
         },
         {
           "id": "planar",
@@ -6292,7 +6583,8 @@
             "平面图边数",
             "Euler 多面体公式"
           ],
-          "description": "一张不交叉的连通平面图分出多少块面？从生成树起逐条加回边，每次多一条边和一个面，连同外面有 V−E+F=2；再数面边关系可限制总边数。"
+          "description": "一张不交叉的连通平面图分出多少块面？从生成树起逐条加回边，每次多一条边和一个面，连同外面有 V−E+F=2；再数面边关系可限制总边数。",
+          "chapter": "chapters/oly-graph/planar.md"
         },
         {
           "id": "extremal",
@@ -6306,7 +6598,8 @@
             "曼特尔定理",
             "团数"
           ],
-          "description": "若 n 个顶点中不许出现三角形，最多能连几条边？把点尽量均分成两部并全连可得 ⌊n²/4⌋ 条，曼特尔定理说明这就是上界；图兰定理推广到禁团情形。"
+          "description": "若 n 个顶点中不许出现三角形，最多能连几条边？把点尽量均分成两部并全连可得 ⌊n²/4⌋ 条，曼特尔定理说明这就是上界；图兰定理推广到禁团情形。",
+          "chapter": "chapters/oly-graph/extremal.md"
         },
         {
           "id": "ramsey",
@@ -6319,7 +6612,8 @@
             "二色完全图",
             "朋友陌生人"
           ],
-          "description": "六个人中能否总找到三人彼此认识或三人彼此不认识？先看一个点周围哪种边色至少三次，再查那三点之间的边。更一般的保证阈值写作 R(s,t)。"
+          "description": "六个人中能否总找到三人彼此认识或三人彼此不认识？先看一个点周围哪种边色至少三次，再查那三点之间的边。更一般的保证阈值写作 R(s,t)。",
+          "chapter": "chapters/oly-graph/ramsey.md"
         },
         {
           "id": "tournament",
@@ -6332,7 +6626,8 @@
             "强连通分量",
             "Hamilton path"
           ],
-          "description": "每一对选手恰分出一胜一负，把胜者指向败者。将新选手插入已有路径可证明总有贯穿所有点的有向路；强连通且至少有三点时还有贯穿全图的有向圈。"
+          "description": "每一对选手恰分出一胜一负，把胜者指向败者。将新选手插入已有路径可证明总有贯穿所有点的有向路；强连通且至少有三点时还有贯穿全图的有向圈。",
+          "chapter": "chapters/oly-graph/tournament.md"
         },
         {
           "id": "chromatic",
@@ -6345,7 +6640,8 @@
             "图着色",
             "色多项式"
           ],
-          "description": "相邻活动不能同时排，最少要几种时段？把每个独立集看作一个色类。团大小给色数下界，沿任意顺序贪心使用至多“最大度数加一”种颜色。"
+          "description": "相邻活动不能同时排，最少要几种时段？把每个独立集看作一个色类。团大小给色数下界，沿任意顺序贪心使用至多“最大度数加一”种颜色。",
+          "chapter": "chapters/oly-graph/chromatic.md"
         }
       ],
       "edges": [
@@ -6486,7 +6782,8 @@
               "why": "每次换支点，有向直线两侧的点数保持不变。把两侧预先分得尽量均衡，转过半圈时每个点都必须成为支点。",
               "url": "https://www.imo-official.org/assets/documents/problems/2011/2011_eng.pdf#page=1"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-strategy/invariant.md"
         },
         {
           "id": "extreme",
@@ -6507,7 +6804,8 @@
               "why": "分别记录后缀的最小值与前缀的最大值。由两种窗口长度得到两个步长的增长规律，利用步长互素推出相邻项差一。",
               "url": "https://www.imo-official.org/assets/documents/problems/2024/IMO2024SL.pdf#page=35"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-strategy/extreme.md"
         },
         {
           "id": "construction",
@@ -6528,7 +6826,8 @@
               "why": "把边长为二的幂的棋盘四等分。先完成左上子棋盘，再操作中心四格，余下三个子棋盘就各有一个起点。这给出可行方向的归纳构造。",
               "url": "https://www.imo-official.org/assets/documents/problems/2024/IMO2024SL.pdf#page=57"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-strategy/construction.md"
         },
         {
           "id": "bound-build",
@@ -6548,7 +6847,8 @@
               "why": "摆出若干候选方块，利用行列限制保证其中一个空着；再用一种车的布局说明一般无法保证更大的空方块。",
               "url": "https://www.imo-official.org/assets/documents/problems/2014/2014_eng.pdf#page=1"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-strategy/bound-build.md"
         },
         {
           "id": "monovariant",
@@ -6562,7 +6862,8 @@
             "终止性",
             "势能法"
           ],
-          "description": "状态可能频繁改变，怎样证明总有停下的一刻？找每步严格下降且有下界的整数，或有限状态上严格变化的量；只有实数下界不足以保证有限步终止。"
+          "description": "状态可能频繁改变，怎样证明总有停下的一刻？找每步严格下降且有下界的整数，或有限状态上严格变化的量；只有实数下界不足以保证有限步终止。",
+          "chapter": "chapters/oly-strategy/monovariant.md"
         },
         {
           "id": "tiling",
@@ -6576,7 +6877,8 @@
             "铺砌",
             "棋盘染色法"
           ],
-          "description": "从棋盘挖走两格还能铺满吗？每块多米诺骨牌覆盖一黑一白，故两色剩余数必须相等。换棋块后可试周期多色或权重，并另行检验必要条件是否充分。"
+          "description": "从棋盘挖走两格还能铺满吗？每块多米诺骨牌覆盖一黑一白，故两色剩余数必须相等。换棋块后可试周期多色或权重，并另行检验必要条件是否充分。",
+          "chapter": "chapters/oly-strategy/tiling.md"
         },
         {
           "id": "weighted",
@@ -6589,7 +6891,8 @@
             "灯泡翻转",
             "二元域"
           ],
-          "description": "一次翻转会改变几个格子，单数黑格不够区分状态。把开关写成模 2 的向量，加权和给出不变量；目标差向量属于操作向量的张成空间才可达。"
+          "description": "一次翻转会改变几个格子，单数黑格不够区分状态。把开关写成模 2 的向量，加权和给出不变量；目标差向量属于操作向量的张成空间才可达。",
+          "chapter": "chapters/oly-strategy/weighted.md"
         },
         {
           "id": "greedy",
@@ -6601,7 +6904,8 @@
             "局部改进",
             "贪心算法"
           ],
-          "description": "先选最早结束的活动，真的不会少安排一场吗？把一个最优解的首项换成这个选择并验证余下仍然可行，才能把局部直觉变成全局论证。"
+          "description": "先选最早结束的活动，真的不会少安排一场吗？把一个最优解的首项换成这个选择并验证余下仍然可行，才能把局部直觉变成全局论证。",
+          "chapter": "chapters/oly-strategy/greedy.md"
         },
         {
           "id": "finite-state",
@@ -6622,7 +6926,8 @@
               "why": "官方第二解比较出现次数的相对差，证明这些差有界。记录这些差和当前活跃项后，状态有限且更新确定，于是会进入循环。",
               "url": "https://www.imo-official.org/assets/documents/problems/2024/IMO2024SL.pdf#page=56"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-strategy/finite-state.md"
         },
         {
           "id": "backward-game",
@@ -6636,7 +6941,8 @@
             "P局面",
             "N局面"
           ],
-          "description": "在有限且必终止的双方轮流、无平局取子游戏中，用规则先标出终局。能走到对方败态的为胜态，所有走法都把对手送进胜态的为败态。"
+          "description": "在有限且必终止的双方轮流、无平局取子游戏中，用规则先标出终局。能走到对方败态的为胜态，所有走法都把对手送进胜态的为败态。",
+          "chapter": "chapters/oly-strategy/backward-game.md"
         },
         {
           "id": "pairing-game",
@@ -6648,7 +6954,8 @@
             "应对策略",
             "配对法"
           ],
-          "description": "若可把初始选项配成对子，能否让后手总选回另一半？首先检验每次回应都合法，并证明回应完后剩下的局面仍满足相同条件。"
+          "description": "若可把初始选项配成对子，能否让后手总选回另一半？首先检验每次回应都合法，并证明回应完后剩下的局面仍满足相同条件。",
+          "chapter": "chapters/oly-strategy/pairing-game.md"
         },
         {
           "id": "nim",
@@ -6662,7 +6969,8 @@
             "异或",
             "尼姆和"
           ],
-          "description": "轮流从一堆拿走任意正数、拿最后者胜时，堆大小的异或为零是败态。一般有限无环公平正常博弈中，子局值取后继值集合缺失的最小非负整数，独立子游戏之和用异或合成。"
+          "description": "轮流从一堆拿走任意正数、拿最后者胜时，堆大小的异或为零是败态。一般有限无环公平正常博弈中，子局值取后继值集合缺失的最小非负整数，独立子游戏之和用异或合成。",
+          "chapter": "chapters/oly-strategy/nim.md"
         },
         {
           "id": "adversary",
@@ -6683,7 +6991,8 @@
               "why": "先让隐藏障碍的位置迫使前两次尝试可能失败，再用失败获得的位置信息设计三次内保证成功的走法。",
               "url": "https://www.imo-official.org/assets/documents/problems/2024/2024_eng.pdf#page=2"
             }
-          ]
+          ],
+          "chapter": "chapters/oly-strategy/adversary.md"
         },
         {
           "id": "convex-hull",
@@ -6697,7 +7006,8 @@
             "旋转直线",
             "组合几何"
           ],
-          "description": "钉板上用橡皮筋兜住有限个点会得到什么？所有含它们的凸集的交就是凸包。移动一条直线直到首次碰点，可以找出支撑面，旋转它则能追踪极端点的变化。"
+          "description": "钉板上用橡皮筋兜住有限个点会得到什么？所有含它们的凸集的交就是凸包。移动一条直线直到首次碰点，可以找出支撑面，旋转它则能追踪极端点的变化。",
+          "chapter": "chapters/oly-strategy/convex-hull.md"
         },
         {
           "id": "lattice",
@@ -6711,7 +7021,8 @@
             "皮克定理",
             "格点多边形"
           ],
-          "description": "端点水平和竖直坐标的差为 a,b 时，非零线段含 gcd(∣a∣,∣b∣)+1 个格点。对简单格点多边形，面积等于内点数加边界点数的一半再减一，可以把面积问题换成计点。"
+          "description": "端点水平和竖直坐标的差为 a,b 时，非零线段含 gcd(∣a∣,∣b∣)+1 个格点。对简单格点多边形，面积等于内点数加边界点数的一半再减一，可以把面积问题换成计点。",
+          "chapter": "chapters/oly-strategy/lattice.md"
         },
         {
           "id": "covering",
@@ -6726,7 +7037,8 @@
             "装箱",
             "平面覆盖"
           ],
-          "description": "一批集合的并含住每个对象就是覆盖；分割还要求各块不交。统计“对象落入哪几块”的关联对能发现重叠的代价，再用局部样板或边界排布逼近最少块数。"
+          "description": "一批集合的并含住每个对象就是覆盖；分割还要求各块不交。统计“对象落入哪几块”的关联对能发现重叠的代价，再用局部样板或边界排布逼近最少块数。",
+          "chapter": "chapters/oly-strategy/covering.md"
         },
         {
           "id": "discrete-continuity",
@@ -6739,7 +7051,8 @@
             "连续变换",
             "离散连续性"
           ],
-          "description": "沿路径逐步移动分界线，若左侧点数每次至多改变 1，从少于目标走到多于目标就必曾恰好达到。先处理多个点同时越线等退化情况，才能保证没有跳过目标。"
+          "description": "沿路径逐步移动分界线，若左侧点数每次至多改变 1，从少于目标走到多于目标就必曾恰好达到。先处理多个点同时越线等退化情况，才能保证没有跳过目标。",
+          "chapter": "chapters/oly-strategy/discrete-continuity.md"
         }
       ],
       "edges": [
@@ -8180,7 +8493,7 @@
       "why": "若最小反例能导出更小的反例，就与自然数的良序性矛盾；这和允许调用所有更小情形的归纳用到同一性质。"
     }
   ],
-  "updated": "2026-11-23",
+  "updated": "2026-11-27",
   "olympiadReading": {
     "algebra": {
       "question": "为什么知道两组数各自的平方和，就能限制它们对应乘积的和？",

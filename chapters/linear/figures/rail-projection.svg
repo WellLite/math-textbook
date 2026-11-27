@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 495 296" role="img" aria-labelledby="t d">
+<title id="t">最近点与垂线</title><desc id="d">目标和轨道最近点之间的差向量为负一、二，与轨道方向二、一垂直。</desc>
+<g font-family="system-ui, sans-serif">
+<line x1="62" y1="242" x2="372" y2="242" stroke="#dde8df" stroke-width="1"/>
+<line x1="62" y1="180" x2="372" y2="180" stroke="#dde8df" stroke-width="1"/>
+<line x1="62" y1="118" x2="372" y2="118" stroke="#dde8df" stroke-width="1"/>
+<line x1="62" y1="56" x2="372" y2="56" stroke="#dde8df" stroke-width="1"/>
+<line x1="124" y1="242" x2="124" y2="25.0" stroke="#dde8df" stroke-width="1"/>
+<line x1="186" y1="242" x2="186" y2="25.0" stroke="#dde8df" stroke-width="1"/>
+<line x1="248" y1="242" x2="248" y2="25.0" stroke="#dde8df" stroke-width="1"/>
+<line x1="310" y1="242" x2="310" y2="25.0" stroke="#dde8df" stroke-width="1"/>
+<line x1="372" y1="242" x2="372" y2="25.0" stroke="#dde8df" stroke-width="1"/>
+<line x1="55.8" y1="242" x2="396.8" y2="242" stroke="#173f42" stroke-width="2"/>
+<line x1="124" y1="263.7" x2="124" y2="21.900000000000006" stroke="#173f42" stroke-width="2"/>
+<text x="399.90000000000003" y="247" font-size="16" text-anchor="start" fill="#173f42">x</text>
+<text x="120" y="17.799999999999983" font-size="16" text-anchor="start" fill="#173f42">y</text>
+<line x1="49.60000000000001" y1="279.2" x2="403.0" y2="102.5" stroke="#16756f" stroke-width="3"/>
+<line x1="186" y1="56" x2="248" y2="180" stroke="#af5b31" stroke-width="2.5" stroke-dasharray="6 4"/>
+<circle cx="124" cy="242" r="4" fill="#173f42"/>
+<text x="116" y="263" font-size="16" text-anchor="start" fill="#173f42">0</text>
+<circle cx="186" cy="56" r="4" fill="#af5b31"/>
+<text x="193" y="47" font-size="16" text-anchor="start" fill="#af5b31">目标 (1, 3)</text>
+<circle cx="248" cy="180" r="4" fill="#16756f"/>
+<text x="257" y="203" font-size="16" text-anchor="start" fill="#16756f">最近点 (2, 1)</text>
+<text x="319.29999999999995" y="117.2" font-size="16" text-anchor="start" fill="#16756f">可到达的轨道</text>
+<path d="M 256.0498447189992 175.9750776405004 l -4.024922359499621 -8.049844718999243 l -8.049844718999243 4.024922359499621" fill="none" stroke="#173f42" stroke-width="1.4"/></g>
+</svg>

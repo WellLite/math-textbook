@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 466 296" role="img" aria-labelledby="t d">
+<title id="t">把水流的变化量夹在两套估计之间</title><desc id="d">浅色矩形用各段起始流量计水量。直线表明实际流量持续增加，每块上方留下一个小三角形。</desc>
+<g font-family="system-ui, sans-serif">
+<rect x="96.0" y="244.0" width="69.5" height="0.0" fill="#bee2d7"/>
+<line x1="96.0" y1="244.0" x2="165.5" y2="244.0" stroke="#16756f" stroke-width="2"/>
+<line x1="165.5" y1="244.0" x2="165.5" y2="196.0" stroke="#16756f" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="165.5" y="196.0" width="69.5" height="48.0" fill="#bee2d7"/>
+<line x1="165.5" y1="196.0" x2="235.0" y2="196.0" stroke="#16756f" stroke-width="2"/>
+<line x1="235.0" y1="196.0" x2="235.0" y2="148.0" stroke="#16756f" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="235.0" y="148.0" width="69.5" height="96.0" fill="#bee2d7"/>
+<line x1="235.0" y1="148.0" x2="304.5" y2="148.0" stroke="#16756f" stroke-width="2"/>
+<line x1="304.5" y1="148.0" x2="304.5" y2="100.0" stroke="#16756f" stroke-width="1.2" stroke-dasharray="4 4"/>
+<rect x="304.5" y="100.0" width="69.5" height="144.0" fill="#bee2d7"/>
+<line x1="304.5" y1="100.0" x2="374.0" y2="100.0" stroke="#16756f" stroke-width="2"/>
+<line x1="374.0" y1="100.0" x2="374.0" y2="52.0" stroke="#16756f" stroke-width="1.2" stroke-dasharray="4 4"/>
+<line x1="96" y1="244" x2="374" y2="52" stroke="#af5b31" stroke-width="3"/>
+<line x1="89" y1="244" x2="389" y2="244" stroke="#173f42" stroke-width="2"/>
+<line x1="96" y1="250" x2="96" y2="38" stroke="#173f42" stroke-width="2"/>
+<text x="82" y="263" font-size="16" text-anchor="start" fill="#173f42">0</text>
+<text x="78" y="154" font-size="16" text-anchor="start" fill="#173f42">1</text>
+<text x="78" y="58" font-size="16" text-anchor="start" fill="#173f42">2</text>
+<text x="374" y="266" font-size="16" text-anchor="start" fill="#173f42">1</text>
+<text x="383" y="282" font-size="14" text-anchor="end" fill="#173f42">时间（小时）</text>
+<text x="17" y="21" font-size="14" text-anchor="start" fill="#173f42">流量（升/小时）</text>
+<text x="285" y="84" font-size="17" text-anchor="start" fill="#af5b31">v = 2t</text>
+<text x="291" y="213" font-size="15" text-anchor="start" fill="#16756f">左端读数</text></g>
+</svg>

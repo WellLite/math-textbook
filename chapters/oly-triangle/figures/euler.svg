@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" role="img"><title>浅色虚线为外接圆。红色九点圆的一条直径是 MT，垂足 D 也在这个圆上。</title><rect width="600" height="320" fill="#fffdf6"/>
+<circle cx="300.0" cy="160.0" r="133.00" stroke="#bfd4cd" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<circle cx="290.92" cy="126.3" r="66.50" stroke="#a34830" fill="none" stroke-width="2"/>
+<line x1="280.66" y1="28.41" x2="171.54" y2="194.47" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="171.54" y1="194.47" x2="429.64" y2="189.72" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="429.64" y1="189.72" x2="280.66" y2="28.41" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="280.66" y1="28.41" x2="283.68" y2="192.4" stroke="#53877f" fill="none" stroke-width="2"/>
+<line x1="281.25" y1="60.51" x2="300.59" y2="192.09" stroke="#53877f" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<circle cx="280.66" cy="28.41" r="2.7" fill="#254a4c"/><text x="284.66" y="22.41" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">A</text>
+<circle cx="171.54" cy="194.47" r="2.7" fill="#254a4c"/><text x="158.54" y="205.47" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">B</text>
+<circle cx="429.64" cy="189.72" r="2.7" fill="#254a4c"/><text x="435.64" y="201.72" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">C</text>
+<circle cx="283.68" cy="192.4" r="2.7" fill="#254a4c"/><text x="272.68" y="207.4" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">D</text>
+<circle cx="300.0" cy="160.0" r="2.7" fill="#254a4c"/><text x="304.0" y="152.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">O</text>
+<circle cx="281.84" cy="92.6" r="2.7" fill="#254a4c"/><text x="263.84" y="101.6" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">H</text>
+<circle cx="300.59" cy="192.09" r="2.7" fill="#254a4c"/><text x="304.59" y="208.09" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">M</text>
+<circle cx="281.25" cy="60.51" r="2.7" fill="#254a4c"/><text x="285.25" y="56.51" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">T</text>
+<circle cx="290.92" cy="126.3" r="2.7" fill="#254a4c"/><text x="294.92" y="143.3" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">N</text>
+</svg>

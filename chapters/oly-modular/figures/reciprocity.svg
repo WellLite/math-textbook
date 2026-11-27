@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 310" role="img"><title>模七与模十一的二次互反格点数。七倍纵坐标与十一倍横坐标的大小，把十五个格点分到直线两侧。</title><rect width="550" height="310" fill="#fffdf6"/>
+<line x1="203" y1="235.3" x2="203" y2="58.599999999999994" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="266" y1="235.3" x2="266" y2="58.599999999999994" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="329" y1="235.3" x2="329" y2="58.599999999999994" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="180.95" y1="222" x2="349.15999999999997" y2="222" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="180.95" y1="184" x2="349.15999999999997" y2="184" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="180.95" y1="146" x2="349.15999999999997" y2="146" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="180.95" y1="108" x2="349.15999999999997" y2="108" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="180.95" y1="70" x2="349.15999999999997" y2="70" stroke="#c2d4cd" stroke-width="1"/>
+<line x1="174.02" y1="227.75428571428571" x2="358.61" y2="52.79142857142858" stroke="#385756" stroke-width="2.3"/>
+<circle cx="203" cy="222" r="5.5" fill="#a34830"/>
+<rect x="198.5" y="179.5" width="9" height="9" fill="#4e827c"/>
+<rect x="198.5" y="141.5" width="9" height="9" fill="#4e827c"/>
+<rect x="198.5" y="103.5" width="9" height="9" fill="#4e827c"/>
+<rect x="198.5" y="65.5" width="9" height="9" fill="#4e827c"/>
+<circle cx="266" cy="222" r="5.5" fill="#a34830"/>
+<circle cx="266" cy="184" r="5.5" fill="#a34830"/>
+<circle cx="266" cy="146" r="5.5" fill="#a34830"/>
+<rect x="261.5" y="103.5" width="9" height="9" fill="#4e827c"/>
+<rect x="261.5" y="65.5" width="9" height="9" fill="#4e827c"/>
+<circle cx="329" cy="222" r="5.5" fill="#a34830"/>
+<circle cx="329" cy="184" r="5.5" fill="#a34830"/>
+<circle cx="329" cy="146" r="5.5" fill="#a34830"/>
+<circle cx="329" cy="108" r="5.5" fill="#a34830"/>
+<rect x="324.5" y="65.5" width="9" height="9" fill="#4e827c"/>
+<text x="199" y="260" font-family="serif" font-size="16">1</text>
+<text x="262" y="260" font-family="serif" font-size="16">2</text>
+<text x="325" y="260" font-family="serif" font-size="16">3</text>
+<text x="171.5" y="227" font-family="serif" font-size="16">1</text>
+<text x="171.5" y="189" font-family="serif" font-size="16">2</text>
+<text x="171.5" y="151" font-family="serif" font-size="16">3</text>
+<text x="171.5" y="113" font-family="serif" font-size="16">4</text>
+<text x="171.5" y="75" font-family="serif" font-size="16">5</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490 185" role="img" aria-labelledby="title desc">
+  <title id="title">七的两种共轭分拆</title>
+  <desc id="desc">浅绿色的第一行在转置后成为第一列。</desc>
+  <style>
+    text { font: 17px system-ui, sans-serif; fill: #244a48; }
+    .label { font-size: 15px; } .small { font-size: 13px; }
+    .line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <rect width="490" height="185" fill="#fffdf6"/>
+  <text x="112" y="28" class="" text-anchor="middle">原分拆</text><rect x="62" y="54" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><rect x="89" y="54" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><rect x="116" y="54" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><rect x="143" y="54" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><text x="43" y="71.28" class="small" text-anchor="middle">4</text><rect x="62" y="81" width="27" height="27" fill="#e7ede2" stroke="#477571"/><rect x="89" y="81" width="27" height="27" fill="#e7ede2" stroke="#477571"/><text x="43" y="98.28" class="small" text-anchor="middle">2</text><rect x="62" y="108" width="27" height="27" fill="#e7ede2" stroke="#477571"/><text x="43" y="125.28" class="small" text-anchor="middle">1</text><text x="366" y="28" class="" text-anchor="middle">共轭分拆</text><rect x="316" y="54" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><rect x="343" y="54" width="27" height="27" fill="#e7ede2" stroke="#477571"/><rect x="370" y="54" width="27" height="27" fill="#e7ede2" stroke="#477571"/><text x="297" y="71.28" class="small" text-anchor="middle">3</text><rect x="316" y="81" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><rect x="343" y="81" width="27" height="27" fill="#e7ede2" stroke="#477571"/><text x="297" y="98.28" class="small" text-anchor="middle">2</text><rect x="316" y="108" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><text x="297" y="125.28" class="small" text-anchor="middle">1</text><rect x="316" y="135" width="27" height="27" fill="#b4d2c7" stroke="#477571"/><text x="297" y="152.28" class="small" text-anchor="middle">1</text><text x="243" y="96" class="label" text-anchor="middle">转置</text>
+</svg>

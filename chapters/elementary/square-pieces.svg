@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 268" role="img" aria-labelledby="t d">
+  <title id="t">把两条宽三的长条贴到正方形旁边</title>
+  <desc id="d">大正方形和两个矩形拼好后，右下角还缺一个边长三的方块。</desc>
+  <g stroke="#305c59" stroke-width="2">
+    <path d="M68 36h138v138H68z" fill="#c7e1d6"/>
+    <path d="M206 36h56v138h-56zM68 174h138v56H68z" fill="#f0dcb6"/>
+    <path d="M206 174h56v56h-56z" fill="#f9f4ea" stroke="#9b503a" stroke-dasharray="5 5"/>
+  </g>
+  <g text-anchor="middle" dominant-baseline="middle" font-family="serif" font-size="18" fill="#243e3c">
+    <text x="137" y="19">x</text><text x="234" y="19">3</text><text x="50" y="105">x</text><text x="50" y="202">3</text>
+    <text x="137" y="108">x²</text><text x="234" y="108">3x</text><text x="137" y="202">3x</text><text x="234" y="202">?</text>
+  </g>
+</svg>

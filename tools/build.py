@@ -103,6 +103,11 @@ def page(title, body, root, directory=False, outline='', pending=False):
 '''
 
 
+def topic_address(world_id, node_id):
+    return PurePosixPath('chapters/_topics', 'world-' + quote(world_id, safe=''),
+                         'topic-' + quote(node_id, safe='') + '.html')
+
+
 def reader_paths(worlds):
     """Keep published chapter URLs and give every point a place in its own outline."""
     paths = {}
@@ -116,7 +121,7 @@ def reader_paths(worlds):
                 if path in used:
                     path = path.with_name(f'{path.stem}.outline-{world_key}.{node_key}.html')
             else:
-                path = PurePosixPath('chapters/_topics', 'world-' + world_key, 'topic-' + node_key + '.html')
+                path = topic_address(world['id'], node['id'])
             if path in used or path == PurePosixPath('chapters/index.html'):
                 raise ValueError(f'阅读页面路径冲突：{path}')
             paths[world['id'], node['id']] = path
@@ -284,6 +289,7 @@ def build(stage):
         shutil.copyfile(ROOT / 'site' / name, stage / name)
     worlds = {world['id']: world for world in atlas['views'] if world['id'] != 'overview'}
     paths = reader_paths(worlds.values())
+    occupied_paths = set(paths.values())
     (stage / 'content').mkdir()
     (stage / 'content/map.json').write_text(json.dumps(atlas, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     (stage / 'chapters').mkdir()
@@ -319,6 +325,16 @@ def build(stage):
             if node.get('chapter'):
                 source = PurePosixPath(node['chapter'])
                 title = titles[source]
+                # A bookmark to a topic created before its lesson was written still opens it.
+                bookmark = topic_address(world_id, node['id'])
+                if bookmark != path and bookmark not in occupied_paths:
+                    href = escape(quote(os.path.relpath(path, bookmark.parent)), quote=True)
+                    alias = stage / bookmark
+                    alias.parent.mkdir(parents=True, exist_ok=True)
+                    alias.write_text(f'<!doctype html><html lang="zh-CN"><meta charset="utf-8">'
+                                     f'<title>{label}</title><meta http-equiv="refresh" content="0;url={href}">'
+                                     f'<link rel="canonical" href="{href}"><a href="{href}">阅读{label}</a></html>',
+                                     encoding='utf-8')
                 body = (f'<p class="reading-context" data-reading-topic>{label}</p><article>{articles[source]}</article>'
                         '<footer class="reading-end">' + related_reading(worlds, chapters[source], source)
                         + f'<nav class="map-return" aria-label="返回导航"><a href="{map_href}">在地图中查看「{label}」</a>'

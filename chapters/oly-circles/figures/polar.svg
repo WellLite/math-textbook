@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" role="img"><title>圆外点 P 的两个切点位于同一条极线上。极线与 OP 垂直。</title><rect width="600" height="320" fill="#fffdf6"/>
+<circle cx="264.0" cy="177.72" r="102.85" stroke="#53877f" fill="none" stroke-width="2"/>
+<line x1="292.53" y1="78.9" x2="438.85" y2="121.15" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="438.85" y1="121.15" x2="345.01" y2="241.1" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="275.74" y1="27.0" x2="361.8" y2="293.0" stroke="#a34830" fill="none" stroke-width="2"/>
+<line x1="264.0" y1="177.72" x2="438.85" y2="121.15" stroke="#bfd4cd" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="264.0" y1="177.72" x2="292.53" y2="78.9" stroke="#53877f" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="264.0" y1="177.72" x2="345.01" y2="241.1" stroke="#53877f" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<circle cx="264.0" cy="177.72" r="2.7" fill="#254a4c"/><text x="270.0" y="170.72" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">O</text>
+<circle cx="438.85" cy="121.15" r="2.7" fill="#254a4c"/><text x="444.85" y="114.15" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">P</text>
+<circle cx="292.53" cy="78.9" r="2.7" fill="#254a4c"/><text x="298.53" y="71.9" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">T₁</text>
+<circle cx="345.01" cy="241.1" r="2.7" fill="#254a4c"/><text x="351.01" y="234.1" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">T₂</text>
+</svg>

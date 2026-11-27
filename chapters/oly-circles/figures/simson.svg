@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" role="img"><title>圆周点 P 在三条边所在直线上的垂足 D、E、F，落在同一条红线上。</title><rect width="600" height="320" fill="#fffdf6"/>
+<circle cx="300.0" cy="139.24" r="112.24" stroke="#bfd4cd" fill="none" stroke-width="2"/>
+<line x1="300.0" y1="27.0" x2="220.64" y2="218.6" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="220.64" y1="218.6" x2="300.0" y2="251.48" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="300.0" y1="251.48" x2="300.0" y2="27.0" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="363.91" y1="277.95" x2="363.91" y2="277.95" stroke="#bfd4cd" fill="none" stroke-width="2"/>
+<line x1="405.47" y1="177.63" x2="363.91" y2="277.95" stroke="#53877f" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="363.91" y1="277.95" x2="300.0" y2="251.48" stroke="#bfd4cd" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="300.0" y1="177.63" x2="300.0" y2="177.63" stroke="#bfd4cd" fill="none" stroke-width="2"/>
+<line x1="405.47" y1="177.63" x2="300.0" y2="177.63" stroke="#53877f" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="262.19" y1="118.28" x2="262.19" y2="118.28" stroke="#bfd4cd" fill="none" stroke-width="2"/>
+<line x1="405.47" y1="177.63" x2="262.19" y2="118.28" stroke="#53877f" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="373.5" y1="293.0" x2="287.22" y2="157.56" stroke="#a34830" fill="none" stroke-width="2"/>
+<circle cx="300.0" cy="27.0" r="2.7" fill="#254a4c"/><text x="304.0" y="19.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">A</text>
+<circle cx="220.64" cy="218.6" r="2.7" fill="#254a4c"/><text x="205.64" y="231.6" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">B</text>
+<circle cx="300.0" cy="251.48" r="2.7" fill="#254a4c"/><text x="307.0" y="263.48" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">C</text>
+<circle cx="405.47" cy="177.63" r="2.7" fill="#254a4c"/><text x="389.47" y="173.63" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">P</text>
+<circle cx="363.91" cy="277.95" r="2.7" fill="#254a4c"/><text x="346.91" y="293.95" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">D</text>
+<circle cx="300.0" cy="177.63" r="2.7" fill="#254a4c"/><text x="306.0" y="169.63" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">E</text>
+<circle cx="262.19" cy="118.28" r="2.7" fill="#254a4c"/><text x="242.19" y="114.28" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">F</text>
+</svg>

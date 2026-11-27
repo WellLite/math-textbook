@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" role="img"><title>把 B 沿河岸反射到 B′，经 T 的折线与直线 ATB′ 等长。</title><rect width="600" height="320" fill="#fffdf6"/>
+<line x1="50.0" y1="193.33" x2="550.0" y2="193.33" stroke="#53877f" fill="none" stroke-width="2"/>
+<line x1="90.0" y1="60.0" x2="356.67" y2="193.33" stroke="#a34830" fill="none" stroke-width="2"/>
+<line x1="356.67" y1="193.33" x2="490.0" y2="126.67" stroke="#a34830" fill="none" stroke-width="2"/>
+<line x1="356.67" y1="193.33" x2="490.0" y2="260.0" stroke="#53877f" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<line x1="490.0" y1="126.67" x2="490.0" y2="260.0" stroke="#bfd4cd" fill="none" stroke-width="2" stroke-dasharray="5 4"/>
+<circle cx="90.0" cy="60.0" r="2.7" fill="#254a4c"/><text x="96.0" y="53.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">A</text>
+<circle cx="490.0" cy="126.67" r="2.7" fill="#254a4c"/><text x="496.0" y="119.67" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">B</text>
+<circle cx="490.0" cy="260.0" r="2.7" fill="#254a4c"/><text x="497.0" y="273.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">B′</text>
+<circle cx="356.67" cy="193.33" r="2.7" fill="#254a4c"/><text x="344.67" y="210.33" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">T</text>
+</svg>
