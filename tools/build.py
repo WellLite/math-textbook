@@ -1,6 +1,7 @@
 """Build the student edition from the public map and chapter sources."""
 import argparse
 from collections import defaultdict
+from functools import lru_cache
 from graphlib import TopologicalSorter
 from hashlib import sha256
 from html import escape
@@ -18,7 +19,7 @@ from urllib.parse import quote, unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 SITE_FILES = ('index.html', 'app.js', 'style.css', 'chapter.css', 'ocean.css',
               'ocean-layout.js', 'learning-view.css', 'learning-view.js', 'learning-graph.js', 'reader.js',
-              'chapter-outline.js', 'outline-graph.css')
+              'chapter-outline.js', 'outline-graph.css', 'math-figures.js')
 RELATIONS = {'prerequisite', 'perspective', 'route'}
 MARKER = '.math-textbook-build'
 
@@ -92,21 +93,54 @@ def feedback_link(review_pr, source=None):
     return f'<a class="review-link" href="{target}" title="在 GitHub 给审阅稿反馈">给反馈</a>'
 
 
-def page(title, body, root, directory=False, outline='', pending=False, feedback=''):
+def edition_switch(path, adult):
+    """Both versions are ordinary documents, including when JavaScript is off."""
+    here = PurePosixPath('adult') / path if adult else path
+    names = {True: '大朋友版', False: '小朋友版'}
+    links = []
+    for is_adult, name in names.items():
+        if is_adult == adult:
+            links.append(f'<span aria-current="page">{name}</span>')
+        else:
+            target = PurePosixPath('adult') / path if is_adult else path
+            href = quote(os.path.relpath(target, here.parent))
+            links.append(f'<a href="{href}" data-switch-edition>{name}</a>')
+    return '<nav class="reader-editions" aria-label="选择教材版本">' + ''.join(links) + '</nav>'
+
+
+def edition_source(path, adult):
+    alternative = ROOT / 'editions' / 'adult' / path
+    return alternative if adult and alternative.is_file() else ROOT / path
+
+
+def lesson_text(source, adult):
+    manuscript = edition_source(source, adult)
+    text = manuscript.read_text(encoding='utf-8')
+    if manuscript == ROOT / source:
+        return text
+    # An adult manuscript may link to a figure or lesson in the shared source
+    # tree on GitHub. Both editions publish those paths under their own chapters/.
+    shared_prefix = os.path.relpath(ROOT / 'chapters', manuscript.parent) + '/'
+    published_prefix = os.path.relpath(ROOT / 'chapters', (ROOT / source).parent) + '/'
+    return text.replace('](' + shared_prefix, '](' + published_prefix)
+
+
+def page(title, body, root, directory=False, outline='', pending=False, feedback='', switch=''):
     reading_tools = '' if directory or pending else '<button id="large-type" type="button" aria-pressed="false" hidden>大字阅读</button>'
     page_class = 'directory' if directory else 'chapter'
-    main = f'<main class="{page_class}" id="reading" tabindex="-1">{body}</main>'
+    main = f'<main class="{page_class}" id="reading" tabindex="-1">{switch}{body}</main>'
     outline_assets = ''
     if outline:
         outline_assets = (f'<link rel="stylesheet" href="{root}outline-graph.css">'
                           f'<script src="{root}learning-graph.js" defer></script><script src="{root}chapter-outline.js" defer></script>')
         main = f'<div class="reading-layout">{outline}{main}</div>'
+    diagrams = f'<script src="{root}math-figures.js" defer></script>' if 'id="demo-' in body else ''
     return f'''<!doctype html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' https:; base-uri 'none'; form-action 'none'">
 <title>{escape(title)} · 数学地图</title>
-<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css">{outline_assets}<script src="{root}reader.js" defer></script>
+<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css">{outline_assets}{diagrams}<script src="{root}reader.js" defer></script>
 </head>
 <body class="chapter-page{' with-outline' if outline else ''}"><a class="skip-reading" href="#reading">跳到正文</a><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><nav aria-label="阅读导航">{reading_tools}<a href="{root}chapters/index.html">教材目录</a>{feedback}</nav></header>
 {main}</body></html>
@@ -231,6 +265,7 @@ class ChapterLinks(HTMLParser):
             raise ValueError(f'{self.document.name} 中的链接无法打开：{target}')
 
 
+@lru_cache(maxsize=None)
 def render_markdown(text, *, overview=False):
     return subprocess.run(
         ['pandoc', '--from=gfm+tex_math_dollars', '--to=html5', '--mathml', '--wrap=none',
@@ -240,8 +275,8 @@ def render_markdown(text, *, overview=False):
     ).stdout
 
 
-def write_overview(stage, world, paths, review_pr):
-    source = ROOT / 'overviews' / (quote(world['id'], safe='') + '.md')
+def write_overview(stage, world, paths, review_pr, adult):
+    source = edition_source(PurePosixPath('overviews', quote(world['id'], safe='') + '.md'), adult)
     path = PurePosixPath(unquote(world['overviewPage']))
     nodes = {n['id']: n for n in world['nodes']}
     text = source.read_text(encoding='utf-8')
@@ -285,10 +320,10 @@ def write_overview(stage, world, paths, review_pr):
     output = stage / path
     output.parent.mkdir(parents=True, exist_ok=True)
     feedback = feedback_link(review_pr, source.relative_to(ROOT))
-    output.write_text(page(title, body, root, outline=outline, feedback=feedback), encoding='utf-8')
+    output.write_text(page(title, body, root, outline=outline, feedback=feedback, switch=edition_switch(path, adult)), encoding='utf-8')
 
 
-def build(stage, review_pr=None):
+def build_edition(stage, review_pr, adult):
     atlas_path = ROOT / 'content/map.json'
     atlas = json.loads(atlas_path.read_text(encoding='utf-8'))
     chapters = chapter_sources(atlas)
@@ -299,7 +334,10 @@ def build(stage, review_pr=None):
     for name in SITE_FILES:
         shutil.copyfile(ROOT / 'site' / name, stage / name)
     home = stage / 'index.html'
-    home.write_text(home.read_text(encoding='utf-8').replace('<!-- review-feedback -->', feedback_link(review_pr)), encoding='utf-8')
+    home_html = home.read_text(encoding='utf-8').replace('<!-- review-feedback -->', feedback_link(review_pr))
+    home_html = home_html.replace('<!-- edition-switch -->', edition_switch(PurePosixPath('index.html'), adult))
+    name = '大朋友版' if adult else '小朋友版'
+    home.write_text(home_html.replace('数学地图 · 学生视图', '数学地图 · ' + name), encoding='utf-8')
     worlds = {world['id']: world for world in atlas['views'] if world['id'] != 'overview'}
     paths = reader_paths(worlds.values())
     occupied_paths = set(paths.values())
@@ -319,15 +357,21 @@ def build(stage, review_pr=None):
     titles = {}
     articles = {}
     for source in chapters:
-        text = (ROOT / source).read_text(encoding='utf-8')
+        text = lesson_text(source, adult)
         first = next((line for line in text.splitlines() if line.strip()), '')
         if not first.startswith('# '):
             raise ValueError(f'{source} 请用一级标题开篇')
         title = first[2:].strip()
         titles[source] = title
-        articles[source] = render_markdown(text)
+        markup = render_markdown(text)
+        for figure in ('matrix-composition', 'cyclic-angles', 'successor-walk', 'vector-addition',
+                       'quantifier-balls', 'quantifier-roots'):
+            anchor = 'quantifiers' if figure.startswith('quantifier-') else figure
+            markup = re.sub(r'<figure>(?=\s*<img src="[^"]*/' + figure + r'\.svg")',
+                            f'<figure id="demo-{anchor}">', markup)
+        articles[source] = markup
     for world_id, world in worlds.items():
-        write_overview(stage, world, paths, review_pr)
+        write_overview(stage, world, paths, review_pr, adult)
         for node in world['nodes']:
             path = paths[world_id, node['id']]
             output = stage / path
@@ -340,7 +384,7 @@ def build(stage, review_pr=None):
                 title = titles[source]
                 # A bookmark to a topic created before its lesson was written still opens it.
                 bookmark = topic_address(world_id, node['id'])
-                if bookmark != path and bookmark not in occupied_paths:
+                if not adult and bookmark != path and bookmark not in occupied_paths:
                     href = escape(quote(os.path.relpath(path, bookmark.parent)), quote=True)
                     alias = stage / bookmark
                     alias.parent.mkdir(parents=True, exist_ok=True)
@@ -359,10 +403,10 @@ def build(stage, review_pr=None):
                         f'<footer class="reading-end"><nav class="map-return" aria-label="返回导航">'
                         f'<a href="{map_href}">查看「{label}」的知识联系</a></nav></footer>')
             output.parent.mkdir(parents=True, exist_ok=True)
-            feedback = feedback_link(review_pr, source)
-            output.write_text(page(title, body, root, outline=outline, pending=not node.get('chapter'), feedback=feedback), encoding='utf-8')
+            feedback = feedback_link(review_pr, edition_source(source, adult).relative_to(ROOT) if source else None)
+            output.write_text(page(title, body, root, outline=outline, pending=not node.get('chapter'), feedback=feedback, switch=edition_switch(path, adult)), encoding='utf-8')
     index = chapter_directory(atlas, titles)
-    (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True, feedback=feedback_link(review_pr)), encoding='utf-8')
+    (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True, feedback=feedback_link(review_pr), switch=edition_switch(PurePosixPath('chapters/index.html'), adult)), encoding='utf-8')
     # Browsers can retain yesterday's map scripts or data when a reader reopens the book.
     assets = {name: sha256((stage / name).read_bytes()).hexdigest()[:12]
               for name in (*SITE_FILES, 'content/map.json') if not name.endswith('.html')}
@@ -371,7 +415,18 @@ def build(stage, review_pr=None):
         markup = document.read_text(encoding='utf-8')
         markup = asset_ref.sub(lambda m: f'{m[1]}{m[2]}?v={assets[m[2]]}{m[3]}', markup)
         document.write_text(markup, encoding='utf-8')
-        ChapterLinks(document, stage).feed(markup)
+
+
+def build(stage, review_pr=None):
+    for path in (ROOT / 'editions/adult').rglob('*.md'):
+        relative = path.relative_to(ROOT / 'editions/adult')
+        if relative.parts[0] not in ('chapters', 'overviews') or not (ROOT / relative).is_file():
+            raise ValueError(f'大朋友版稿件缺少对应章节：{relative}')
+    build_edition(stage, review_pr, adult=False)
+    (stage / 'adult').mkdir()
+    build_edition(stage / 'adult', review_pr, adult=True)
+    for document in stage.rglob('*.html'):
+        ChapterLinks(document, stage).feed(document.read_text(encoding='utf-8'))
     (stage / '.nojekyll').touch()
     (stage / MARKER).touch()
 

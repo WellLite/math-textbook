@@ -6,6 +6,18 @@
   const topic = document.querySelector('[data-reading-topic]');
   const resumeLinks = document.querySelectorAll('[data-resume-reading]');
 
+  const editionLink = document.querySelector('[data-switch-edition]');
+  if (editionLink) {
+    function preserveSection() {
+      const fragment = location.hash;
+      // Chapter titles can change between editions. Share only stable reading anchors.
+      editionLink.hash = /^#(?:topic\/|world-|definitions$|demo-|olympiad)/.test(fragment) ? fragment : '';
+    }
+    preserveSection();
+    window.addEventListener('hashchange', preserveSection);
+    editionLink.addEventListener('click', preserveSection);
+  }
+
   function read(key, storage = 'localStorage') {
     try { return JSON.parse(window[storage].getItem(key)); } catch { return null; }
   }

@@ -411,3 +411,10 @@ body:has(#olympiad[open]) {overflow:hidden}
   #reading-start {padding-inline:.65rem; column-gap:.65rem; font-size:.85rem}
   #first-chapters {column-gap:.65rem}
 }
+
+.reader-editions {display:inline-flex; align-items:stretch; padding:2px; gap:2px; border:1px solid #b4c6be; border-radius:7px; background:#f4f6f0; vertical-align:middle; white-space:nowrap}
+.reader-editions > * {display:inline-flex; align-items:center; justify-content:center; min-height:36px; padding:0 .65rem; border-radius:4px; color:#26544e; font:600 .86rem/1.4 var(--reading-sans,system-ui,sans-serif); text-decoration:none}
+.reader-editions > [aria-current] {background:#28564e; color:white}
+.reader-editions > a:hover {background:#e1ebe4; color:#173b35}
+#reading > .reader-editions {margin-bottom:1.3rem}
+@media print {.reader-editions {display:none}}
