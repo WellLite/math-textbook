@@ -82,7 +82,17 @@ def chapter_sources(atlas):
     return chapters
 
 
-def page(title, body, root, directory=False, outline='', pending=False):
+def feedback_link(review_pr, source=None):
+    if not review_pr:
+        return ''
+    target = f'https://github.com/WellLite/math-textbook/pull/{review_pr}'
+    if source is not None:
+        digest = sha256(source.as_posix().encode('utf-8')).hexdigest()
+        target += f'/files#diff-{digest}'
+    return f'<a class="review-link" href="{target}" title="在 GitHub 给审阅稿反馈">给反馈</a>'
+
+
+def page(title, body, root, directory=False, outline='', pending=False, feedback=''):
     reading_tools = '' if directory or pending else '<button id="large-type" type="button" aria-pressed="false" hidden>大字阅读</button>'
     page_class = 'directory' if directory else 'chapter'
     main = f'<main class="{page_class}" id="reading" tabindex="-1">{body}</main>'
@@ -98,7 +108,7 @@ def page(title, body, root, directory=False, outline='', pending=False):
 <title>{escape(title)} · 数学地图</title>
 <link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css">{outline_assets}<script src="{root}reader.js" defer></script>
 </head>
-<body class="chapter-page{' with-outline' if outline else ''}"><a class="skip-reading" href="#reading">跳到正文</a><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><nav aria-label="阅读导航">{reading_tools}<a href="{root}chapters/index.html">教材目录</a></nav></header>
+<body class="chapter-page{' with-outline' if outline else ''}"><a class="skip-reading" href="#reading">跳到正文</a><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><nav aria-label="阅读导航">{reading_tools}<a href="{root}chapters/index.html">教材目录</a>{feedback}</nav></header>
 {main}</body></html>
 '''
 
@@ -230,7 +240,7 @@ def render_markdown(text, *, overview=False):
     ).stdout
 
 
-def write_overview(stage, world, paths):
+def write_overview(stage, world, paths, review_pr):
     source = ROOT / 'overviews' / (quote(world['id'], safe='') + '.md')
     path = PurePosixPath(unquote(world['overviewPage']))
     nodes = {n['id']: n for n in world['nodes']}
@@ -274,10 +284,11 @@ def write_overview(stage, world, paths):
             '<span role="status"></span></div>' + glossary_html + '</article>')
     output = stage / path
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(page(title, body, root, outline=outline), encoding='utf-8')
+    feedback = feedback_link(review_pr, source.relative_to(ROOT))
+    output.write_text(page(title, body, root, outline=outline, feedback=feedback), encoding='utf-8')
 
 
-def build(stage):
+def build(stage, review_pr=None):
     atlas_path = ROOT / 'content/map.json'
     atlas = json.loads(atlas_path.read_text(encoding='utf-8'))
     chapters = chapter_sources(atlas)
@@ -287,6 +298,8 @@ def build(stage):
         raise ValueError(f'章节文件与地图的 chapter 引用不一致：{mismatch}')
     for name in SITE_FILES:
         shutil.copyfile(ROOT / 'site' / name, stage / name)
+    home = stage / 'index.html'
+    home.write_text(home.read_text(encoding='utf-8').replace('<!-- review-feedback -->', feedback_link(review_pr)), encoding='utf-8')
     worlds = {world['id']: world for world in atlas['views'] if world['id'] != 'overview'}
     paths = reader_paths(worlds.values())
     occupied_paths = set(paths.values())
@@ -314,7 +327,7 @@ def build(stage):
         titles[source] = title
         articles[source] = render_markdown(text)
     for world_id, world in worlds.items():
-        write_overview(stage, world, paths)
+        write_overview(stage, world, paths, review_pr)
         for node in world['nodes']:
             path = paths[world_id, node['id']]
             output = stage / path
@@ -322,8 +335,8 @@ def build(stage):
             map_href = f'{root}index.html#topic/{quote(world_id, safe="")}/{quote(node["id"], safe="")}'
             outline = chapter_outline(world, node['id'], path, paths, map_href)
             label = escape(node['label'])
-            if node.get('chapter'):
-                source = PurePosixPath(node['chapter'])
+            source = PurePosixPath(node['chapter']) if node.get('chapter') else None
+            if source:
                 title = titles[source]
                 # A bookmark to a topic created before its lesson was written still opens it.
                 bookmark = topic_address(world_id, node['id'])
@@ -346,9 +359,10 @@ def build(stage):
                         f'<footer class="reading-end"><nav class="map-return" aria-label="返回导航">'
                         f'<a href="{map_href}">查看「{label}」的知识联系</a></nav></footer>')
             output.parent.mkdir(parents=True, exist_ok=True)
-            output.write_text(page(title, body, root, outline=outline, pending=not node.get('chapter')), encoding='utf-8')
+            feedback = feedback_link(review_pr, source)
+            output.write_text(page(title, body, root, outline=outline, pending=not node.get('chapter'), feedback=feedback), encoding='utf-8')
     index = chapter_directory(atlas, titles)
-    (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True), encoding='utf-8')
+    (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True, feedback=feedback_link(review_pr)), encoding='utf-8')
     # Browsers can retain yesterday's map scripts or data when a reader reopens the book.
     assets = {name: sha256((stage / name).read_bytes()).hexdigest()[:12]
               for name in (*SITE_FILES, 'content/map.json') if not name.endswith('.html')}
@@ -365,14 +379,18 @@ def build(stage):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT / '_site')
-    dest = parser.parse_args().output.resolve()
+    parser.add_argument('--review-pr', type=int, metavar='NUMBER', help='在审阅站显示进入指定 GitHub PR 的反馈链接')
+    args = parser.parse_args()
+    if args.review_pr is not None and args.review_pr < 1:
+        parser.error('审阅 PR 编号应当为正整数。')
+    dest = args.output.resolve()
     if dest.exists() and (not dest.is_dir() or (any(dest.iterdir()) and not (dest / MARKER).is_file())):
         parser.error('输出目录已有其他文件，请选择空目录。')
     dest.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=dest.parent) as temporary:
         stage = Path(temporary) / 'site'
         stage.mkdir()
-        build(stage)
+        build(stage, args.review_pr)
         previous = Path(temporary) / 'previous'
         if dest.exists():
             os.replace(dest, previous)

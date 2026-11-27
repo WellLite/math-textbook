@@ -45,6 +45,10 @@ button.active:hover, button[aria-pressed=true]:hover, button.primary:hover {back
 .brand-mark::before, .brand-mark::after {content: ""; position: absolute; inset: 5px 0; border: 1px solid currentColor; border-radius: 50%; transform: rotate(-42deg)}
 .brand-mark::after {transform: rotate(42deg); opacity: .52}
 .brand-mark i {position: absolute; top: 5px; right: 1px; width: 7px; height: 7px; border-radius: 50%; background: var(--atlas-accent); outline: 2px solid var(--atlas-paper)}
+.atlas-header .review-link {
+  display:inline-flex; align-items:center; min-height:32px; margin-inline-start:.35rem;
+  color:var(--blue); font-size:.87rem; text-underline-offset:.22em;
+}
 .header-actions {display: flex; align-items: center; gap: .6rem}
 .section-link {
   display:inline-flex; align-items:center; justify-content:center; gap:.65rem; min-height:44px;

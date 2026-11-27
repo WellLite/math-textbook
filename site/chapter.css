@@ -211,6 +211,11 @@
   .reading-layout:has(.outline-panel:not(.has-toggle)) {display: block}
   .outline-panel:not(.has-toggle) {position: static; height: auto; max-height: 32vh; border-block-end: 1px solid var(--reading-rule)}
 }
+@media (max-width: 365px) {
+  .chapter-header nav:has(.review-link) {gap: .25rem}
+  .chapter-header nav:has(.review-link) > * {padding-inline: .1rem; white-space: nowrap}
+}
+
 @media print {
   .chapter-page {background: white; color: black}
   .chapter-header, .skip-reading, .reading-end, .directory-find, .resume-link, .outline-panel {display: none}
