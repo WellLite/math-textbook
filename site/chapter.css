@@ -1,15 +1,249 @@
-.chapter-page {margin:0; background:var(--atlas-paper); line-height:1.85; color:var(--atlas-ink)}
-.chapter-header {display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:66px; padding:.6rem clamp(1rem,5vw,4rem); border-bottom:1px solid var(--atlas-rule)}
-.chapter-header .brand {font-family:var(--atlas-serif); font-size:1.4rem; font-weight:700; text-decoration:none}
-.chapter-page a {color:var(--blue); text-underline-offset:.2em}
-.chapter {max-width:48rem; margin:auto; padding:clamp(2rem,6vw,4.2rem) clamp(1.1rem,4vw,2rem) 5rem; font-family:var(--atlas-serif); font-size:clamp(1.05rem,1.6vw,1.2rem); overflow-wrap:anywhere}
-.chapter h1 {font-size:clamp(1.7rem,4.5vw,2.6rem); line-height:1.35; margin:0 0 2.25rem; text-wrap:balance}
-.chapter h2,.chapter h3 {margin:2.15em 0 .5em}
-.chapter p {margin:.9em 0}
-.chapter li {margin:.4em 0}
-.chapter math[display="block"] {display:block math; max-width:100%; overflow-x:auto; padding:.55rem 0}
-.chapter img {max-width:100%; height:auto}
-.chapter details {margin:1rem 0; padding:.5rem 1rem; border-left:2px solid #8aaca1; background:#edf2eb}
-.chapter summary {cursor:pointer}
-.map-return {display:flex; flex-wrap:wrap; gap:.8rem; align-items:baseline; margin-top:3rem; border-top:1px solid var(--atlas-rule); padding-top:1rem; color:var(--atlas-muted); font:1rem/1.6 system-ui,sans-serif}
-.chapter-directory {padding-left:1.3rem}
+.chapter-page {
+  --reading-paper: #fdfcf8;
+  --reading-ink: #263733;
+  --reading-teal: #245d56;
+  --reading-rule: #d9dfd5;
+  --reading-muted: #536862;
+  --reading-sans: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  margin: 0;
+  background: var(--reading-paper);
+  color: var(--reading-ink);
+  font-family: var(--reading-sans);
+}
+.chapter-page a {color: var(--reading-teal); text-underline-offset: .22em; text-decoration-thickness: 1px}
+.chapter-page a:hover {color: #854728}
+.chapter-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .55rem clamp(1rem, 4.5vw, 4rem);
+  min-height: 62px; border-bottom: 1px solid var(--reading-rule);
+  position: sticky; top: 0; z-index: 2; background: var(--reading-paper);
+}
+.chapter-header .brand {font: 700 1.25rem/1.25 var(--atlas-serif); text-decoration: none}
+.chapter-header .brand-mark {width: 28px; height: 28px}
+.chapter-header nav {display: flex; align-items: center; gap: clamp(.55rem, 2.4vw, 1.8rem)}
+.chapter-header nav a, .chapter-header button {
+  display: inline-flex; align-items: center; min-height: 44px; padding: .25rem .3rem; font: 500 .9rem/1.4 var(--reading-sans);
+}
+.chapter-header nav a {text-decoration: none}
+.chapter-header nav a:hover {text-decoration: underline}
+.chapter-header button {border: 0; border-radius: 3px; color: var(--reading-muted)}
+.chapter-header button[aria-pressed="true"] {background: #deebe3; color: #204b43; padding-inline: .55rem}
+.skip-reading {position: absolute; z-index: 5; transform: translateY(-150%); background: var(--reading-paper); padding: .75rem}
+.skip-reading:focus {transform: none}
+.chapter {
+  font-size: clamp(1.1rem, 1rem + .24vw, 1.25rem); line-height: 1.93;
+  max-width: 35em; width: calc(100% - 2.5rem); margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(3.5rem, 8vw, 7rem);
+  overflow-wrap: break-word; line-break: strict;
+}
+.large-type .chapter {font-size: clamp(1.3rem, 1.2rem + .3vw, 1.55rem)}
+.chapter .reading-context {
+  display: flex; align-items: center; flex-wrap: wrap; column-gap: .55rem;
+  margin: 0 0 1rem; color: var(--reading-muted); font: 500 .86rem/1.6 var(--reading-sans);
+}
+.reading-context a {text-decoration: none}
+.reading-context a:hover {text-decoration: underline}
+.reading-context [aria-hidden] {color: #88998d}
+.chapter h1, .chapter h2, .chapter h3, .directory h1, .directory h2 {font-family: var(--atlas-serif); color: #203f39}
+.chapter article h1 {
+  margin: 0 0 1em; font-size: clamp(1.85rem, 1.3rem + 2.1vw, 2.85rem);
+  line-height: 1.36; letter-spacing: .01em; text-wrap: pretty;
+}
+.chapter article h2 {font-size: 1.3em; margin: 2.1em 0 .7em; line-height: 1.55; text-wrap: pretty}
+.chapter article h3 {font-size: 1.09em; margin: 1.75em 0 .6em; line-height: 1.6}
+.chapter article p {margin: .86em 0}
+.chapter article strong {font-weight: 720; color: #203c36}
+.outline-intro {display:flex; align-items:center; gap:.55rem; min-height:44px; padding:.4rem 1rem;
+  border-block:1px solid var(--reading-rule); font-size:.88rem; text-decoration:none}
+.outline-intro::before {content:""; width:.6rem; height:.72rem; border:1.5px solid currentColor;
+  border-inline-start-width:3px; border-radius:2px; flex:none}
+.outline-intro[aria-current] {background:#dfeadf; font-weight:700}
+.outline-intro:hover, .outline-intro:focus-visible {text-decoration:underline}
+.overview-actions {display:flex; flex-wrap:wrap; gap:.15rem 1.5rem; margin:1.15em 0;
+  border-block:1px solid var(--reading-rule); padding:.3em 0}
+.overview-actions a {display:inline-flex; align-items:center; min-height:44px; font-size:.92em}
+.chapter-overview .overview-status {color:var(--reading-muted); font-size:.84em}
+.definition-find:not([hidden]) {display:flex; flex-wrap:wrap; align-items:center; gap:.45rem .7rem; font-size:.86em}
+.definition-find input {min-width:0; max-width:100%; width:13em; min-height:40px; color:inherit; background:#fff;
+  border:1px solid #aab9ad; border-radius:4px; padding:.35em .65em}
+.chapter .definition-group ul {list-style:none; padding:0}
+.chapter .definition-group li {margin:.6em 0}
+.definition-group li > strong:first-child {margin-inline-end:.2em}
+.chapter-overview .inline-formula {display:inline-block; vertical-align:middle; max-width:100%;
+  overflow-x:auto; overscroll-behavior-x:contain; scrollbar-width:thin}
+.definition-group h3 a {text-decoration-thickness:1px; text-underline-offset:.18em}
+@media (min-width:641px) {.directory-layout nav {max-height:calc(100dvh - 6rem); overflow-y:auto}}
+@media (max-width:419px) {.outline-panel.has-toggle:not(.is-open) .outline-intro {justify-content:center; padding:0}}
+.chapter article :is(ul, ol) {padding-inline-start: 1.5em}
+.chapter article li {margin: .55em 0}
+.chapter article li::marker {color: #546e65}
+.chapter article figure {margin: 1.4em 0 1.7em; text-align: center}
+.chapter article img {max-width: 100%; height: auto; vertical-align: middle}
+.chapter article figcaption {max-width: 40em; margin: .6rem auto 0; color: var(--reading-muted); font: .84em/1.65 var(--reading-sans); text-wrap: pretty}
+.chapter .equation-block, .chapter .table-scroll {max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain}
+.chapter .equation-block {
+  margin: .85em 0 1.1em; padding: .75em .85em; border-left: 2px solid #a3b9a9;
+  background: #f0f4ec; scrollbar-width: thin;
+}
+.chapter .equation-block math[display="block"] {
+  display: block math; width: max-content; max-width: none; margin-inline: auto;
+}
+.chapter article math {font-size: 1.01em}
+.chapter .table-scroll {margin-block: 1.1em 1.4em}
+.chapter table {width: 100%; border-collapse: collapse; font-size: .92em; line-height: 1.65}
+.chapter :is(td, th) {padding: .6em .72em; text-align: start; vertical-align: top; border-bottom: 1px solid var(--reading-rule)}
+.chapter th {background: #edf2eb; font-weight: 620}
+.chapter details {margin: 1.1em 0; padding: .55em .9em; border-left: 2px solid #96aa98; background: #f0f4ec}
+.chapter summary {cursor: pointer; color: var(--reading-teal)}
+.reading-end {margin-top: 2.5em; border-top: 1px solid var(--reading-rule); padding-top: 1.35em}
+.next-reading h2 {font-size: 1.06em; line-height: 1.45; margin: 0 0 .45em}
+.next-reading a, .map-return a {display: inline-flex; align-items: center; gap: .55em; min-height: 44px; margin-right: 1.2em; font-size: .95em}
+.next-reading a {flex-direction: column; align-items: flex-start; justify-content: center; gap: .05em;
+  margin-bottom: .75em; margin-right: 1.45em; text-decoration: none; font-weight: 550; line-height: 1.6}
+.next-reading small {color: var(--reading-muted); font-size: .83em; font-weight: 400}
+.next-reading a:hover {text-decoration: underline}
+.map-return {display: flex; gap: .45em .75em; flex-wrap: wrap; align-items: center; color: var(--reading-muted); font-size: .85em}
+.directory {max-width: 66rem; margin: auto; padding: clamp(2.2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 3rem) 6rem}
+.directory-heading {display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8em; margin: 0 0 1.8rem}
+.directory h1 {margin: 0; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.3}
+.directory-heading p {margin: .5em 0 0; font-size: .95rem; color: var(--reading-muted)}
+.resume-link {display: inline-flex; align-items: center; min-height: 44px; font-weight: 550}
+.directory-find {display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .8rem; margin-bottom: 2rem}
+.directory-find label {font-size: .95rem; color: var(--reading-muted)}
+.directory-find input {width: min(23rem, 100%); min-height: 44px; padding: .55em .8em; border: 1px solid #aab9ad; border-radius: 4px; background: #fff; color: var(--reading-ink)}
+#found-lessons {font-size: .88rem; color: var(--reading-muted)}
+.directory-layout {display: grid; grid-template-columns: minmax(10rem, .38fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start}
+.directory-layout:has(nav[hidden]) {grid-template-columns: 1fr}
+.directory-layout nav {display: grid; position: sticky; top: 5rem; border-block-start: 1px solid var(--reading-rule); padding-top: .6rem}
+.directory-layout nav a {display: flex; align-items: center; min-height: 44px; padding: .4em .2em; text-decoration: none; font-size: .94rem}
+.directory-layout nav a:hover, .chapter-directory a:hover span {text-decoration: underline}
+.directory-section {margin: 0 0 2.8rem}
+.directory-section h2 {border-top: 2px solid #698d81; padding-top: .85em; margin: 0; font-size: clamp(1.25rem, 3vw, 1.55rem); scroll-margin-top: 5rem}
+.chapter-page :is(#reading, article h2, article h3) {scroll-margin-top: 4.6rem}
+.map-return .directory-return {color: var(--reading-muted)}
+.chapter-directory {padding: 0; margin: .35rem 0 0; list-style: none}
+.chapter-directory li {border-bottom: 1px solid var(--reading-rule)}
+.chapter-directory a {display: block; padding: .75em 0; text-decoration: none; line-height: 1.55}
+.chapter-directory small {display: block; color: var(--reading-muted); font-size: .82rem; margin-bottom: .18em}
+.chapter-directory span {font-size: 1.05rem}
+.with-outline {
+  --chapter-header-height: 62px;
+  --outline-paper: #f1f4ed;
+  --outline-width: clamp(12.5rem, 19vw, 16.5rem);
+}
+.with-outline .chapter-header {z-index: 3}
+.reading-layout {
+  display: grid; grid-template-columns: var(--outline-width) minmax(0, 1fr);
+  align-items: start; min-height: calc(100vh - var(--chapter-header-height));
+  min-height: calc(100dvh - var(--chapter-header-height));
+}
+.reading-layout > .chapter {
+  min-width: 0; width: calc(100% - clamp(2.5rem, 9vw, 9rem));
+  padding-top: clamp(1.8rem, 2.5vw, 2.5rem);
+}
+.outline-panel {
+  position: sticky; top: var(--chapter-header-height); z-index: 1;
+  display: flex; flex-direction: column; min-width: 0;
+  height: calc(100vh - var(--chapter-header-height));
+  height: calc(100dvh - var(--chapter-header-height));
+  color: var(--reading-ink); background: var(--outline-paper);
+  border-inline-end: 1px solid var(--reading-rule);
+}
+#chapter-outline {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain;
+  scrollbar-width: thin; padding-block-end: 1.5rem;
+}
+#chapter-outline h2 {
+  padding: 1.8rem 1.1rem .95rem; color: var(--reading-teal);
+  font: 650 1.14rem/1.5 var(--atlas-serif); text-wrap: pretty;
+  position: sticky; top: 0; z-index: 1; background: var(--outline-paper);
+}
+#chapter-outline a {scroll-margin-block: 5rem .5rem}
+.outline-map-link {
+  display: flex; align-items: center; min-height: 44px; margin: .8rem .85rem 0;
+  border-top: 1px solid var(--reading-rule); padding: .55rem .25rem 0;
+  font-size: .85rem; text-decoration: none;
+}
+.outline-map-link:hover {text-decoration: underline}
+.outline-toggle {display: none}
+@media (min-width: 420px) {
+  .reading-layout .reading-context {display: none}
+}
+@media (min-width: 1080px) {
+  .reading-layout > .chapter {margin-inline-start: clamp(3rem, 7vw, 8.5rem)}
+}
+@media (max-width: 640px) {
+  .chapter-header {min-height: 54px; gap: .4rem; padding: .15rem .85rem}
+  .chapter-header .brand {font-size: 1.08rem; gap: .45rem}
+  .chapter-header .brand-mark {width: 23px; height: 23px}
+  .chapter {width: calc(100% - 2rem); line-height: 1.85}
+  .chapter .reading-context {margin-bottom: .7rem; font-size: .8rem}
+  .chapter article h1 {margin-bottom: .75em}
+  .directory-layout {display: block}
+  .directory-layout nav {position: static; display: flex; flex-wrap: wrap; gap: 0 1.1rem; margin-bottom: 1.6rem}
+  .directory-find {margin-bottom: 1.2rem}
+  .directory-find input {flex: 1 1 12rem}
+}
+@media (max-width: 699px) {
+  .with-outline {--outline-width: clamp(7.2rem, 27vw, 9.6rem)}
+  .reading-layout > .chapter {width: calc(100% - clamp(1.2rem, 4.9vw, 2.2rem)); padding-top: 1.6rem}
+  .reading-layout > .chapter article h1 {font-size: clamp(1.57rem, 1.18rem + 2.15vw, 2.1rem)}
+  #chapter-outline h2 {padding: 1.4rem .5rem .9rem; font-size: .93rem}
+  .outline-map-link {margin-inline: .4rem; font-size: .77rem}
+}
+@media (max-width: 419px) {
+  .with-outline {--outline-width: 45px}
+  .outline-panel.has-toggle.is-open {width: min(16rem, calc(100vw - 3.6rem)); z-index: 2; box-shadow: 8px 0 22px -10px #30453e42}
+  .outline-panel.has-toggle .outline-toggle {
+    flex: none; width: 100%; min-height: 46px; display: flex; justify-content: center;
+    align-items: center; gap: .6em; border: 0; border-radius: 0; border-bottom: 1px solid var(--reading-rule);
+    padding: 0; background: var(--outline-paper); color: var(--reading-teal); font-size: .76rem; font-weight: 600;
+  }
+  .outline-panel.is-open .outline-toggle {justify-content: space-between; padding: 0 1rem}
+  .outline-panel.is-open .outline-toggle::after {
+    content: ""; width: .49rem; height: .49rem; border: solid currentColor; border-width: 0 0 1.5px 1.5px;
+    transform: rotate(45deg);
+  }
+  .outline-panel.has-toggle:not(.is-open) :is(#chapter-outline h2, .outline-map-link) {display: none}
+  .outline-panel.has-toggle.is-open #chapter-outline h2 {padding: 1rem 1rem .7rem; font-size: 1.05rem}
+  .outline-panel .outline-toggle:focus-visible {outline-offset: -3px}
+  /* Let the complete list remain reachable if scripting is unavailable. */
+  .reading-layout:has(.outline-panel:not(.has-toggle)) {display: block}
+  .outline-panel:not(.has-toggle) {position: static; height: auto; max-height: 32vh; border-block-end: 1px solid var(--reading-rule)}
+}
+@media (max-width: 365px) {
+  .chapter-header nav:has(.review-link) {gap: .25rem}
+  .chapter-header nav:has(.review-link) > * {padding-inline: .1rem; white-space: nowrap}
+}
+
+@media print {
+  .chapter-page {background: white; color: black}
+  .chapter-header, .skip-reading, .reading-end, .directory-find, .resume-link, .outline-panel {display: none}
+  .reading-layout {display: block; min-height: 0}
+  .chapter, .reading-layout > .chapter {width: auto; max-width: none; padding: 0; font-size: 11pt}
+  .chapter h2, .chapter h3 {break-after: avoid}
+  .chapter figure, .chapter .equation-block {break-inside: avoid}
+  .chapter .equation-block, .chapter .table-scroll {overflow: visible}
+}
+
+.math-demo {margin-inline:auto; max-width:34rem; padding:clamp(.8rem,3vw,1.4rem); border:1px solid #b9cec3; border-radius:9px; background:#f8faf7; text-align:left; font:400 1rem/1.6 var(--reading-sans)}
+.chapter .math-demo h3 {margin:0 0 .25rem; font-size:1.15rem}
+.demo-picture {display:grid; place-items:center; margin-block:.4rem}
+.demo-picture svg {display:block; width:100%; max-height:17rem}
+.math-demo label {font-weight:600; font-size:.85rem}
+.demo-settings:empty {display:none}
+.demo-settings select {margin-bottom:.6rem; color:var(--reading-ink); border:1px solid #9eb9ab; border-radius:4px; background:white; padding:.4rem .6rem; min-height:38px; font:inherit; font-size:.87rem; max-width:100%}
+.demo-seek {display:grid; grid-template-columns:minmax(0,1fr) 3.7rem; align-items:center; gap:.7rem}
+.demo-seek input {margin:0; display:block; width:100%; height:38px; accent-color:#176457; cursor:pointer}
+.demo-play {min-height:38px; color:#1f554a; border-color:#a8c3b6; background:#fff}
+.demo-ticks {display:flex; width:calc(100% - 4.4rem); justify-content:space-between; gap:.2rem; color:#596c63; font-size:.75rem}
+.chapter article .demo-status {margin:.8rem 0 0; padding-top:.7rem; border-top:1px solid #d0ddd4; min-height:3em; font-size:.93rem; line-height:1.55}
+.has-math-demo > img, .has-math-demo > p:has(> img) {display:none}
+@media print {
+  .math-demo {display:none}
+  .has-math-demo > img, .has-math-demo > p:has(> img) {display:block}
+}
+
+.demo-picture:has([data-drag-point]) {touch-action:none}
+.demo-picture [data-drag-point] {cursor:ns-resize}
+figure[id^="demo-"] {scroll-margin-top:calc(var(--chapter-header-height, 62px) + .7rem)}

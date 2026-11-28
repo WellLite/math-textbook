@@ -7,36 +7,38 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="ocean.css" />
     <link rel="stylesheet" href="learning-view.css" />
+    <script src="reader.js" defer></script>
   </head>
-  <body data-view="student">
+  <body data-view="student" data-map-source="content/map.json">
     <header class="atlas-header">
       <div class="brand">
         <span class="brand-mark" aria-hidden="true"><i></i></span>
-        <h1>数学地图</h1>
+        <h1>数学地图</h1><!-- review-feedback -->
       </div>
-      <div class="header-actions">
+      <nav class="header-actions" aria-label="教材导航">
         <a class="section-link" href="chapters/index.html">教材正文</a>
         <button id="open-olympiad" aria-haspopup="dialog" disabled>奥赛专题</button>
         <button id="open-search" aria-haspopup="dialog" disabled>
           <span class="search-mark" aria-hidden="true"></span>查找知识点
         </button>
-      </div>
+      </nav>
     </header>
     <div class="workspace">
-      <nav aria-label="数学板块">
-        <div class="nav-heading">教材目录</div>
-        <button class="nav-all" id="nav-all">查看全部板块</button>
-        <div id="world-list"></div>
-      </nav>
-      <main>
+      <main id="map-panel" tabindex="-1">
         <div class="toolbar">
           <div class="crumb">
             <button id="back" hidden>全部板块</button><strong id="view-title">知识深度图</strong>
           </div>
+          <a class="map-resume" data-resume-reading hidden></a>
           <div class="tools">
+            <!-- edition-switch -->
             <button id="all-links" aria-pressed="false" title="切换逐层路线和全部原始连线">全部连线</button>
           </div>
         </div>
+        <nav id="reading-start" aria-label="从基础开始阅读" hidden>
+          <span class="reading-start-label">从这里读</span>
+          <div id="first-chapters"></div>
+        </nav>
         <div id="canvas">
           <svg id="map" aria-label="数学知识地图">
             <defs>
@@ -56,11 +58,12 @@
           </svg>
           <div class="map-bottom">
             <div class="legend">
-              <span class="legend-item"><i class="line route"></i>推进路线</span
-              ><span class="legend-item"><i class="line prerequisite"></i>必要前置</span
+              <span class="legend-item" id="route-key"><i class="line route"></i>推进路线</span
+              ><span class="legend-item" id="prerequisite-key"><i class="line prerequisite"></i>必要前置</span
               ><span class="legend-item" id="relay-key" hidden
                 ><i class="relay-key-symbol" aria-hidden="true"></i>续接上游联系</span
-              ><span class="legend-item" id="perspective-key"><i class="line perspective"></i>理解联系</span>
+              ><span class="legend-item" id="perspective-key"><i class="line perspective"></i>理解联系</span
+              ><span class="legend-item" id="section-key" hidden><i class="line section"></i>跨章小节</span>
             </div>
             <div class="zoom">
               <button id="zoom-out" aria-label="缩小">−</button><span id="zoom-value">100%</span

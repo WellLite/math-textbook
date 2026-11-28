@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 222" role="img" aria-labelledby="t d">
+  <title id="t">从条纹试到交错染色</title>
+  <desc id="d">两块四乘四的方格局部各放了一横一竖两块牌。条纹图的竖牌下是两块同色格；棋盘图中的每一块牌下都有两种颜色。</desc>
+  <defs>
+    <pattern id="stripes" width="72" height="36" patternUnits="userSpaceOnUse"><path fill="#739c93" d="M0 0h36v36H0z"/><path fill="#f7edda" d="M36 0h36v36H36z"/></pattern>
+    <pattern id="check" width="72" height="72" patternUnits="userSpaceOnUse"><path fill="#739c93" d="M0 0h72v72H0z"/><path fill="#f7edda" d="M36 0h36v36H36zM0 36h36v36H0z"/></pattern>
+    <g id="grid"><path fill="none" stroke="#526c68" stroke-width="1" d="M0 0h144v144H0zM36 0v144M72 0v144M108 0v144M0 36h144M0 72h144M0 108h144"/></g>
+    <g id="tiles" fill="none" stroke="#7d3028" stroke-width="4"><rect x="4" y="4" width="64" height="28" rx="8"/><rect x="76" y="40" width="28" height="64" rx="8"/></g>
+  </defs>
+  <g transform="translate(49 24)"><rect width="144" height="144" fill="url(#stripes)"/><use href="#grid"/><use href="#tiles"/></g>
+  <g transform="translate(302 24)"><rect width="144" height="144" fill="url(#check)"/><use href="#grid"/><use href="#tiles"/></g>
+  <g font-family="sans-serif" fill="#263f3b" font-size="16" text-anchor="middle"><text x="121" y="197">各列轮流换色</text><text x="374" y="197">下一行也换色</text></g>
+</svg>

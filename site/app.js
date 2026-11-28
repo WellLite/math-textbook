@@ -33,12 +33,14 @@ let data,
   selection = null;
 let camera = { x: 0, y: 0, k: 1 },
   gesture = null,
+  pendingMapClick = null,
   toastTimer = null;
 let navigationReady = false,
   keepTopicCentered = false,
   topicLayout = null;
 let showAllLinks = false,
   learningLayout = null;
+let chapterTrace = null, hoverPoint = null, traceExitTimer;
 const adjacentMode = () => !showAllLinks;
 const olympiadFields = {
   algebra: {
@@ -87,6 +89,7 @@ function oceanData() {
 const overview = () => data.views.find((v) => v.id === 'overview');
 const view = (id) => data.views.find((v) => v.id === id);
 const worlds = () => data.views.filter((v) => v.id !== 'overview');
+const chapterHref = (node) => node.readingPage || node.chapter?.replace(/\.md$/, '.html');
 const worldTitle = (id) => overview().nodes.find((n) => n.target === id)?.label || view(id)?.title || id;
 const color = (id) =>
   COLORS[
@@ -255,12 +258,24 @@ function select(ref) {
   replaceTopicAddress();
   renderCanvas();
   renderInspector();
-  if (ref && matchMedia('(max-width:640px)').matches) {
+  revealInspector();
+}
+function revealInspector() {
+  inspector.closest('.workspace').classList.toggle('topic-open', Boolean(inspector.querySelector('.chapter-link')));
+  if (selection && matchMedia('(max-width:640px)').matches) {
     inspector.scrollIntoView({ block: 'start' });
   }
 }
 function enter(id) {
+  if (id !== 'overview') {
+    const front = view(id)?.overviewPage;
+    if (front) {
+      location.assign(front);
+      return;
+    }
+  }
   frameWholeOcean = false;
+  inspector.closest('.workspace').classList.remove('topic-open');
   scope = id;
   selection = id === 'overview' ? null : { type: 'world', world: id };
   render();
@@ -269,6 +284,11 @@ function enter(id) {
 
 function actionNode(ref) {
   if (ref.type === 'world') enter(ref.world);
+  else if (scope === 'overview' && ref.type === 'node') {
+    const node = view(ref.world).nodes.find(n => n.id === ref.node);
+    if (node && chapterHref(node)) location.assign(chapterHref(node));
+    else select(ref);
+  }
   else select(ref);
 }
 function interactive(g, ref, label) {
@@ -280,6 +300,8 @@ function interactive(g, ref, label) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       actionNode(ref);
+      if (ref.type === 'node') inspector.querySelector('.chapter-link')?.focus({ preventScroll: true });
+      if (ref.type === 'chapter-connection') inspector.querySelector('button')?.focus({ preventScroll: true });
     }
   });
 }
@@ -319,13 +341,18 @@ function edgeElement(edge, ref, path) {
 }
 function renderCanvas() {
   if (!data) return;
+  clearTimeout(traceExitTimer);
+  chapterTrace = null;
   scene.classList.remove('trace-world');
   svg.classList.toggle('ocean-overview', scope === 'overview');
   scene.replaceChildren();
   scene.setAttribute('transform', `translate(${camera.x},${camera.y}) scale(${camera.k})`);
   $('zoom-value').textContent = Math.round(camera.k * 100) + '%';
   svg.classList.toggle('adjacent-map', adjacentMode());
+  $('route-key').hidden = false;
+  $('prerequisite-key').hidden = false;
   $('perspective-key').hidden = adjacentMode();
+  $('section-key').hidden = true;
   $('relay-key').hidden = true;
   if (adjacentMode()) {
     const { map, course, graph, layout } = learningMap();
@@ -428,33 +455,18 @@ function renderCanvas() {
     });
   }
 
-  $('map-hint').textContent = adjacentMode()
+  $('map-hint').textContent = scope === 'overview'
+    ? matchMedia('(hover: hover)').matches
+      ? '指向大圆看章节联系，点连线看缘由。点大圆读一章，点小圆读一节。'
+      : '点大圆读一章，点小圆读一节。拖动地图可以继续向下看。'
+    : adjacentMode()
     ? '沿箭头逐层往下读，点线查看两端的联系。'
-    : scope === 'overview'
-      ? '点大圆展开板块，点小圆查看跨板块联系。'
-      : '点知识点阅读讲解，点连线查看它们之间的联系。';
-}
-function renderNav() {
-  const list = $('world-list');
-  list.replaceChildren();
-  for (const band of OceanMap.bands(data)) {
-    const nodes = overview().nodes.filter((node) => node.level === band.level);
-    if (!nodes.length) continue;
-    list.append(html('div', { class: 'nav-depth' }, [band.title, band.subtitle].filter(Boolean).join(' · ')));
-    for (const node of nodes) {
-      const world = view(node.target);
-      const item = button('', () => enter(world.id), 'world-nav' + (scope === world.id ? ' current' : ''));
-      item.setAttribute('aria-label', '打开板块 ' + node.label);
-      const swatch = html('span', { class: 'swatch' });
-      swatch.style.background = color(world.id);
-      item.append(
-        swatch,
-        html('span', { class: 'nav-name' }, node.label),
-        html('span', { class: 'count' }, String(world.nodes.length)),
-      );
-      list.append(item);
-    }
+    : '点知识点查看相关内容，点连线查看两端的联系。';
+  if (scope === 'overview' && !gesture) {
+    traceTarget(hoverPoint && document.elementFromPoint(hoverPoint.x, hoverPoint.y));
   }
+}
+function renderMapHeading() {
   $('view-title').textContent =
     scope === 'overview'
       ? oceanField
@@ -462,6 +474,16 @@ function renderNav() {
         : '知识深度图'
       : worldTitle(scope);
   $('back').hidden = scope === 'overview' && !oceanField;
+}
+function renderFirstChapters() {
+  const roots = overview().nodes;
+  const firstLevel = Math.min(...roots.map((node) => node.level));
+  const list = $('first-chapters');
+  list.replaceChildren();
+  for (const root of roots.filter((node) => node.level === firstLevel)) {
+    const world = view(root.target);
+    if (world.overviewPage) list.append(html('a', { href: world.overviewPage }, root.label));
+  }
 }
 function heading(kicker, title) {
   inspector.append(html('div', { class: 'eyebrow' }, kicker), html('h2', {}, title));
@@ -641,15 +663,29 @@ function appendEdgePassage(ref, edge) {
   }
   inspector.append(passage);
 }
+function appendChapterConnection(ref) {
+  heading('章节联系', worldTitle(ref.from) + ' → ' + worldTitle(ref.to));
+  for (const index of ref.chapters) {
+    const edge = overview().edges[index];
+    inspector.append(html('h3', {}, [TYPES[edge.kind], edge.label].filter(Boolean).join(' · ')));
+    appendEdgePassage({ world: 'overview' }, edge);
+  }
+  if (ref.sections.length) inspector.append(html('h3', {}, '哪些小节用到了这条联系'));
+  for (const index of ref.sections) {
+    const edge = data.crossEdges[index];
+    inspector.append(html('strong', {}, TYPES[edge.kind] + ' · ' + (edge.label || refLabel(edge.target))));
+    appendEdgePassage({ world: 'cross' }, edge);
+  }
+}
 function renderReadingSelection(ref) {
-  if (ref.type === 'world') {
+  if (ref.type === 'chapter-connection') {
+    appendChapterConnection(ref);
+  } else if (ref.type === 'world') {
     const world = view(ref.world);
     const entry = overview().nodes.find((n) => n.target === world.id)?.entry;
     heading('数学板块', worldTitle(ref.world));
     if (entry) inspector.append(html('p', { class: 'intro' }, entry));
-    if (world.nodes.length) inspector.append(html('h3', {}, '板块内的知识点'));
-    for (const n of world.nodes)
-      inspector.append(html('a', { class: 'topic-item', href: topicHash(world.id, n.id) }, n.label));
+    if (world.nodes.length) inspector.append(button('进入本章', () => enter(world.id), 'topic-item'));
     appendWorldConnections(world.id);
   } else if (ref.type === 'node') {
     const node = view(ref.world)?.nodes.find((n) => n.id === ref.node);
@@ -660,10 +696,21 @@ function renderReadingSelection(ref) {
       id: 'student-lesson',
       'aria-label': node.label + '的讲解',
     });
-    if (node.chapter)
-      article.append(
-        html('a', { class: 'chapter-link', href: node.chapter.replace(/\.md$/, '.html') }, '阅读本节正文'),
+    if (chapterHref(node)) {
+      const actions = html('div', { class: 'reading-actions' });
+      actions.append(
+        html('a', { class: 'chapter-link', href: chapterHref(node) }, node.chapter ? '阅读本节正文' : '查看本章脉络'),
       );
+      if (scope !== 'overview') {
+        actions.append(button('回到图上', () => {
+          inspector.closest('.workspace').classList.remove('topic-open');
+          keepTopicCentered = true;
+          $('map-panel').scrollIntoView({ block: 'start' });
+          $('map-panel').focus({ preventScroll: true });
+        }, 'return-to-map'));
+      }
+      article.append(actions);
+    }
     appendLessonText(article, lessonParagraphs(node.lesson));
     if (!article.childElementCount && !String(node.description || '').trim())
       article.append(html('p', { class: 'empty' }, '这个知识点的讲解尚未写好。'));
@@ -686,6 +733,7 @@ function renderReadingSelection(ref) {
 function renderInspector() {
   const overviewOnly = scope === 'overview' && !selection;
   document.querySelector('.workspace').classList.toggle('wide-map', overviewOnly);
+  $('reading-start').hidden = !overviewOnly || Boolean(oceanField) || !$('first-chapters').childElementCount;
   inspector.replaceChildren();
   if (!data || overviewOnly) return;
   if (scope === 'overview') inspector.append(button('返回深度图', () => select(null)));
@@ -701,7 +749,7 @@ function render() {
   learningLayout = null;
   requiredParents = null;
   replaceTopicAddress();
-  renderNav();
+  renderMapHeading();
   renderCanvas();
   renderInspector();
 }
@@ -709,11 +757,10 @@ function refLabel(r) {
   return view(r.view)?.nodes.find((n) => n.id === r.node)?.label || '?';
 }
 
-$('nav-all').onclick = () => {
+$('back').onclick = () => {
   oceanField = '';
   enter('overview');
 };
-$('back').onclick = $('nav-all').onclick;
 $('all-links').onclick = () => {
   showAllLinks = !showAllLinks;
   $('all-links').setAttribute('aria-pressed', showAllLinks);
@@ -726,20 +773,113 @@ $('fit').onclick = () => {
 };
 $('zoom-in').onclick = () => zoom(1.25);
 $('zoom-out').onclick = () => zoom(0.8);
-function traceWorld(event) {
-  const target = event.target.closest?.('[data-ref]');
-  const ref = target ? JSON.parse(target.dataset.ref) : null;
-  const id = scope === 'overview' && ref?.type === 'world' && !gesture ? ref.world : null;
-  scene.classList.toggle('trace-world', Boolean(id));
-  if (!id) return;
-  for (const line of scene.querySelectorAll('[data-endpoints]')) {
-    line.classList.toggle('trace-link', JSON.parse(line.dataset.endpoints).includes(id));
+// The overview uses its own node IDs. Section links name chapters directly.
+// Keep the original evidence so a line can explain exactly what connects its ends.
+function visibleChapterConnections(course) {
+  const byId = new Map(course.nodes.map(n => [n.id, n]));
+  const byWorld = new Map(course.nodes.map(n => [n.target, n]));
+  const pairs = new Map();
+  function pair(a, b) {
+    const key = JSON.stringify([a.id, b.id]);
+    if (!pairs.has(key)) pairs.set(key, {
+      source: a.id, target: b.id, from: a.target, to: b.target, kind: 'section', chapters: [], sections: [],
+    });
+    return pairs.get(key);
   }
+  overview().edges.forEach((edge, i) => {
+    const a = byId.get(edge.source), b = byId.get(edge.target);
+    if (!a || !b || a === b) return;
+    const link = pair(a, b);
+    link.kind = edge.kind;
+    link.chapters.push(i);
+  });
+  (data.crossEdges || []).forEach((edge, i) => {
+    const a = byWorld.get(edge.source.view), b = byWorld.get(edge.target.view);
+    if (a && b && a !== b) pair(a, b).sections.push(i);
+  });
+  return [...pairs.values()];
 }
-svg.addEventListener('pointerover', traceWorld);
-svg.addEventListener('focusin', traceWorld);
-for (const event of ['pointerleave', 'focusout'])
-  svg.addEventListener(event, () => scene.classList.remove('trace-world'));
+function prepareChapterTrace() {
+  const nodes = [...scene.querySelectorAll('.ocean-world[data-world]')];
+  if (!nodes.length) return null;
+  const map = adjacentMode() ? learningMap().map : oceanData();
+  const links = visibleChapterConnections(map.views.find(v => v.id === 'overview'));
+  const paths = adjacentMode()
+    ? LearningView.worldRoutes(learningMap().layout, camera.k, links)
+    : OceanMap.routes(map, camera.k, links);
+  const layer = el('g', { class: 'chapter-connections' });
+  nodes[0].before(layer);
+  return { nodes, links, paths, layer, active: '', relaysHidden: $('relay-key').hidden, idleHint: $('map-hint').textContent };
+}
+function drawChapterConnection(link, d) {
+  const g = el('g', { class: 'chapter-connection', 'data-source': link.from, 'data-target': link.to, 'data-kind': link.kind });
+  const label = worldTitle(link.from) + ' → ' + worldTitle(link.to) + ' · ' + (TYPES[link.kind] || '跨章小节');
+  g.append(el('title', {}, label),
+    el('path', { d, class: 'chapter-thread-halo' }),
+    el('path', { d, class: 'chapter-thread' }),
+    el('path', { d, class: 'edge-hit' }));
+  const ref = { type: 'chapter-connection', from: link.from, to: link.to, chapters: link.chapters, sections: link.sections };
+  interactive(g, ref, label);
+  g.addEventListener('click', event => {
+    if (event.detail === 0) actionNode(ref);
+  });
+  return g;
+}
+function traceChapter(id) {
+  const pinned = !id && selection?.type === 'chapter-connection' ? selection : null;
+  if (scope !== 'overview' || (!chapterTrace && !id && !pinned)) return;
+  chapterTrace ||= prepareChapterTrace();
+  if (!chapterTrace) return;
+  const key = pinned ? JSON.stringify([pinned.from, pinned.to]) : id || '';
+  if (chapterTrace.active === key) return;
+  chapterTrace.active = key;
+  const { nodes, links, paths, layer } = chapterTrace;
+  const neighbors = new Set(), kinds = new Set();
+  layer.replaceChildren();
+  for (const link of links) {
+    const matches = pinned ? link.from === pinned.from && link.to === pinned.to : id === link.from || id === link.to;
+    if (!matches || !paths.has(link)) continue;
+    neighbors.add(link.from);
+    neighbors.add(link.to);
+    kinds.add(link.kind);
+    layer.append(drawChapterConnection(link, paths.get(link)));
+  }
+  const origin = id || pinned?.from;
+  for (const node of nodes) {
+    node.classList.toggle('trace-origin', node.dataset.world === origin);
+    node.classList.toggle('trace-neighbor', node.dataset.world !== origin && neighbors.has(node.dataset.world));
+  }
+  scene.classList.toggle('trace-world', Boolean(key));
+  for (const kind of ['route', 'prerequisite']) $(kind + '-key').hidden = Boolean(key) && !kinds.has(kind);
+  $('section-key').hidden = !kinds.has('section');
+  $('perspective-key').hidden = key ? !kinds.has('perspective') : adjacentMode();
+  $('relay-key').hidden = Boolean(key) || chapterTrace.relaysHidden;
+  $('map-hint').textContent = id && !neighbors.size
+    ? '当前范围内没有与「' + worldTitle(id) + '」直接相连的章节。'
+    : chapterTrace.idleHint;
+}
+function traceTarget(target, allowTravel = false) {
+  clearTimeout(traceExitTimer);
+  if (scope !== 'overview' || gesture) return;
+  if (target?.closest?.('.chapter-connection')) return;
+  const world = target?.closest?.('.ocean-world')?.dataset.world;
+  // Let a pointer cross the small gap from the rim to its connection.
+  if (!world && allowTravel && chapterTrace?.active) {
+    traceExitTimer = setTimeout(() => traceChapter(null), 150);
+  } else traceChapter(world);
+}
+svg.addEventListener('pointerover', event => {
+  if (event.pointerType !== 'touch') {
+    hoverPoint = { x: event.clientX, y: event.clientY };
+    traceTarget(event.target, true);
+  }
+});
+svg.addEventListener('pointerleave', () => {
+  hoverPoint = null;
+  traceTarget(svg.querySelector(':focus-visible'));
+});
+svg.addEventListener('focusin', event => traceTarget(event.target));
+svg.addEventListener('focusout', event => traceTarget(event.relatedTarget));
 svg.addEventListener(
   'wheel',
   (e) => {
@@ -752,6 +892,8 @@ svg.addEventListener(
 
 svg.addEventListener('pointerdown', (event) => {
   if (event.button !== 0) return;
+  if (event.pointerType === 'touch') hoverPoint = null;
+  pendingMapClick = null;
   const element = event.target;
   gesture = {
     start: { x: event.clientX, y: event.clientY },
@@ -764,6 +906,7 @@ svg.addEventListener('pointerdown', (event) => {
   svg.setPointerCapture(event.pointerId);
 });
 svg.addEventListener('pointermove', (event) => {
+  if (event.pointerType !== 'touch') hoverPoint = { x: event.clientX, y: event.clientY };
   if (!gesture) return;
   const dx = event.clientX - gesture.start.x,
     dy = event.clientY - gesture.start.y;
@@ -777,10 +920,15 @@ svg.addEventListener('pointermove', (event) => {
 });
 svg.addEventListener('pointerup', () => {
   if (!gesture) return;
-  const hit = gesture;
+  pendingMapClick = gesture;
   gesture = null;
   svg.classList.remove('dragging');
-  if (hit.moved) return;
+});
+svg.addEventListener('click', () => {
+  // Finish the click before replacing the canvas with a mobile topic panel.
+  const hit = pendingMapClick;
+  pendingMapClick = null;
+  if (!hit || hit.moved) return;
   if (hit.ref) actionNode(JSON.parse(hit.ref));
   else if (hit.learningEdges) showLearningEdges(JSON.parse(hit.learningEdges));
   else if (hit.edge) select(JSON.parse(hit.edge));
@@ -788,6 +936,7 @@ svg.addEventListener('pointerup', () => {
 });
 svg.addEventListener('pointercancel', () => {
   gesture = null;
+  pendingMapClick = null;
   svg.classList.remove('dragging');
 });
 function topicHash(worldId, nodeId) {
@@ -810,6 +959,7 @@ function centerOnTopic() {
   if (selection?.type !== 'node' || scope !== selection.world) return;
   const point = nodePos(scope, selection.node),
     rect = svg.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
   const scale = Math.max(0.9, Math.min(1.2, rect.width / 460));
   camera = { k: scale, x: rect.width / 2 - point.x * scale, y: (rect.height - 32) / 2 - point.y * scale };
   renderCanvas();
@@ -824,7 +974,7 @@ function openTopic(worldId, nodeId) {
   centerOnTopic();
   const panel = inspector.closest('aside');
   panel.scrollTop = 0;
-  if (matchMedia('(max-width:640px)').matches) inspector.scrollIntoView({ block: 'start' });
+  revealInspector();
   return true;
 }
 function readTopicAddress() {
@@ -1096,7 +1246,7 @@ function updateSearchResults() {
   for (const { world, node } of matches) {
     const li = html('li'),
       hash = topicHash(world.id, node.id),
-      link = html('a', { href: hash });
+      link = html('a', { class: 'search-topic', href: hash, 'aria-label': node.label + '，在地图中查看' });
     link.append(html('span', {}, node.label), html('small', {}, worldTitle(world.id)));
     link.addEventListener('click', (event) => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -1107,6 +1257,11 @@ function updateSearchResults() {
       openTopic(world.id, node.id);
     });
     li.append(link);
+    if (node.chapter) {
+      li.append(html('a', {
+        class: 'search-read', href: chapterHref(node), 'aria-label': '阅读「' + node.label + '」正文',
+      }, '读正文'));
+    }
     list.append(li);
   }
 }
@@ -1121,20 +1276,23 @@ $('close-search').onclick = () => $('topic-search').close();
 $('topic-query').addEventListener('input', updateSearchResults);
 $('topic-search').addEventListener('keydown', (event) => {
   if (event.isComposing || event.keyCode === 229) return;
-  const links = [...$('topic-results').querySelectorAll('a')];
+  const links = [...$('topic-results').querySelectorAll('.search-topic')];
   if (!links.length) return;
-  const index = links.indexOf(event.target);
+  const index = links.indexOf(event.target.closest('li')?.querySelector('.search-topic'));
   if (event.key === 'Enter' && event.target === $('topic-query')) {
     event.preventDefault();
     links[0].click();
   }
-  if (event.key === 'ArrowDown') {
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault();
-    links[Math.min(links.length - 1, index + 1)].focus();
-  }
-  if (event.key === 'ArrowUp') {
-    event.preventDefault();
-    (index <= 0 ? $('topic-query') : links[index - 1]).focus();
+    if (event.key === 'ArrowUp' && index <= 0) {
+      $('topic-query').focus();
+      return;
+    }
+    const step = event.key === 'ArrowDown' ? 1 : -1;
+    const next = links[Math.min(links.length - 1, index + step)];
+    const read = event.target.matches('.search-read') && next.closest('li').querySelector('.search-read');
+    (read || next).focus();
   }
 });
 
@@ -1143,20 +1301,21 @@ window.addEventListener('hashchange', () => {
 });
 
 new ResizeObserver(() => {
-  if (!data) return;
+  if (!data || !svg.clientWidth || !svg.clientHeight) return;
   if (keepTopicCentered && selection?.type === 'node' && scope === selection.world) centerOnTopic();
   else fit();
 }).observe($('canvas'));
 
 async function start() {
   try {
-    const response = await fetch('content/map.json');
+    const response = await fetch(document.body.dataset.mapSource);
     if (!response.ok) throw new Error('无法读取教材地图');
     data = await response.json();
+    renderFirstChapters();
     navigationReady = true;
     $('open-search').disabled = false;
     $('open-olympiad').disabled = false;
-    renderNav();
+    renderMapHeading();
     fit();
     readTopicAddress();
   } catch (error) {

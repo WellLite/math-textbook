@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="320" viewBox="0 0 480 320" role="img" aria-labelledby="title desc">
+<title id="title">把等腰三角形分为两块</title>
+<desc id="desc">AB、AC 上各有一道相同记号。BD、DC 上各有两道相同记号。连结 A 和 D，把原三角形分成两个共边的三角形。</desc>
+<defs><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#677b80"/></marker></defs>
+<rect width="480" height="320" rx="12" fill="#f8faf7"/>
+<g font-family="Georgia,'Times New Roman',serif">
+<path d="M240 40 L80 267 H400 Z" fill="none" stroke="#087c74" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="240" y1="40" x2="240" y2="267" stroke="#ad4d21" stroke-width="2.5" />
+<line x1="152.89" y1="172.27" x2="144.71" y2="166.51" stroke="#203d43" stroke-width="2" />
+<line x1="335.29" y1="166.51" x2="327.11" y2="172.27" stroke="#203d43" stroke-width="2" />
+<line x1="157" y1="262" x2="157" y2="272" stroke="#203d43" stroke-width="2" />
+<line x1="163" y1="262" x2="163" y2="272" stroke="#203d43" stroke-width="2" />
+<line x1="317" y1="262" x2="317" y2="272" stroke="#203d43" stroke-width="2" />
+<line x1="323" y1="262" x2="323" y2="272" stroke="#203d43" stroke-width="2" />
+<circle cx="240" cy="40" r="4" fill="#203d43"/>
+<circle cx="80" cy="267" r="4" fill="#203d43"/>
+<circle cx="400" cy="267" r="4" fill="#203d43"/>
+<circle cx="240" cy="267" r="4" fill="#ad4d21"/>
+<text x="240" y="29" text-anchor="middle" fill="#203d43" font-size="20">A</text>
+<text x="69" y="286" text-anchor="middle" fill="#203d43" font-size="20">B</text>
+<text x="409" y="286" text-anchor="middle" fill="#203d43" font-size="20">C</text>
+<text x="240" y="291" text-anchor="middle" fill="#ad4d21" font-size="20">D</text>
+</g>
+</svg>

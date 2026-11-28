@@ -20,6 +20,11 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y pandoc
       - name: 验证知识图
         run: node --test tests/*.cjs
+      - name: 验证审阅批注
+        run: |
+          python3 -m unittest discover -s tests -p '*_test.py'
+          npm install --prefix "$RUNNER_TEMP/annotation-test" --no-save --no-package-lock miniflare@4.20260730.0
+          NODE_PATH="$RUNNER_TEMP/annotation-test/node_modules" node --test tests/annotation-api.test.mjs
       - name: 构建学生版
         run: python3 tools/build.py
       - name: 上传静态页面

@@ -74,40 +74,11 @@ window.OceanMap = (() => {
     return {x:x + drift + Math.sin(phase + .45) * 23, y:baseline + Math.sin(phase) * 25};
   }
 
-  function routeGeometry(data) {
-    const overview = data.views.find(view => view.id === 'overview');
-    const positions = new Map(overview.nodes.map(node => [node.id, position(data, node.target)]));
-    const points = [...positions.values()];
-    const left = Math.min(0,...points.map(point=>point.x));
-    const right = Math.max(0,...points.map(point=>point.x));
-    const middle = (left + right) / 2;
-    const lanes = {left:[], right:[]};
-    const links = overview.edges.map(edge => {
-      const from = positions.get(edge.source), to = positions.get(edge.target);
-      const link = {edge,from,to};
-      if (from && to && Math.abs(to.y-from.y)>rowHeight*1.6) {
-        const mean = (from.x+to.x)/2;
-        link.side = (mean===middle ? from.x : mean) >= middle ? 1 : -1;
-        lanes[link.side>0 ? 'right' : 'left'].push(link);
-      }
-      return link;
-    }).filter(link=>link.from && link.to);
-    for(const [side,group] of Object.entries(lanes)) {
-      // Shorter jumps stay inside longer jumps, each on an independently clickable rail.
-      group.sort((a,b)=>Math.abs(a.from.y-a.to.y)-Math.abs(b.from.y-b.to.y));
-      group.forEach((link,index)=>{
-        link.slot=index;
-        link.rail=(side==='left' ? left : right)+link.side*(96+index*36);
-      });
-    }
-    return {points,left,right,lanes,links};
-  }
-
   function bounds(data) {
-    const {points,left,right,lanes} = routeGeometry(data);
+    const points = overviewNodes(data).map(node => position(data, node.target));
     const vertical = bands(data).map(band => rowY(data, band.level));
-    const margin = laneCount=>Math.max(136,106+Math.max(0,laneCount-1)*36);
-    const minX = left-margin(lanes.left.length), maxX = right+margin(lanes.right.length);
+    const minX = Math.min(0, ...points.map(p => p.x)) - 136;
+    const maxX = Math.max(0, ...points.map(p => p.x)) + 136;
     const top = Math.min(0, ...vertical, ...points.map(p => p.y)) - 134;
     const bottom = Math.max(0, ...vertical, ...points.map(p => p.y)) + 176;
     const labelGutter = 140;
@@ -219,8 +190,6 @@ window.OceanMap = (() => {
     return group;
   }
 
-  // Standard routes leave below the captions and arrive above the receiving orbit.
-  // Long routes run around the intervening layers so the lines do not cut through their circles.
   function textSizes(zoom) {
     return {
       title: Math.max(22,(zoom<.30?10.5:13.5)/zoom),
@@ -228,55 +197,145 @@ window.OceanMap = (() => {
     };
   }
 
-  function routes(data, zoom) {
-    const {links} = routeGeometry(data);
-    const out = new Map(), incoming = new Map();
-    for (const link of links) {
-      if (!out.has(link.edge.source)) out.set(link.edge.source,[]);
-      if (!incoming.has(link.edge.target)) incoming.set(link.edge.target,[]);
-      out.get(link.edge.source).push(link);
-      incoming.get(link.edge.target).push(link);
+  // A clear segment between two visibility-graph vertices may follow a box
+  // boundary. Only an intersection with its interior blocks the segment.
+  function cutsBox(a, b, box) {
+    const dx = b.x-a.x, dy = b.y-a.y;
+    let enter = 0, leave = 1;
+    if (dx !== 0) {
+      const near = ((dx > 0 ? box.left : box.right) - a.x) / dx;
+      const far = ((dx > 0 ? box.right : box.left) - a.x) / dx;
+      if (near > enter) enter = near;
+      if (far < leave) leave = far;
     }
-    const compare = (a,b)=>a.x-b.x || a.y-b.y;
-    for (const group of out.values()) group.sort((a,b)=>compare(a.to,b.to));
-    for (const group of incoming.values()) group.sort((a,b)=>compare(a.from,b.from));
-    function port(group,link) {
-      return (group.indexOf(link)-(group.length-1)/2)*Math.min(20,100/Math.max(1,group.length-1));
+    if (dy !== 0) {
+      const near = ((dy > 0 ? box.top : box.bottom) - a.y) / dy;
+      const far = ((dy > 0 ? box.bottom : box.top) - a.y) / dy;
+      if (near > enter) enter = near;
+      if (far < leave) leave = far;
     }
-    const sizes = textSizes(zoom);
-    const bottom = 90+sizes.title*.83+sizes.subtitle*1.6;
-    const paths = new Map();
-    for (const link of links) {
-      const {edge,from:a,to:b}=link;
-      const dx=b.x-a.x,dy=b.y-a.y,direction=Math.sign(dy);
-      const startPort=port(out.get(edge.source),link), endPort=port(incoming.get(edge.target),link);
-      let path;
-      if (Math.abs(dy)<155) {
-        const side=dx>=0?1:-1, start=a.x+75*side, end=b.x-75*side;
-        path=`M ${start} ${a.y-22} C ${start+60*side} ${a.y-96}, ${end-60*side} ${b.y-96}, ${end} ${b.y-22}`;
-      } else if (link.side) {
-        const sx=a.x+startPort, ex=b.x+endPort;
-        const sy=a.y+(dy>0?bottom:-84), ey=b.y+(dy>0?-Math.sqrt(84**2-endPort**2):bottom);
-        const departure=sy+direction*(22+link.slot*14), approach=ey-direction*(26+link.slot*14);
-        const {rail}=link;
-        const bend=Math.min(Math.abs(approach-departure)*.36,94);
-        path=`M ${sx} ${sy} C ${sx} ${departure+direction*bend*.48}, ${rail} ${departure-direction*bend*.15}, ${rail} ${departure+direction*bend} L ${rail} ${approach-direction*bend} C ${rail} ${approach+direction*bend*.15}, ${ex} ${approach-direction*bend*.48}, ${ex} ${ey}`;
-      } else {
-        // Separate arrivals around the top arc. Diagonal routes leave on the side
-        // facing their destination, which keeps the whole inter-layer space usable.
-        const side=Math.sign(dx);
-        const diagonal=Math.abs(dx)>140 && Math.abs(dx)<columnWidth*.85;
-        const sx=a.x+(diagonal ? side*76 : startPort);
-        const sy=a.y+(diagonal ? direction*(20+startPort*.42) : (dy>0?bottom:-84));
-        const ex=b.x+endPort, ey=b.y+(dy>0 ? -Math.sqrt(84**2-endPort**2) : bottom);
-        const rise=ey-sy;
-        const controlX=sx+(ex-sx)*.58;
-        const swing=Math.max(.18,Math.min(.57,.35+(startPort-endPort)/170));
-        path=`M ${sx} ${sy} C ${controlX} ${sy+rise*swing}, ${ex} ${sy+rise*.60}, ${ex} ${ey}`;
+    return enter < leave - 1e-8;
+  }
+
+  function approach(from, toward, distance) {
+    const fraction = distance / (Math.hypot(toward.x - from.x, toward.y - from.y) || 1);
+    return {x:from.x + (toward.x - from.x) * fraction, y:from.y + (toward.y - from.y) * fraction};
+  }
+
+  function routePath(points, start, end, paired) {
+    const dx = end.x - start.x, dy = end.y - start.y, span = Math.hypot(dx, dy);
+    if (!span) return '';
+    // Opposite directions occupy different sides of the same corridor.
+    const shift = paired ? Math.min(6, start.radius / 10, end.radius / 10) : 0;
+    const path = points.map(p => ({x:p.x - shift * dy / span, y:p.y + shift * dx / span}));
+    function dock(center, index, next) {
+      const a = path[index], b = path[next], length = Math.hypot(b.x-a.x, b.y-a.y) || 1;
+      const x = a.x-center.x, y = a.y-center.y;
+      const dot = (x*(b.x-a.x) + y*(b.y-a.y)) / length;
+      const radial = Math.sqrt(Math.max(0, center.radius**2 - x*x - y*y + dot*dot)) - dot;
+      return approach(a, b, Math.min(radial, length));
+    }
+    const last = path.length - 1;
+    const a = dock(start, 0, 1), b = dock(end, last, last-1);
+    path[0] = a; path[last] = b;
+    const coord = p => p.x.toFixed(2) + ',' + p.y.toFixed(2);
+    let d = 'M' + coord(a);
+    for (let i=1; i<last; i++) {
+      const prev = path[i-1], p = path[i], next = path[i+1];
+      const round = Math.min(12, Math.hypot(prev.x-p.x,prev.y-p.y)/3, Math.hypot(next.x-p.x,next.y-p.y)/3);
+      d += ' L' + coord(approach(p, prev, round)) + ' Q' + coord(p) + ' ' + coord(approach(p, next, round));
+    }
+    return d + ' L' + coord(b);
+  }
+
+  // Shortest visible paths use local corners only when an intervening orbit or
+  // caption obstructs the direct line. World centers are terminals, never relays.
+  function routePlanner(chapters) {
+    const boxes = [], points = [], centers = new Map();
+    for (const [id, p] of chapters) {
+      centers.set(id, points.length);
+      points.push({...p, id});
+      boxes.push({owner:id, left:p.x-p.radius-8, right:p.x+p.radius+8,
+        top:p.y-p.radius-8, bottom:p.y+p.radius+8});
+      boxes.push({left:p.x-p.labelWidth/2-7, right:p.x+p.labelWidth/2+7,
+        top:p.y+p.labelTop-4, bottom:p.y+p.labelBottom+7});
+    }
+    for (const b of boxes) {
+      for (const x of [b.left,b.right]) for (const y of [b.top,b.bottom]) points.push({x,y});
+    }
+    const graph = points.map(() => []);
+    for (let i=0; i<points.length; i++) {
+      const a = points[i];
+      for (let j=0; j<i; j++) {
+        const b = points[j];
+        const left = Math.min(a.x,b.x), right = Math.max(a.x,b.x);
+        const top = Math.min(a.y,b.y), bottom = Math.max(a.y,b.y);
+        if (boxes.some(box => left < box.right && right > box.left && top < box.bottom && bottom > box.top &&
+          !(box.owner && (box.owner === a.id || box.owner === b.id)) && cutsBox(a,b,box))) continue;
+        const weight = Math.hypot(a.x-b.x, a.y-b.y);
+        if (!weight) continue;
+        graph[i].push({index:j, weight});
+        graph[j].push({index:i, weight});
       }
-      paths.set(edge,path);
+    }
+    function pathsFrom(source) {
+      const from = centers.get(source);
+      const previous = Array(points.length).fill(-1), dist = Array(points.length).fill(Infinity);
+      const visited = Array(points.length).fill(false);
+      dist[from] = 0;
+      while (true) {
+        let index = -1, min = Infinity;
+        for (let i=0; i<points.length; i++) {
+          if (!visited[i] && dist[i] < min) {index = i; min = dist[i];}
+        }
+        if (index === -1) break;
+        visited[index] = true;
+        if (index !== from && points[index].id !== undefined) continue;
+        for (const hop of graph[index]) {
+          const total = min + hop.weight;
+          if (total < dist[hop.index]) {dist[hop.index] = total; previous[hop.index] = index;}
+        }
+      }
+      return previous;
+    }
+    const parents = new Map();
+    return (source, target, paired) => {
+      const from = centers.get(source), to = centers.get(target);
+      if (from === undefined || to === undefined || source === target) return '';
+      if (!parents.has(source)) parents.set(source,pathsFrom(source));
+      const previous = parents.get(source), route = [points[to]];
+      for (let i=previous[to]; i!==-1 && i!==from; i=previous[i]) route.push(points[i]);
+      route.push(points[from]);
+      return routePath(route.reverse(), points[from], points[to], paired);
+    };
+  }
+
+  // Panning and hovering do not move the orbits. Reuse their visibility graph
+  // until the layout or the zoom-dependent caption bounds actually change.
+  let lastGeometry, planner;
+  function chapterRoutes(edges, chapters) {
+    const geometry = JSON.stringify([...chapters].map(([id,p]) =>
+      [id,p.x,p.y,p.radius,p.labelWidth,p.labelTop,p.labelBottom]));
+    if (lastGeometry !== geometry) {
+      planner = routePlanner(chapters);
+      lastGeometry = geometry;
+    }
+    const paths = new Map(), directed = new Set(edges.map(e => JSON.stringify([e.source,e.target])));
+    for (const edge of edges) {
+      const path = planner(edge.source, edge.target, directed.has(JSON.stringify([edge.target,edge.source])));
+      if (path) paths.set(edge, path);
     }
     return paths;
+  }
+
+  function routes(data, zoom, edges = data.views.find(v => v.id === 'overview').edges) {
+    const {title,subtitle} = textSizes(zoom);
+    const chapters = new Map(overviewNodes(data).map(n => {
+      const width = Math.min(columnWidth-28, Math.max(Array.from(n.label || '').length*title, Array.from(n.entry || '').length*subtitle));
+      return [n.id, {...position(data,n.target), radius:orbitRadius+9, labelWidth:width,
+        labelTop:83, labelBottom:83+title+(n.entry ? subtitle*1.4 : 0)}];
+    }));
+    return chapterRoutes(edges,chapters);
   }
 
   // Retain the per-link signature for older local pages while they are refreshed.
@@ -303,8 +362,10 @@ window.OceanMap = (() => {
     const metadata = overviewNodes(data).find(node=>node.target===view.id);
     const layers = bands(data), index = layers.findIndex(band=>band.level===metadata?.level);
     const water = palette(Math.max(index,0),layers.length);
-    const group = svgNode('g',{class:'ocean-world',style:`--world:${colour};--ocean-ink:${water.ink};--ocean-note:${water.muted};--ocean-halo:${water.bottom}`});
+    const group = svgNode('g',{class:'ocean-world','data-world':view.id,style:`--world:${colour};--ocean-ink:${water.ink};--ocean-note:${water.muted};--ocean-halo:${water.bottom}`});
     group.append(svgNode('circle',{cx:center.x,cy:center.y,r:orbitRadius,class:'world-ring'}));
+    group.append(svgNode('circle',{cx:center.x,cy:center.y,r:orbitRadius,fill:'transparent','aria-hidden':'true',
+      'data-ref':JSON.stringify({type:'world',world:view.id})}));
     const core = svgNode('g',{class:'world-core'});
     const countSize = Math.min(44,Math.max(24,10/zoom));
     core.append(svgNode('circle',{cx:center.x,cy:center.y,r:40}),svgNode('text',{x:center.x,y:center.y+countSize*.34,'text-anchor':'middle','font-size':countSize,class:'world-count'},String(view.nodes.length)));
@@ -335,5 +396,5 @@ window.OceanMap = (() => {
     return group;
   }
 
-  return {bands,rowY,nearestRow,position,bounds,fit,opening,satellite,background,edge,routes,world};
+  return {bands,rowY,nearestRow,position,bounds,fit,opening,satellite,background,edge,routes,chapterRoutes,world};
 })();

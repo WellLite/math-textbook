@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" role="img"><title>三条线交于 P。三个着色三角形的面积，分别为相邻两条分割线提供比例。</title><rect width="600" height="320" fill="#fffdf6"/>
+<polygon points="231.04,27.0 102.96,293.0 253.77,231.62" fill="#e3eddb"/>
+<polygon points="102.96,293.0 497.04,293.0 253.77,231.62" fill="#efddc7"/>
+<polygon points="497.04,293.0 231.04,27.0 253.77,231.62" fill="#d5e7e8"/>
+<line x1="231.04" y1="27.0" x2="102.96" y2="293.0" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="102.96" y1="293.0" x2="497.04" y2="293.0" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="497.04" y1="293.0" x2="231.04" y2="27.0" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="231.04" y1="27.0" x2="260.59" y2="293.0" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="102.96" y1="293.0" x2="383.04" y2="179.0" stroke="#254a4c" fill="none" stroke-width="2"/>
+<line x1="497.04" y1="293.0" x2="145.65" y2="204.33" stroke="#254a4c" fill="none" stroke-width="2"/>
+<circle cx="231.04" cy="27.0" r="2.7" fill="#254a4c"/><text x="237.04" y="20.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">A</text>
+<circle cx="102.96" cy="293.0" r="2.7" fill="#254a4c"/><text x="87.96" y="306.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">B</text>
+<circle cx="497.04" cy="293.0" r="2.7" fill="#254a4c"/><text x="502.04" y="307.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">C</text>
+<circle cx="260.59" cy="293.0" r="2.7" fill="#254a4c"/><text x="263.59" y="310.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">D</text>
+<circle cx="383.04" cy="179.0" r="2.7" fill="#254a4c"/><text x="389.04" y="172.0" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">E</text>
+<circle cx="145.65" cy="204.33" r="2.7" fill="#254a4c"/><text x="129.65" y="201.33" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">F</text>
+<circle cx="253.77" cy="231.62" r="2.7" fill="#254a4c"/><text x="251.77" y="221.62" style="font:17px Georgia,serif;fill:#254a4c;stroke:#fffdf6;stroke-width:3;paint-order:stroke">P</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 405 202" role="img" aria-labelledby="title desc">
+  <title id="title">四乘四棋盘的中心砖</title>
+  <desc id="desc">深色格是原缺角，陶色三格是一块中心 L 砖，粗线分开四个子棋盘。</desc>
+  <style>
+    text { font: 17px system-ui, sans-serif; fill: #244a48; }
+    .label { font-size: 15px; } .small { font-size: 13px; }
+    .line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+  <rect width="405" height="202" fill="#fffdf6"/>
+  <rect x="124" y="32" width="36" height="36" fill="#415d5c" stroke="#96aaa0"/><rect x="160" y="32" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="196" y="32" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="232" y="32" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="124" y="68" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="160" y="68" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="196" y="68" width="36" height="36" fill="#cf8f6d" stroke="#96aaa0"/><rect x="232" y="68" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="124" y="104" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="160" y="104" width="36" height="36" fill="#cf8f6d" stroke="#96aaa0"/><rect x="196" y="104" width="36" height="36" fill="#cf8f6d" stroke="#96aaa0"/><rect x="232" y="104" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="124" y="140" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="160" y="140" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="196" y="140" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><rect x="232" y="140" width="36" height="36" fill="#e5eeea" stroke="#96aaa0"/><path d="M196,32 L196,176" class="line" stroke="#233f3e" stroke-width="2.6"/><path d="M124,104 L268,104" class="line" stroke="#233f3e" stroke-width="2.6"/><text x="60" y="54" class="label" text-anchor="middle">原缺格</text><path d="M82,49 L139,48" class="line" stroke="#244a48" stroke-width="1.7"/><text x="349" y="161" class="label" text-anchor="middle">中心 L 砖</text><path d="M315,155 L217.60000000000002,125.60000000000001" class="line" stroke="#9b4e32" stroke-width="1.7"/>
+</svg>

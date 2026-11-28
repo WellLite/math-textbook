@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" role="img" aria-labelledby="t d">
+  <title id="t">抛物线的两边怎样配对</title>
+  <desc id="d">直线 x=2 穿过顶点。离这条线各一单位的两点，都在横轴上。</desc>
+  <g stroke="#77908b" fill="none"><path d="M23 170H378m-8 -4 8 4-8 4M67 228V16m-4 8 4-8 4 8"/></g>
+  <path d="M207 21V229" stroke="#9c573f" stroke-dasharray="5 4" fill="none"/>
+  <path d="M67 56Q207 360 347 56" fill="none" stroke="#245d57" stroke-width="3"/>
+  <g fill="#245d57"><circle cx="137" cy="170" r="4"/><circle cx="277" cy="170" r="4"/></g>
+  <circle cx="207" cy="208" r="4" fill="#9c573f"/>
+  <g font-family="serif" font-size="16" fill="#263d3a">
+    <text x="370" y="192">x</text><text x="49" y="22">y</text><text x="49" y="190">0</text>
+    <text x="131" y="190">1</text><text x="271" y="190">3</text><text x="218" y="220">(2, −1)</text><text x="216" y="36">x = 2</text>
+  </g>
+</svg>
