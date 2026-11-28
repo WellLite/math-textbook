@@ -93,14 +93,18 @@
     });
     document.querySelectorAll('.chapter-overview .inline-formula').forEach(formula => formulaSize.observe(formula));
     const normalize = text => text.normalize('NFKC').toLocaleLowerCase().trim();
+    const definitions = [...groups].map(group => ({
+      group,
+      heading: normalize(group.querySelector('h3').textContent),
+      entries: [...group.querySelectorAll('li')].map(entry => [entry, normalize(entry.textContent)])
+    }));
     function findDefinition() {
       const query = normalize(definitionSearch.value);
       let matches = 0;
-      for (const group of groups) {
-        const heading = normalize(group.querySelector('h3').textContent);
+      for (const { group, heading, entries } of definitions) {
         let visible = 0;
-        for (const entry of group.querySelectorAll('li')) {
-          entry.hidden = Boolean(query) && !heading.includes(query) && !normalize(entry.textContent).includes(query);
+        for (const [entry, text] of entries) {
+          entry.hidden = Boolean(query) && !heading.includes(query) && !text.includes(query);
           if (!entry.hidden) visible++;
         }
         matches += visible;

@@ -15,11 +15,15 @@ import subprocess
 import tempfile
 from urllib.parse import quote, unquote, urlsplit
 
+from annotation_anchors import mark_blocks, page_attribute
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_FILES = ('index.html', 'app.js', 'style.css', 'chapter.css', 'ocean.css',
               'ocean-layout.js', 'learning-view.css', 'learning-view.js', 'learning-graph.js', 'reader.js',
               'chapter-outline.js', 'outline-graph.css', 'math-figures.js')
+REVIEW_FILES = ('annotations.css', 'annotations.js')
+REVIEW_SERVICE = ('_worker.js', '_routes.json')
 RELATIONS = {'prerequisite', 'perspective', 'route'}
 MARKER = '.math-textbook-build'
 
@@ -135,12 +139,18 @@ def page(title, body, root, directory=False, outline='', pending=False, feedback
                           f'<script src="{root}learning-graph.js" defer></script><script src="{root}chapter-outline.js" defer></script>')
         main = f'<div class="reading-layout">{outline}{main}</div>'
     diagrams = f'<script src="{root}math-figures.js" defer></script>' if 'id="demo-' in body else ''
+    review_assets = ''
+    connect = ''
+    if ' data-note-page="' in body:
+        review_assets = (f'<link rel="stylesheet" href="{root}annotations.css">'
+                         f'<script src="{root}annotations.js" defer></script>')
+        connect = " connect-src 'self' https://math-textbook-review.pages.dev;"
     return f'''<!doctype html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' https:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' https:;{connect} base-uri 'none'; form-action 'none'">
 <title>{escape(title)} · 数学地图</title>
-<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css">{outline_assets}{diagrams}<script src="{root}reader.js" defer></script>
+<link rel="stylesheet" href="{root}style.css"><link rel="stylesheet" href="{root}chapter.css">{outline_assets}{diagrams}<script src="{root}reader.js" defer></script>{review_assets}
 </head>
 <body class="chapter-page{' with-outline' if outline else ''}"><a class="skip-reading" href="#reading">跳到正文</a><header class="chapter-header"><a class="brand" href="{root}index.html"><span class="brand-mark" aria-hidden="true"><i></i></span>数学地图</a><nav aria-label="阅读导航">{reading_tools}<a href="{root}chapters/index.html">教材目录</a>{feedback}</nav></header>
 {main}</body></html>
@@ -292,6 +302,11 @@ def write_overview(stage, world, paths, review_pr, adult):
 
     intro_html, glossary_html = (render_markdown(re.sub(r'\]\(topic:([^\s)]+)\)', topic_link, section), overview=True)
                                  for section in (intro, glossary))
+    note_page = ''
+    if review_pr:
+        note_page = page_attribute(path, adult)
+        intro_html = mark_blocks(intro_html)
+        glossary_html = mark_blocks(glossary_html, definitions=True)
     glossary_html = glossary_html.replace('</strong>　', '</strong> ')
     glossary_html = ''.join(f'<section class="definition-group">{part}</section>' if part.startswith('<h3') else part
                             for part in re.split(r'(?=<h3\b)', glossary_html))
@@ -312,7 +327,7 @@ def write_overview(stage, world, paths, review_pr, adult):
         start_link = f'<a href="{href}">{verb} · {escape(opening["label"])} →</a>'
         map_href += f'#topic/{quote(world["id"], safe="")}/{quote(starts[0]["id"], safe="")}'
     outline = chapter_outline(world, None, path, paths, map_href)
-    body = (f'<p class="reading-context" data-reading-topic>{escape(title)}</p><article class="chapter-overview">{intro_html}'
+    body = (f'<p class="reading-context" data-reading-topic>{escape(title)}</p><article class="chapter-overview"{note_page}>{intro_html}'
             f'{status}<nav class="overview-actions" aria-label="本章阅读">{start_link}<a href="#definitions">查本章定义 ↓</a></nav>'
             '<h2 id="definitions">本章定义</h2><div class="definition-find" hidden>'
             '<label for="find-definition">查定义</label><input type="search" id="find-definition" placeholder="输入术语">'
@@ -331,7 +346,8 @@ def build_edition(stage, review_pr, adult):
     if sources != chapters.keys():
         mismatch = ', '.join(str(p) for p in sorted(sources.symmetric_difference(chapters)))
         raise ValueError(f'章节文件与地图的 chapter 引用不一致：{mismatch}')
-    for name in SITE_FILES:
+    site_files = SITE_FILES + (REVIEW_FILES if review_pr else ())
+    for name in site_files:
         shutil.copyfile(ROOT / 'site' / name, stage / name)
     home = stage / 'index.html'
     home_html = home.read_text(encoding='utf-8').replace('<!-- review-feedback -->', feedback_link(review_pr))
@@ -369,7 +385,7 @@ def build_edition(stage, review_pr, adult):
             anchor = 'quantifiers' if figure.startswith('quantifier-') else figure
             markup = re.sub(r'<figure>(?=\s*<img src="[^"]*/' + figure + r'\.svg")',
                             f'<figure id="demo-{anchor}">', markup)
-        articles[source] = markup
+        articles[source] = mark_blocks(markup) if review_pr else markup
     for world_id, world in worlds.items():
         write_overview(stage, world, paths, review_pr, adult)
         for node in world['nodes']:
@@ -392,7 +408,8 @@ def build_edition(stage, review_pr, adult):
                                      f'<title>{label}</title><meta http-equiv="refresh" content="0;url={href}">'
                                      f'<link rel="canonical" href="{href}"><a href="{href}">阅读{label}</a></html>',
                                      encoding='utf-8')
-                body = (f'<p class="reading-context" data-reading-topic>{label}</p><article>{articles[source]}</article>'
+                note_page = page_attribute(source, adult) if review_pr else ''
+                body = (f'<p class="reading-context" data-reading-topic>{label}</p><article{note_page}>{articles[source]}</article>'
                         '<footer class="reading-end">' + related_reading(worlds, chapters[source], source)
                         + f'<nav class="map-return" aria-label="返回导航"><a href="{map_href}">在地图中查看「{label}」</a>'
                           f'<a href="{root}chapters/index.html#world-{quote(world_id, safe="")}">返回本板块目录</a></nav></footer>')
@@ -409,7 +426,7 @@ def build_edition(stage, review_pr, adult):
     (stage / 'chapters/index.html').write_text(page('教材目录', index, '../', directory=True, feedback=feedback_link(review_pr), switch=edition_switch(PurePosixPath('chapters/index.html'), adult)), encoding='utf-8')
     # Browsers can retain yesterday's map scripts or data when a reader reopens the book.
     assets = {name: sha256((stage / name).read_bytes()).hexdigest()[:12]
-              for name in (*SITE_FILES, 'content/map.json') if not name.endswith('.html')}
+              for name in (*site_files, 'content/map.json') if not name.endswith('.html')}
     asset_ref = re.compile(r'((?:<script src|<link rel="stylesheet" href|data-map-source)="(?:\.\./)*)([^"]+)(")')
     for document in stage.rglob('*.html'):
         markup = document.read_text(encoding='utf-8')
@@ -427,6 +444,9 @@ def build(stage, review_pr=None):
     build_edition(stage / 'adult', review_pr, adult=True)
     for document in stage.rglob('*.html'):
         ChapterLinks(document, stage).feed(document.read_text(encoding='utf-8'))
+    if review_pr:
+        for name in REVIEW_SERVICE:
+            shutil.copyfile(ROOT / 'review' / name, stage / name)
     (stage / '.nojekyll').touch()
     (stage / MARKER).touch()
 

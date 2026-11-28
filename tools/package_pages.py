@@ -7,17 +7,20 @@ from tempfile import NamedTemporaryFile
 from urllib.parse import unquote
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from build import MARKER, ROOT, SITE_FILES, topic_address
+from build import MARKER, REVIEW_FILES, REVIEW_SERVICE, ROOT, SITE_FILES, topic_address
 
 
 def collect(site):
     if not (site / MARKER).is_file():
         raise ValueError('请选择 build.py 生成的教材目录')
-    files, redirects = set(), {}
+    review = (site / REVIEW_SERVICE[0]).is_file()
+    files = {Path(name) for name in REVIEW_SERVICE} if review else set()
+    redirects = {}
+    site_files = SITE_FILES + (REVIEW_FILES if review else ())
     figures = {p.relative_to(ROOT) for p in (ROOT / 'chapters').rglob('*')
                if p.suffix.lower() in {'.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp'}}
     for prefix in (Path(), Path('adult')):
-        files.update(prefix / p for p in [*SITE_FILES, *figures, 'chapters/index.html', 'content/map.json'])
+        files.update(prefix / p for p in [*site_files, *figures, 'chapters/index.html', 'content/map.json'])
         atlas = json.loads((site / prefix / 'content/map.json').read_text())
         for world in atlas['views']:
             if world['id'] == 'overview':
